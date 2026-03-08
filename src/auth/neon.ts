@@ -34,6 +34,11 @@ interface RawSessionPayload {
   } | null
 }
 
+export interface RunOAuthLoginOptions {
+  allowBrowser?: boolean
+  preferExistingBrowserSession?: boolean
+}
+
 function createDeferred<T>() {
   let resolve!: (value: T) => void
   let reject!: (reason?: unknown) => void
@@ -99,11 +104,17 @@ function escapeHtml(value: string): string {
     .replaceAll("'", "&#39;")
 }
 
-function buildStartHtml(authUrl: string, provider: string, callbackURL: string): string {
+function buildStartHtml(
+  authUrl: string,
+  provider: string,
+  callbackURL: string,
+  preferExistingBrowserSession: boolean
+): string {
   const safeAuthUrl = JSON.stringify(authUrl)
   const safeProvider = JSON.stringify(provider)
   const safeCallbackUrl = JSON.stringify(callbackURL)
   const safeSdkUrl = JSON.stringify(NEON_AUTH_BROWSER_SDK_URL)
+  const safePreferExistingBrowserSession = JSON.stringify(preferExistingBrowserSession)
 
   return `<!doctype html>
 <html lang="es">
@@ -161,34 +172,93 @@ function buildStartHtml(authUrl: string, provider: string, callbackURL: string):
       const authUrl = ${safeAuthUrl};
       const provider = ${safeProvider};
       const callbackURL = ${safeCallbackUrl};
+      const preferExistingBrowserSession = ${safePreferExistingBrowserSession};
       const status = document.getElementById("status");
       const errorNode = document.getElementById("error");
       const retryButton = document.getElementById("retry");
 
+      function getErrorMessage(error) {
+        return error instanceof Error ? error.message : String(error);
+      }
+
+      function extractPayload(result) {
+        if (!result || typeof result !== "object") {
+          return null;
+        }
+
+        const payload =
+          "data" in result && result.data && typeof result.data === "object"
+            ? result.data
+            : result;
+
+        const session = payload && typeof payload === "object" ? payload.session : null;
+        const user =
+          payload && typeof payload === "object" ? payload.user ?? session?.user ?? null : null;
+        const token = session?.token ?? session?.access_token ?? session?.accessToken ?? null;
+
+        if (!session || !user?.id || !token) {
+          return null;
+        }
+
+        return payload;
+      }
+
+      async function finish(body) {
+        await fetch("${COMPLETE_PATH}", {
+          method: "POST",
+          headers: { "content-type": "application/json" },
+          body: JSON.stringify(body),
+        });
+      }
+
       async function notifyError(message) {
         try {
-          await fetch("${COMPLETE_PATH}", {
-            method: "POST",
-            headers: { "content-type": "application/json" },
-            body: JSON.stringify({ error: message }),
-          });
+          await finish({ error: message });
         } catch {
           // Ignorar errores de notificación al CLI.
+        }
+      }
+
+      async function tryReuseExistingSession(auth) {
+        if (!preferExistingBrowserSession) {
+          return false;
+        }
+
+        status.textContent = "Buscando una sesión web existente...";
+
+        try {
+          const result = await auth.getSession();
+          const payload = extractPayload(result);
+          if (!payload) {
+            return false;
+          }
+
+          status.textContent = "Sesión web recuperada. Ya puedes volver a la terminal.";
+          await finish({ payload });
+          setTimeout(() => window.close(), 1200);
+          return true;
+        } catch {
+          return false;
         }
       }
 
       async function startLogin() {
         retryButton.style.display = "none";
         errorNode.textContent = "";
-        status.textContent = "Redirigiendo al proveedor OAuth...";
         try {
           const auth = createAuthClient(authUrl);
+          const reusedSession = await tryReuseExistingSession(auth);
+          if (reusedSession) {
+            return;
+          }
+
+          status.textContent = "Redirigiendo al proveedor OAuth...";
           await auth.signIn.social({
             provider,
             callbackURL,
           });
         } catch (error) {
-          const message = error instanceof Error ? error.message : String(error);
+          const message = getErrorMessage(error);
           status.textContent = "No se pudo iniciar el login OAuth.";
           errorNode.textContent =
             message +
@@ -365,9 +435,21 @@ export function formatSessionLabel(session: StoredSession | null): string {
   return `${identity} (${session.provider})`
 }
 
-export async function runOAuthLogin(): Promise<StoredSession> {
+export function canOpenBrowserAutomatically(): boolean {
+  return Boolean(process.stdin.isTTY && process.stdout.isTTY)
+}
+
+export async function runOAuthLogin(options: RunOAuthLoginOptions = {}): Promise<StoredSession> {
+  const { allowBrowser = true, preferExistingBrowserSession = true } = options
   const config = await loadConfig()
   const provider = config.oauthProvider || "google"
+
+  if (!allowBrowser) {
+    throw new Error(
+      "No hay una sesión válida y este comando se está ejecutando en modo no interactivo. Ejecuta `orgmorg login` desde una terminal interactiva y vuelve a intentar."
+    )
+  }
+
   const deferred = createDeferred<StoredSession>()
   let timeoutHandle: NodeJS.Timeout | null = null
 
@@ -377,7 +459,7 @@ export async function runOAuthLogin(): Promise<StoredSession> {
       if (req.method === "GET" && url.pathname === START_PATH) {
         const callbackURL = buildLocalUrl((server.address() as AddressInfo).port, CALLBACK_PATH)
         res.writeHead(200, { "content-type": "text/html; charset=utf-8" })
-        res.end(buildStartHtml(config.authUrl, provider, callbackURL))
+        res.end(buildStartHtml(config.authUrl, provider, callbackURL, preferExistingBrowserSession))
         return
       }
 

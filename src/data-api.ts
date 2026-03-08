@@ -1,3 +1,4 @@
+import { canOpenBrowserAutomatically, runOAuthLogin } from "./auth/neon.js"
 import { loadConfig, loadSession, type Config, type StoredSession } from "./config.js"
 
 export type DataApiErrorKind =
@@ -24,6 +25,20 @@ export interface AuthenticatedContext {
   config: Config
   session: StoredSession
 }
+
+interface AuthenticatedContextOptions {
+  allowReauth?: boolean
+  resource?: string
+}
+
+interface AuthenticatedContextResolution {
+  context: AuthenticatedContext
+  reauthenticated: boolean
+}
+
+type ReauthReason = "missing" | "expired" | "rejected"
+
+let reauthenticationPromise: Promise<StoredSession> | null = null
 
 function normalizeEpochMs(value: number | null | undefined): number | null {
   if (value == null) return null
@@ -61,15 +76,83 @@ export function isSessionExpired(session: StoredSession): boolean {
   return Date.now() >= expiresAtMs
 }
 
-export async function getAuthenticatedContext(): Promise<AuthenticatedContext> {
+function buildInteractiveLoginHint(reason: ReauthReason, resource?: string): string {
+  const resourceHint = resource ? ` para consultar ${resource}` : ""
+  switch (reason) {
+    case "missing":
+      return `No hay sesión activa${resourceHint} y el comando se está ejecutando en modo no interactivo. Ejecuta \`orgmorg login\` en una terminal interactiva y vuelve a intentar.`
+    case "expired":
+      return `La sesión guardada ya expiró${resourceHint} y el comando se está ejecutando en modo no interactivo. Ejecuta \`orgmorg login\` en una terminal interactiva y vuelve a intentar.`
+    default:
+      return `Neon rechazó el token actual${resourceHint}, pero el comando se está ejecutando en modo no interactivo. Ejecuta \`orgmorg login\` en una terminal interactiva y vuelve a intentar.`
+  }
+}
+
+function toErrorMessage(error: unknown): string {
+  return error instanceof Error ? error.message : String(error)
+}
+
+async function reauthenticateSession(reason: ReauthReason, resource?: string): Promise<StoredSession> {
+  if (!canOpenBrowserAutomatically()) {
+    throw new Error(buildInteractiveLoginHint(reason, resource))
+  }
+
+  if (!reauthenticationPromise) {
+    // Serializa la reautenticación para que múltiples requests compartan el mismo login.
+    reauthenticationPromise = runOAuthLogin({
+      allowBrowser: true,
+      preferExistingBrowserSession: true,
+    })
+      .catch((error) => {
+        throw new Error(`No se pudo reautenticar automáticamente. ${toErrorMessage(error)}`)
+      })
+      .finally(() => {
+        reauthenticationPromise = null
+      })
+  }
+
+  return reauthenticationPromise
+}
+
+async function resolveAuthenticatedContext(
+  options: AuthenticatedContextOptions = {}
+): Promise<AuthenticatedContextResolution> {
+  const { allowReauth = false, resource } = options
   const [config, session] = await Promise.all([loadConfig(), loadSession()])
   if (!session) {
-    throw new Error("No hay sesión activa. Ejecuta: orgmorg login")
+    if (!allowReauth) {
+      throw new Error("No hay sesión activa. Ejecuta: orgmorg login")
+    }
+    return {
+      context: {
+        config,
+        session: await reauthenticateSession("missing", resource),
+      },
+      reauthenticated: true,
+    }
   }
   if (isSessionExpired(session)) {
-    throw new Error("La sesión expiró. Ejecuta: orgmorg login")
+    if (!allowReauth) {
+      throw new Error("La sesión expiró. Ejecuta: orgmorg login")
+    }
+    return {
+      context: {
+        config,
+        session: await reauthenticateSession("expired", resource),
+      },
+      reauthenticated: true,
+    }
   }
-  return { config, session }
+  return {
+    context: { config, session },
+    reauthenticated: false,
+  }
+}
+
+export async function getAuthenticatedContext(
+  options: AuthenticatedContextOptions = {}
+): Promise<AuthenticatedContext> {
+  return (await resolveAuthenticatedContext(options)).context
 }
 
 type Primitive = string | number | boolean
@@ -220,11 +303,19 @@ export function describeDataApiError(error: unknown): string {
   return String(error)
 }
 
-export async function dataApiRequest<T>(
+async function dataApiRequestInternal<T>(
   resource: string,
-  options: RequestOptions = {}
+  options: RequestOptions,
+  hasRetried: boolean
 ): Promise<T> {
-  const { config, session } = await getAuthenticatedContext()
+  const authResolution = await resolveAuthenticatedContext({
+    allowReauth: !hasRetried,
+    resource,
+  })
+  const {
+    context: { config, session },
+    reauthenticated,
+  } = authResolution
   const url = new URL(`${normalizeBaseUrl(config.apiUrl)}/${resource.replace(/^\/+/, "")}`)
 
   if (options.searchParams) {
@@ -252,6 +343,10 @@ export async function dataApiRequest<T>(
   const parsed = await parseResponse(res)
   if (!res.ok) {
     const kind = classifyDataApiError(res.status, parsed)
+    if (!hasRetried && !reauthenticated && (kind === "session-expired" || kind === "auth")) {
+      await reauthenticateSession(kind === "session-expired" ? "expired" : "rejected", resource)
+      return dataApiRequestInternal<T>(resource, options, true)
+    }
     throw new DataApiError(
       buildDataApiErrorMessage(kind, res.status, resource, parsed),
       res.status,
@@ -262,4 +357,11 @@ export async function dataApiRequest<T>(
   }
 
   return parsed as T
+}
+
+export async function dataApiRequest<T>(
+  resource: string,
+  options: RequestOptions = {}
+): Promise<T> {
+  return dataApiRequestInternal<T>(resource, options, false)
 }
