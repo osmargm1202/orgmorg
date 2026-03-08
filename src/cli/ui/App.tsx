@@ -14,7 +14,9 @@ import { AuthLoginScreen } from "./screens/AuthLoginScreen.js"
 import { AuthStatusScreen } from "./screens/AuthStatusScreen.js"
 import { AuthLogoutScreen } from "./screens/AuthLogoutScreen.js"
 import { RecrearCarpetaScreen } from "./screens/RecrearCarpetaScreen.js"
-import { DbSeedScreen } from "./screens/DbSeedScreen.js"
+import { OrganizeByTypeScreen } from "./screens/OrganizeByTypeScreen.js"
+import { OrganizeByDateMenuScreen } from "./screens/OrganizeByDateMenuScreen.js"
+import { OrganizeByDateScreen } from "./screens/OrganizeByDateScreen.js"
 
 export function App() {
   const { exit } = useApp()
@@ -42,8 +44,16 @@ export function App() {
         return <ConsultarMenuScreen onSelect={handleScreenSelection} onBack={goBack} />
       case "configuraciones-menu":
         return <ConfiguracionesMenuScreen onSelect={handleScreenSelection} onBack={goBack} />
-      case "db-seed":
-        return <DbSeedScreen onBack={goBack} />
+      case "organize-by-type":
+        return <OrganizeByTypeScreen onBack={goBack} />
+      case "organize-by-date-menu":
+        return <OrganizeByDateMenuScreen onSelect={handleScreenSelection} onBack={goBack} />
+      case "organize-by-date-year":
+        return <OrganizeByDateScreen onBack={goBack} mode="year" />
+      case "organize-by-date-month":
+        return <OrganizeByDateScreen onBack={goBack} mode="month" />
+      case "organize-by-date-day":
+        return <OrganizeByDateScreen onBack={goBack} mode="day" />
       case "ultimo-numero":
         return <UltimoNumeroScreen onBack={goBack} />
       case "listar-proyectos":

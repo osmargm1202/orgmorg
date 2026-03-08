@@ -13,9 +13,14 @@ const OPCIONES = [
     hint: "Buscar proyectos, ver el último número y recrear carpetas",
   },
   {
-    id: "db-seed",
-    label: "Poblar base de datos",
-    hint: "Importar proyectos y cotizaciones desde el JSON local",
+    id: "organize-by-type",
+    label: "Organizar por tipo",
+    hint: "Ordena el directorio actual por extensión sin pedir ruta",
+  },
+  {
+    id: "organize-by-date-menu",
+    label: "Organizar por fecha",
+    hint: "Ordena el directorio actual por año, mes o día",
   },
   {
     id: "configuraciones-menu",

@@ -1,17 +1,56 @@
+import type { Dirent } from "fs"
 import fs from "fs-extra"
 import path from "path"
 
-async function getCreationDate(filePath: string): Promise<Date> {
-  const stat = await fs.stat(filePath, { bigint: false })
-  const t = stat.birthtime
-  if (t && t.getTime() > 0) return t
+export type DateGranularity = "year" | "month" | "day"
+
+function isManagedDateRoot(entry: Dirent): boolean {
+  return entry.isDirectory() && /^\d{4}$/.test(entry.name)
+}
+
+async function getModifiedDate(entryPath: string): Promise<Date> {
+  const stat = await fs.stat(entryPath, { bigint: false })
   return stat.mtime
 }
 
+function getDestinationDir(dir: string, date: Date, granularity: DateGranularity): string {
+  const year = String(date.getFullYear())
+  const month = String(date.getMonth() + 1).padStart(2, "0")
+  const day = String(date.getDate()).padStart(2, "0")
+
+  if (granularity === "year") {
+    return path.join(dir, year)
+  }
+  if (granularity === "month") {
+    return path.join(dir, year, month)
+  }
+  return path.join(dir, year, month, day)
+}
+
+async function moveEntry(sourcePath: string, destinationDir: string, entryName: string): Promise<void> {
+  const destinationPath = path.join(destinationDir, entryName)
+
+  if (await fs.pathExists(destinationPath)) {
+    throw new Error(
+      `Conflicto al mover "${entryName}" a "${destinationPath}": ya existe un archivo o carpeta con ese nombre.`
+    )
+  }
+
+  await fs.ensureDir(destinationDir)
+
+  try {
+    await fs.move(sourcePath, destinationPath, { overwrite: false })
+  } catch (error) {
+    const message = error instanceof Error ? error.message : String(error)
+    throw new Error(`No se pudo mover "${entryName}" a "${destinationPath}": ${message}`)
+  }
+}
+
 /**
- * Organiza archivos por fecha de creación en el PC (birthtime). Solo primer nivel.
+ * Organiza entradas del primer nivel por fecha de modificación (mtime).
+ * Los directorios del primer nivel se mueven como una sola unidad.
  */
-export async function runOrganizeByDate(dirPath: string): Promise<void> {
+export async function runOrganizeByDate(dirPath: string, granularity: DateGranularity): Promise<void> {
   const dir = path.resolve(dirPath)
   const stat = await fs.stat(dir).catch(() => null)
   if (!stat || !stat.isDirectory()) {
@@ -20,28 +59,21 @@ export async function runOrganizeByDate(dirPath: string): Promise<void> {
   }
 
   const entries = await fs.readdir(dir, { withFileTypes: true })
-  const files = entries.filter((e: import("fs").Dirent) => e.isFile())
-  const byDate = new Map<string, string[]>()
-
-  for (const f of files) {
-    const fp = path.join(dir, f.name)
-    const date = await getCreationDate(fp)
-    const key = date.toISOString().slice(0, 10)
-    if (!byDate.has(key)) byDate.set(key, [])
-    byDate.get(key)!.push(fp)
-  }
+  const movableEntries = entries.filter((entry) => {
+    if (isManagedDateRoot(entry)) {
+      return false
+    }
+    return entry.isFile() || entry.isDirectory()
+  })
 
   let moved = 0
-  for (const [dateKey, filePaths] of byDate) {
-    const subdir = path.join(dir, dateKey)
-    await fs.ensureDir(subdir)
-    for (const fp of filePaths) {
-      const base = path.basename(fp)
-      const dest = path.join(subdir, base)
-      await fs.move(fp, dest, { overwrite: false })
-      moved++
-    }
+  for (const entry of movableEntries) {
+    const sourcePath = path.join(dir, entry.name)
+    const modifiedAt = await getModifiedDate(sourcePath)
+    const destinationDir = getDestinationDir(dir, modifiedAt, granularity)
+    await moveEntry(sourcePath, destinationDir, entry.name)
+    moved++
   }
 
-  console.log("Organizado por fecha de creación:", dir, "-", moved, "archivos movidos.")
+  console.log(`Organizado por fecha (${granularity}, usando mtime): ${dir} - ${moved} entradas movidas.`)
 }
