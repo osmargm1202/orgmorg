@@ -1,7 +1,10 @@
-import React, { useState } from "react"
-import { useApp, useInput } from "ink"
+import React, { useState, useMemo } from "react"
+import { useApp, useInput, useStdout } from "ink"
 import { ScreenFrame } from "./ScreenFrame.js"
 import { SelectList, type SelectItem } from "./SelectList.js"
+
+const FRAME_OVERHEAD_ROWS = 5
+const ROWS_PER_ITEM = 2
 
 export function MenuScreen({
   title,
@@ -17,7 +20,14 @@ export function MenuScreen({
   onBack?: () => void
 }) {
   const { exit } = useApp()
+  const { stdout } = useStdout()
   const [selectedIndex, setSelectedIndex] = useState(0)
+
+  const maxVisible = useMemo(() => {
+    const rows = stdout?.rows ?? 24
+    const contentRows = Math.max(3, rows - FRAME_OVERHEAD_ROWS)
+    return Math.max(3, Math.floor(contentRows / ROWS_PER_ITEM))
+  }, [stdout?.rows])
 
   useInput((input, key) => {
     if (key.ctrl && input === "c") {
@@ -43,7 +53,12 @@ export function MenuScreen({
 
   return (
     <ScreenFrame title={title} help={help}>
-      <SelectList items={items} selectedIndex={selectedIndex} boxed={false} />
+      <SelectList
+        items={items}
+        selectedIndex={selectedIndex}
+        boxed={false}
+        maxVisible={maxVisible}
+      />
     </ScreenFrame>
   )
 }

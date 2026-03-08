@@ -25,6 +25,7 @@ export function App() {
   const handleMainSelection = (screen: string) => {
     if (screen === "exit") {
       exit()
+      process.nextTick(() => process.exit(0))
       return
     }
     navigateTo(screen as ScreenType)

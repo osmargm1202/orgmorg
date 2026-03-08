@@ -1,6 +1,6 @@
 {
   "name": "orgmorg",
-  "version": "1.1.1",
+  "version": "1.1.2",
   "description": "Organizador de archivos y creador de carpetas de proyectos.",
   "type": "module",
   "main": "dist/index.js",

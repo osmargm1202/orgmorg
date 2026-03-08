@@ -10,18 +10,44 @@ export interface SelectItem {
   hint?: string
 }
 
+function computeScrollWindow(
+  itemCount: number,
+  selectedIndex: number,
+  maxVisible: number
+): { start: number; end: number } {
+  if (itemCount <= maxVisible) {
+    return { start: 0, end: itemCount }
+  }
+  const halfVisible = Math.floor(maxVisible / 2)
+  let start = Math.max(0, selectedIndex - halfVisible)
+  let end = Math.min(itemCount, start + maxVisible)
+  if (end - start < maxVisible) {
+    start = Math.max(0, end - maxVisible)
+  }
+  return { start, end }
+}
+
 function SelectListComponent({
   items,
   selectedIndex,
   boxed = true,
+  maxVisible,
 }: {
   items: SelectItem[]
   selectedIndex: number
   boxed?: boolean
+  maxVisible?: number
 }) {
+  const { start, end } =
+    maxVisible != null
+      ? computeScrollWindow(items.length, selectedIndex, maxVisible)
+      : { start: 0, end: items.length }
+  const visibleItems = items.slice(start, end)
+
   const content = (
     <Box flexDirection="column">
-      {items.map((item, index) => {
+      {visibleItems.map((item, i) => {
+        const index = start + i
         const selected = index === selectedIndex
         return (
           <Box
@@ -62,7 +88,7 @@ function SelectListComponent({
 }
 
 function arePropsEqual(prev: Readonly<Parameters<typeof SelectListComponent>[0]>, next: Readonly<Parameters<typeof SelectListComponent>[0]>) {
-  if (prev.selectedIndex !== next.selectedIndex || prev.boxed !== next.boxed) return false
+  if (prev.selectedIndex !== next.selectedIndex || prev.boxed !== next.boxed || prev.maxVisible !== next.maxVisible) return false
   if (prev.items.length !== next.items.length) return false
   for (let index = 0; index < prev.items.length; index += 1) {
     const prevItem = prev.items[index]
