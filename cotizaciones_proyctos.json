@@ -1,0 +1,4442 @@
+{
+  "fuentes": {
+    "api": {
+      "base_url": "http://127.0.0.1:8001",
+      "endpoint_cotizaciones": "/api/cotizaciones?incluir_inactivos=true",
+      "endpoint_proyectos": "/api/proyectos?incluir_inactivos=true",
+      "tenant_id": 1
+    },
+    "neon_mcp": {
+      "project_id": "round-math-03239147",
+      "branch_id": "br-odd-fire-adr7zeyz",
+      "validacion": {
+        "total_cotizaciones_neon": 552,
+        "con_proyecto_neon": 552,
+        "sin_proyecto_neon": 0
+      }
+    }
+  },
+  "resumen": {
+    "total_cotizaciones_api": 552,
+    "total_proyectos_api": 378,
+    "cotizaciones_sin_nombre_proyecto_api": 0
+  },
+  "cotizaciones": [
+    {
+      "numero_cotizacion": 1,
+      "id_proyecto": 239,
+      "nombre_proyecto": "RESIDENCIA FAMILIA MÉJIA BRACHE.",
+      "estado": "TERMINADA",
+      "fecha": "7/8/2020",
+      "activo": true
+    },
+    {
+      "numero_cotizacion": 2,
+      "id_proyecto": 5,
+      "nombre_proyecto": "LTAT STC 69KV",
+      "estado": "TERMINADA",
+      "fecha": "11/30/2020",
+      "activo": true
+    },
+    {
+      "numero_cotizacion": 3,
+      "id_proyecto": 8,
+      "nombre_proyecto": "SUBESTACIÓN GIRASOL 138KV",
+      "estado": "TERMINADA",
+      "fecha": "9/29/2020",
+      "activo": true
+    },
+    {
+      "numero_cotizacion": 4,
+      "id_proyecto": 1,
+      "nombre_proyecto": "READECUACIÓN HOTEL RADISSON",
+      "estado": "GENERADA",
+      "fecha": "11/10/2020",
+      "activo": true
+    },
+    {
+      "numero_cotizacion": 5,
+      "id_proyecto": 1,
+      "nombre_proyecto": "READECUACIÓN HOTEL RADISSON",
+      "estado": "GENERADA",
+      "fecha": "11/10/2020",
+      "activo": true
+    },
+    {
+      "numero_cotizacion": 6,
+      "id_proyecto": 1,
+      "nombre_proyecto": "READECUACIÓN HOTEL RADISSON",
+      "estado": "GENERADA",
+      "fecha": "11/10/2020",
+      "activo": true
+    },
+    {
+      "numero_cotizacion": 7,
+      "id_proyecto": 1,
+      "nombre_proyecto": "READECUACIÓN HOTEL RADISSON",
+      "estado": "GENERADA",
+      "fecha": "11/11/2020",
+      "activo": true
+    },
+    {
+      "numero_cotizacion": 8,
+      "id_proyecto": 5,
+      "nombre_proyecto": "LTAT STC 69KV",
+      "estado": "TERMINADA",
+      "fecha": "12/15/2020",
+      "activo": true
+    },
+    {
+      "numero_cotizacion": 9,
+      "id_proyecto": 1,
+      "nombre_proyecto": "READECUACIÓN HOTEL RADISSON",
+      "estado": "GENERADA",
+      "fecha": "11/11/2020",
+      "activo": true
+    },
+    {
+      "numero_cotizacion": 10,
+      "id_proyecto": 8,
+      "nombre_proyecto": "SUBESTACIÓN GIRASOL 138KV",
+      "estado": "TERMINADA",
+      "fecha": "3/3/2021",
+      "activo": true
+    },
+    {
+      "numero_cotizacion": 11,
+      "id_proyecto": 1,
+      "nombre_proyecto": "READECUACIÓN HOTEL RADISSON",
+      "estado": "GENERADA",
+      "fecha": "11/10/2020",
+      "activo": true
+    },
+    {
+      "numero_cotizacion": 12,
+      "id_proyecto": 1,
+      "nombre_proyecto": "READECUACIÓN HOTEL RADISSON",
+      "estado": "GENERADA",
+      "fecha": "11/10/2020",
+      "activo": true
+    },
+    {
+      "numero_cotizacion": 13,
+      "id_proyecto": 1,
+      "nombre_proyecto": "READECUACIÓN HOTEL RADISSON",
+      "estado": "GENERADA",
+      "fecha": "11/10/2020",
+      "activo": true
+    },
+    {
+      "numero_cotizacion": 14,
+      "id_proyecto": 11,
+      "nombre_proyecto": "PLANTA SOLAR LOS NEGROS.",
+      "estado": "TERMINADA",
+      "fecha": "4/7/2021",
+      "activo": true
+    },
+    {
+      "numero_cotizacion": 15,
+      "id_proyecto": 227,
+      "nombre_proyecto": "COCINA GEORGE STAFFELD.",
+      "estado": "GENERADA",
+      "fecha": "11/6/2020",
+      "activo": true
+    },
+    {
+      "numero_cotizacion": 16,
+      "id_proyecto": 226,
+      "nombre_proyecto": "CASA CONTENEDORES RECICLADOS.",
+      "estado": "TERMINADA",
+      "fecha": "11/12/2020",
+      "activo": true
+    },
+    {
+      "numero_cotizacion": 17,
+      "id_proyecto": 235,
+      "nombre_proyecto": "MANTENIMIENTO DE TANQUES.",
+      "estado": "GENERADA",
+      "fecha": "11/28/2020",
+      "activo": true
+    },
+    {
+      "numero_cotizacion": 18,
+      "id_proyecto": 6,
+      "nombre_proyecto": "SE CZFIS 69KV",
+      "estado": "TERMINADA",
+      "fecha": "11/28/2020",
+      "activo": true
+    },
+    {
+      "numero_cotizacion": 19,
+      "id_proyecto": 200,
+      "nombre_proyecto": "SISTEMA DE MEDICIÓN DE ENERGÍA ELÉCTRICA (SMEE).",
+      "estado": "GENERADA",
+      "fecha": "1/26/2021",
+      "activo": true
+    },
+    {
+      "numero_cotizacion": 20,
+      "id_proyecto": 6,
+      "nombre_proyecto": "SE CZFIS 69KV",
+      "estado": "GENERADA",
+      "fecha": "12/15/2020",
+      "activo": true
+    },
+    {
+      "numero_cotizacion": 21,
+      "id_proyecto": 23,
+      "nombre_proyecto": "MINISO GALERIA 360",
+      "estado": "TERMINADA",
+      "fecha": "12/21/2020",
+      "activo": true
+    },
+    {
+      "numero_cotizacion": 22,
+      "id_proyecto": 237,
+      "nombre_proyecto": "REPARACIÓN GENERADOR NO.2.",
+      "estado": "GENERADA",
+      "fecha": "1/14/2021",
+      "activo": true
+    },
+    {
+      "numero_cotizacion": 23,
+      "id_proyecto": 232,
+      "nombre_proyecto": "FINCA PALMAR DE OCOA.",
+      "estado": "GENERADA",
+      "fecha": "1/26/2021",
+      "activo": true
+    },
+    {
+      "numero_cotizacion": 24,
+      "id_proyecto": 24,
+      "nombre_proyecto": "MINISO RD",
+      "estado": "GENERADA",
+      "fecha": "1/14/2021",
+      "activo": true
+    },
+    {
+      "numero_cotizacion": 25,
+      "id_proyecto": 236,
+      "nombre_proyecto": "MANTENIMIENTO GENERADORES DE SISALRIL.",
+      "estado": "GENERADA",
+      "fecha": "1/21/2021",
+      "activo": true
+    },
+    {
+      "numero_cotizacion": 26,
+      "id_proyecto": 233,
+      "nombre_proyecto": "FINCA RIO SAN JUAN.",
+      "estado": "GENERADA",
+      "fecha": "1/22/2021",
+      "activo": true
+    },
+    {
+      "numero_cotizacion": 27,
+      "id_proyecto": 7,
+      "nombre_proyecto": "SE STC 69KV.",
+      "estado": "GENERADA",
+      "fecha": "2/2/2021",
+      "activo": true
+    },
+    {
+      "numero_cotizacion": 28,
+      "id_proyecto": 243,
+      "nombre_proyecto": "VIVIENDA PAULINO.",
+      "estado": "GENERADA",
+      "fecha": "4/9/2021",
+      "activo": true
+    },
+    {
+      "numero_cotizacion": 29,
+      "id_proyecto": 25,
+      "nombre_proyecto": "MINISO GARDEN PLAZA",
+      "estado": "TERMINADA",
+      "fecha": "2/8/2021",
+      "activo": true
+    },
+    {
+      "numero_cotizacion": 30,
+      "id_proyecto": 187,
+      "nombre_proyecto": "BON AGRO INDUSTRIAL S A KM22",
+      "estado": "GENERADA",
+      "fecha": "2/15/2021",
+      "activo": true
+    },
+    {
+      "numero_cotizacion": 31,
+      "id_proyecto": 199,
+      "nombre_proyecto": "REDISEÑO SISTEMA DE DISTRIBUCIÓN ELÉCTRICA BT AERDOM AILA JFP.",
+      "estado": "GENERADA",
+      "fecha": "3/13/2021",
+      "activo": true
+    },
+    {
+      "numero_cotizacion": 32,
+      "id_proyecto": 168,
+      "nombre_proyecto": "TORRE 8 NIVELES",
+      "estado": "GENERADA",
+      "fecha": "3/14/2021",
+      "activo": true
+    },
+    {
+      "numero_cotizacion": 33,
+      "id_proyecto": 238,
+      "nombre_proyecto": "RES. MIA MERCEDES I.",
+      "estado": "GENERADA",
+      "fecha": "3/17/2021",
+      "activo": true
+    },
+    {
+      "numero_cotizacion": 34,
+      "id_proyecto": 36,
+      "nombre_proyecto": "KICKS AGORA MALL.",
+      "estado": "TERMINADA",
+      "fecha": "4/9/2021",
+      "activo": true
+    },
+    {
+      "numero_cotizacion": 35,
+      "id_proyecto": 36,
+      "nombre_proyecto": "KICKS AGORA MALL.",
+      "estado": "TERMINADA",
+      "fecha": "4/9/2021",
+      "activo": true
+    },
+    {
+      "numero_cotizacion": 36,
+      "id_proyecto": 40,
+      "nombre_proyecto": "SE 138kV",
+      "estado": "GENERADA",
+      "fecha": "4/14/2021",
+      "activo": true
+    },
+    {
+      "numero_cotizacion": 37,
+      "id_proyecto": 41,
+      "nombre_proyecto": "DISEÑO SOLUCIÓN ENERGÉTICA SANTIAGO",
+      "estado": "GENERADA",
+      "fecha": "4/20/2021",
+      "activo": true
+    },
+    {
+      "numero_cotizacion": 38,
+      "id_proyecto": 67,
+      "nombre_proyecto": "NAPOLIS EMPRESARIAL.",
+      "estado": "TERMINADA",
+      "fecha": "4/21/2021",
+      "activo": true
+    },
+    {
+      "numero_cotizacion": 39,
+      "id_proyecto": 6,
+      "nombre_proyecto": "SE CZFIS 69KV",
+      "estado": "TERMINADA",
+      "fecha": "4/28/2021",
+      "activo": true
+    },
+    {
+      "numero_cotizacion": 40,
+      "id_proyecto": 36,
+      "nombre_proyecto": "KICKS AGORA MALL.",
+      "estado": "TERMINADA",
+      "fecha": "4/30/2021",
+      "activo": true
+    },
+    {
+      "numero_cotizacion": 41,
+      "id_proyecto": 42,
+      "nombre_proyecto": "LTAT 69KV.",
+      "estado": "TERMINADA",
+      "fecha": "5/8/2021",
+      "activo": true
+    },
+    {
+      "numero_cotizacion": 42,
+      "id_proyecto": 43,
+      "nombre_proyecto": "SE 12.5KV.",
+      "estado": "GENERADA",
+      "fecha": "5/8/2021",
+      "activo": true
+    },
+    {
+      "numero_cotizacion": 43,
+      "id_proyecto": 224,
+      "nombre_proyecto": "EDIFICIO - GESTIÓN ENERGÉTICA",
+      "estado": "GENERADA",
+      "fecha": "5/11/2021",
+      "activo": true
+    },
+    {
+      "numero_cotizacion": 44,
+      "id_proyecto": 62,
+      "nombre_proyecto": "PARQUE SOLAR SAMANÁ",
+      "estado": "GENERADA",
+      "fecha": "5/16/2021",
+      "activo": true
+    },
+    {
+      "numero_cotizacion": 45,
+      "id_proyecto": 62,
+      "nombre_proyecto": "PARQUE SOLAR SAMANÁ",
+      "estado": "GENERADA",
+      "fecha": "5/16/2021",
+      "activo": true
+    },
+    {
+      "numero_cotizacion": 46,
+      "id_proyecto": 62,
+      "nombre_proyecto": "PARQUE SOLAR SAMANÁ",
+      "estado": "GENERADA",
+      "fecha": "5/16/2021",
+      "activo": true
+    },
+    {
+      "numero_cotizacion": 47,
+      "id_proyecto": 62,
+      "nombre_proyecto": "PARQUE SOLAR SAMANÁ",
+      "estado": "GENERADA",
+      "fecha": "5/16/2021",
+      "activo": true
+    },
+    {
+      "numero_cotizacion": 48,
+      "id_proyecto": 9,
+      "nombre_proyecto": "SE LAESA 138KV.",
+      "estado": "TERMINADA",
+      "fecha": "4/23/2021",
+      "activo": true
+    },
+    {
+      "numero_cotizacion": 49,
+      "id_proyecto": 68,
+      "nombre_proyecto": "LOTIFICACIÓN",
+      "estado": "TERMINADA",
+      "fecha": "6/4/2021",
+      "activo": true
+    },
+    {
+      "numero_cotizacion": 50,
+      "id_proyecto": 44,
+      "nombre_proyecto": "SE 138KV PEDERNALES.",
+      "estado": "GENERADA",
+      "fecha": "7/29/2021",
+      "activo": true
+    },
+    {
+      "numero_cotizacion": 51,
+      "id_proyecto": 45,
+      "nombre_proyecto": "SE 138KV JUANCHO LOS COCOS.",
+      "estado": "GENERADA",
+      "fecha": "7/29/2021",
+      "activo": true
+    },
+    {
+      "numero_cotizacion": 52,
+      "id_proyecto": 69,
+      "nombre_proyecto": "ANGAR MECÁNICA COTUÍ",
+      "estado": "GENERADA",
+      "fecha": "6/9/2021",
+      "activo": true
+    },
+    {
+      "numero_cotizacion": 53,
+      "id_proyecto": 32,
+      "nombre_proyecto": "RESIDENCIAL ZAYES - VISTA CANA",
+      "estado": "TERMINADA",
+      "fecha": "6/9/2021",
+      "activo": true
+    },
+    {
+      "numero_cotizacion": 54,
+      "id_proyecto": 46,
+      "nombre_proyecto": "SE 69kV BRISAS BÁVARO.",
+      "estado": "TERMINADA",
+      "fecha": "6/14/2021",
+      "activo": true
+    },
+    {
+      "numero_cotizacion": 55,
+      "id_proyecto": 70,
+      "nombre_proyecto": "RESIDENCIAL 5 TORRES DE 12 PISOS.",
+      "estado": "GENERADA",
+      "fecha": "6/24/2021",
+      "activo": true
+    },
+    {
+      "numero_cotizacion": 56,
+      "id_proyecto": 75,
+      "nombre_proyecto": "APARTAMENTOS GABRIELA",
+      "estado": "TERMINADA",
+      "fecha": "6/24/2021",
+      "activo": true
+    },
+    {
+      "numero_cotizacion": 57,
+      "id_proyecto": 76,
+      "nombre_proyecto": "CASA LUIS ELIAS",
+      "estado": "TERMINADA",
+      "fecha": "6/24/2021",
+      "activo": true
+    },
+    {
+      "numero_cotizacion": 58,
+      "id_proyecto": 93,
+      "nombre_proyecto": "CASA ALEYDA.",
+      "estado": "TERMINADA",
+      "fecha": "6/24/2021",
+      "activo": true
+    },
+    {
+      "numero_cotizacion": 59,
+      "id_proyecto": 71,
+      "nombre_proyecto": "GYM PLAYA GRANDE.",
+      "estado": "TERMINADA",
+      "fecha": "6/24/2021",
+      "activo": true
+    },
+    {
+      "numero_cotizacion": 60,
+      "id_proyecto": 77,
+      "nombre_proyecto": "APARTAMENTOS PATTY ROBLES",
+      "estado": "GENERADA",
+      "fecha": "6/24/2021",
+      "activo": true
+    },
+    {
+      "numero_cotizacion": 61,
+      "id_proyecto": 72,
+      "nombre_proyecto": "AZZURE IGUANAS CAP CANA.",
+      "estado": "TERMINADA",
+      "fecha": "6/28/2021",
+      "activo": true
+    },
+    {
+      "numero_cotizacion": 62,
+      "id_proyecto": 212,
+      "nombre_proyecto": "RESIDENCIAL JUANIVES.",
+      "estado": "GENERADA",
+      "fecha": "6/28/2021",
+      "activo": true
+    },
+    {
+      "numero_cotizacion": 63,
+      "id_proyecto": 213,
+      "nombre_proyecto": "PLAZA LA ROMANA.",
+      "estado": "TERMINADA",
+      "fecha": "6/28/2021",
+      "activo": true
+    },
+    {
+      "numero_cotizacion": 64,
+      "id_proyecto": 10,
+      "nombre_proyecto": "SE VILLARPANDO 138KV.",
+      "estado": "GENERADA",
+      "fecha": "6/28/2021",
+      "activo": true
+    },
+    {
+      "numero_cotizacion": 65,
+      "id_proyecto": 11,
+      "nombre_proyecto": "PLANTA SOLAR LOS NEGROS.",
+      "estado": "TERMINADA",
+      "fecha": "6/28/2021",
+      "activo": true
+    },
+    {
+      "numero_cotizacion": 66,
+      "id_proyecto": 10,
+      "nombre_proyecto": "SE VILLARPANDO 138KV.",
+      "estado": "GENERADA",
+      "fecha": "6/28/2021",
+      "activo": true
+    },
+    {
+      "numero_cotizacion": 67,
+      "id_proyecto": 10,
+      "nombre_proyecto": "SE VILLARPANDO 138KV.",
+      "estado": "GENERADA",
+      "fecha": "6/28/2021",
+      "activo": true
+    },
+    {
+      "numero_cotizacion": 68,
+      "id_proyecto": 7,
+      "nombre_proyecto": "SE STC 69KV.",
+      "estado": "TERMINADA",
+      "fecha": "5/13/2021",
+      "activo": true
+    },
+    {
+      "numero_cotizacion": 69,
+      "id_proyecto": 13,
+      "nombre_proyecto": "SE LAESA 69KV.",
+      "estado": "TERMINADA",
+      "fecha": "7/1/2021",
+      "activo": true
+    },
+    {
+      "numero_cotizacion": 70,
+      "id_proyecto": 14,
+      "nombre_proyecto": "SE MATRISOL 138kV",
+      "estado": "TERMINADA",
+      "fecha": "7/2/2021",
+      "activo": true
+    },
+    {
+      "numero_cotizacion": 71,
+      "id_proyecto": 62,
+      "nombre_proyecto": "PARQUE SOLAR SAMANÁ",
+      "estado": "GENERADA",
+      "fecha": "7/5/2021",
+      "activo": true
+    },
+    {
+      "numero_cotizacion": 72,
+      "id_proyecto": 92,
+      "nombre_proyecto": "SUMINISTRO DE MATERIALES",
+      "estado": "GENERADA",
+      "fecha": "7/14/2021",
+      "activo": true
+    },
+    {
+      "numero_cotizacion": 73,
+      "id_proyecto": 92,
+      "nombre_proyecto": "SUMINISTRO DE MATERIALES",
+      "estado": "GENERADA",
+      "fecha": "7/7/2021",
+      "activo": true
+    },
+    {
+      "numero_cotizacion": 74,
+      "id_proyecto": 228,
+      "nombre_proyecto": "COMPAÑÍA DE RON.",
+      "estado": "GENERADA",
+      "fecha": "7/8/2021",
+      "activo": true
+    },
+    {
+      "numero_cotizacion": 75,
+      "id_proyecto": 47,
+      "nombre_proyecto": "LICITACIÓN PEDERNALES Y JIMANI.",
+      "estado": "TERMINADA",
+      "fecha": "7/14/2021",
+      "activo": true
+    },
+    {
+      "numero_cotizacion": 76,
+      "id_proyecto": 201,
+      "nombre_proyecto": "TRANSFORMADOR DE POTENCIA 80MVA",
+      "estado": "GENERADA",
+      "fecha": "7/14/2021",
+      "activo": true
+    },
+    {
+      "numero_cotizacion": 77,
+      "id_proyecto": 48,
+      "nombre_proyecto": "SE BOCA CHICA 138kV",
+      "estado": "GENERADA",
+      "fecha": "7/16/2021",
+      "activo": true
+    },
+    {
+      "numero_cotizacion": 78,
+      "id_proyecto": 240,
+      "nombre_proyecto": "RESIDENCIAL DON ANTONIO.",
+      "estado": "GENERADA",
+      "fecha": "8/2/2021",
+      "activo": true
+    },
+    {
+      "numero_cotizacion": 79,
+      "id_proyecto": 240,
+      "nombre_proyecto": "RESIDENCIAL DON ANTONIO.",
+      "estado": "GENERADA",
+      "fecha": "8/2/2021",
+      "activo": true
+    },
+    {
+      "numero_cotizacion": 80,
+      "id_proyecto": 92,
+      "nombre_proyecto": "SUMINISTRO DE MATERIALES",
+      "estado": "GENERADA",
+      "fecha": "8/9/2021",
+      "activo": true
+    },
+    {
+      "numero_cotizacion": 81,
+      "id_proyecto": 214,
+      "nombre_proyecto": "TORRE 10 NIVELES",
+      "estado": "GENERADA",
+      "fecha": "9/2/2021",
+      "activo": true
+    },
+    {
+      "numero_cotizacion": 82,
+      "id_proyecto": 215,
+      "nombre_proyecto": "CASA 350MTS^2",
+      "estado": "GENERADA",
+      "fecha": "9/2/2021",
+      "activo": true
+    },
+    {
+      "numero_cotizacion": 83,
+      "id_proyecto": 49,
+      "nombre_proyecto": "SPT ANTENA SANTIAGO",
+      "estado": "GENERADA",
+      "fecha": "9/8/2021",
+      "activo": true
+    },
+    {
+      "numero_cotizacion": 84,
+      "id_proyecto": 50,
+      "nombre_proyecto": "SPT ANTENA CONSTANZA",
+      "estado": "GENERADA",
+      "fecha": "9/8/2021",
+      "activo": true
+    },
+    {
+      "numero_cotizacion": 85,
+      "id_proyecto": 51,
+      "nombre_proyecto": "SPT ANTENA HATO MAYOR",
+      "estado": "GENERADA",
+      "fecha": "9/8/2021",
+      "activo": true
+    },
+    {
+      "numero_cotizacion": 86,
+      "id_proyecto": 15,
+      "nombre_proyecto": "LTAT SE SANTANA SOL 138kV",
+      "estado": "TERMINADA",
+      "fecha": "9/22/2021",
+      "activo": true
+    },
+    {
+      "numero_cotizacion": 87,
+      "id_proyecto": 59,
+      "nombre_proyecto": "SE CALABAZA 138kV FASE I",
+      "estado": "TERMINADA",
+      "fecha": "9/23/2021",
+      "activo": true
+    },
+    {
+      "numero_cotizacion": 88,
+      "id_proyecto": 94,
+      "nombre_proyecto": "RESIDENCIA CARLOS",
+      "estado": "TERMINADA",
+      "fecha": "9/23/2021",
+      "activo": true
+    },
+    {
+      "numero_cotizacion": 89,
+      "id_proyecto": 95,
+      "nombre_proyecto": "RESIDENCIA THOMAS",
+      "estado": "TERMINADA",
+      "fecha": "9/23/2021",
+      "activo": true
+    },
+    {
+      "numero_cotizacion": 90,
+      "id_proyecto": 1,
+      "nombre_proyecto": "READECUACIÓN HOTEL RADISSON",
+      "estado": "GENERADA",
+      "fecha": "9/27/2021",
+      "activo": true
+    },
+    {
+      "numero_cotizacion": 91,
+      "id_proyecto": 96,
+      "nombre_proyecto": "VILLA LOMA MIRONA",
+      "estado": "TERMINADA",
+      "fecha": "9/27/2021",
+      "activo": true
+    },
+    {
+      "numero_cotizacion": 92,
+      "id_proyecto": 97,
+      "nombre_proyecto": "APARTAMENTOS DAVID",
+      "estado": "TERMINADA",
+      "fecha": "10/11/2021",
+      "activo": true
+    },
+    {
+      "numero_cotizacion": 93,
+      "id_proyecto": 98,
+      "nombre_proyecto": "RESIDENCIA MELBA",
+      "estado": "TERMINADA",
+      "fecha": "10/11/2021",
+      "activo": true
+    },
+    {
+      "numero_cotizacion": 94,
+      "id_proyecto": 202,
+      "nombre_proyecto": "APARTAMENTOS JHORLENY",
+      "estado": "TERMINADA",
+      "fecha": "10/12/2021",
+      "activo": true
+    },
+    {
+      "numero_cotizacion": 95,
+      "id_proyecto": 203,
+      "nombre_proyecto": "THE BAHAMAS RESIDENTIAL",
+      "estado": "GENERADA",
+      "fecha": "10/12/2021",
+      "activo": true
+    },
+    {
+      "numero_cotizacion": 96,
+      "id_proyecto": 204,
+      "nombre_proyecto": "RESIDENCIAL VILLAS",
+      "estado": "GENERADA",
+      "fecha": "10/14/2021",
+      "activo": true
+    },
+    {
+      "numero_cotizacion": 97,
+      "id_proyecto": 205,
+      "nombre_proyecto": "LOTIFICACION BRISAS DE LA PLENA",
+      "estado": "GENERADA",
+      "fecha": "10/15/2021",
+      "activo": true
+    },
+    {
+      "numero_cotizacion": 98,
+      "id_proyecto": 26,
+      "nombre_proyecto": "MINISO",
+      "estado": "TERMINADA",
+      "fecha": "10/21/2021",
+      "activo": true
+    },
+    {
+      "numero_cotizacion": 99,
+      "id_proyecto": 16,
+      "nombre_proyecto": "AMPLIACION SE CEMEX 138KV",
+      "estado": "TERMINADA",
+      "fecha": "10/25/2021",
+      "activo": true
+    },
+    {
+      "numero_cotizacion": 100,
+      "id_proyecto": 59,
+      "nombre_proyecto": "SE CALABAZA 138kV FASE I",
+      "estado": "GENERADA",
+      "fecha": "10/22/2021",
+      "activo": true
+    },
+    {
+      "numero_cotizacion": 101,
+      "id_proyecto": 59,
+      "nombre_proyecto": "SE CALABAZA 138kV FASE I",
+      "estado": "GENERADA",
+      "fecha": "10/22/2021",
+      "activo": true
+    },
+    {
+      "numero_cotizacion": 102,
+      "id_proyecto": 63,
+      "nombre_proyecto": "BANCO DE CAPACITORES",
+      "estado": "TERMINADA",
+      "fecha": "10/25/2021",
+      "activo": true
+    },
+    {
+      "numero_cotizacion": 103,
+      "id_proyecto": 33,
+      "nombre_proyecto": "VISTA CANA - VIVIENDA UNIFAMILIAR",
+      "estado": "TERMINADA",
+      "fecha": "1/16/2022",
+      "activo": true
+    },
+    {
+      "numero_cotizacion": 104,
+      "id_proyecto": 216,
+      "nombre_proyecto": "RESIDENCIAL JUAN DOLIO",
+      "estado": "GENERADA",
+      "fecha": "11/3/2021",
+      "activo": true
+    },
+    {
+      "numero_cotizacion": 105,
+      "id_proyecto": 113,
+      "nombre_proyecto": "VILLA LA MULATA",
+      "estado": "TERMINADA",
+      "fecha": "10/27/2021",
+      "activo": true
+    },
+    {
+      "numero_cotizacion": 106,
+      "id_proyecto": 73,
+      "nombre_proyecto": "TEMPLO MONTE DE DIOS",
+      "estado": "TERMINADA",
+      "fecha": "10/27/2021",
+      "activo": true
+    },
+    {
+      "numero_cotizacion": 107,
+      "id_proyecto": 99,
+      "nombre_proyecto": "RESIDELCIAL RAFELITO",
+      "estado": "TERMINADA",
+      "fecha": "10/27/2021",
+      "activo": true
+    },
+    {
+      "numero_cotizacion": 108,
+      "id_proyecto": 2,
+      "nombre_proyecto": "HOTEL RADISSON - CAMBIO DE 208 A 480 3F",
+      "estado": "TERMINADA",
+      "fecha": "11/11/2021",
+      "activo": true
+    },
+    {
+      "numero_cotizacion": 109,
+      "id_proyecto": 66,
+      "nombre_proyecto": "DESARROLLO PROYECTO SOLAR PUERTO PLATA",
+      "estado": "GENERADA",
+      "fecha": "4/25/2023",
+      "activo": true
+    },
+    {
+      "numero_cotizacion": 110,
+      "id_proyecto": 66,
+      "nombre_proyecto": "DESARROLLO PROYECTO SOLAR PUERTO PLATA",
+      "estado": "GENERADA",
+      "fecha": "4/25/2023",
+      "activo": true
+    },
+    {
+      "numero_cotizacion": 111,
+      "id_proyecto": 66,
+      "nombre_proyecto": "DESARROLLO PROYECTO SOLAR PUERTO PLATA",
+      "estado": "GENERADA",
+      "fecha": "4/25/2023",
+      "activo": true
+    },
+    {
+      "numero_cotizacion": 112,
+      "id_proyecto": 207,
+      "nombre_proyecto": "DESARROLLO FOTOVOLTAICO 50MW  MONTE CRISTI",
+      "estado": "GENERADA",
+      "fecha": "11/17/2021",
+      "activo": true
+    },
+    {
+      "numero_cotizacion": 113,
+      "id_proyecto": 208,
+      "nombre_proyecto": "DESARROLLO FOTOVOLTAICO DE 100 HA NAGUA",
+      "estado": "GENERADA",
+      "fecha": "11/18/2021",
+      "activo": true
+    },
+    {
+      "numero_cotizacion": 114,
+      "id_proyecto": 192,
+      "nombre_proyecto": "LT 69KV JAMBOLAN",
+      "estado": "GENERADA",
+      "fecha": "11/18/2021",
+      "activo": true
+    },
+    {
+      "numero_cotizacion": 115,
+      "id_proyecto": 193,
+      "nombre_proyecto": "LT 69KV LOS JOVILLOS",
+      "estado": "GENERADA",
+      "fecha": "11/18/2021",
+      "activo": true
+    },
+    {
+      "numero_cotizacion": 116,
+      "id_proyecto": 209,
+      "nombre_proyecto": "SUMINISTRO 200 MEDIDORES",
+      "estado": "GENERADA",
+      "fecha": "11/19/2021",
+      "activo": true
+    },
+    {
+      "numero_cotizacion": 117,
+      "id_proyecto": 169,
+      "nombre_proyecto": "RESIDENCIA TIFFANY SIGNATURE",
+      "estado": "GENERADA",
+      "fecha": "11/22/2021",
+      "activo": true
+    },
+    {
+      "numero_cotizacion": 118,
+      "id_proyecto": 170,
+      "nombre_proyecto": "VIBIERA RESIDENCES, RESIDENCIAL NONI Y SUITIC-SOL",
+      "estado": "GENERADA",
+      "fecha": "11/24/2021",
+      "activo": true
+    },
+    {
+      "numero_cotizacion": 119,
+      "id_proyecto": 171,
+      "nombre_proyecto": "BONVIVANT",
+      "estado": "GENERADA",
+      "fecha": "11/24/2021",
+      "activo": true
+    },
+    {
+      "numero_cotizacion": 120,
+      "id_proyecto": 59,
+      "nombre_proyecto": "SE CALABAZA 138kV FASE I",
+      "estado": "GENERADA",
+      "fecha": "12/1/2021",
+      "activo": true
+    },
+    {
+      "numero_cotizacion": 121,
+      "id_proyecto": 192,
+      "nombre_proyecto": "LT 69KV JAMBOLAN",
+      "estado": "GENERADA",
+      "fecha": "12/5/2021",
+      "activo": true
+    },
+    {
+      "numero_cotizacion": 122,
+      "id_proyecto": 193,
+      "nombre_proyecto": "LT 69KV LOS JOVILLOS",
+      "estado": "GENERADA",
+      "fecha": "12/5/2021",
+      "activo": true
+    },
+    {
+      "numero_cotizacion": 123,
+      "id_proyecto": 2,
+      "nombre_proyecto": "HOTEL RADISSON - CAMBIO DE 208 A 480 3F",
+      "estado": "GENERADA",
+      "fecha": "12/6/2021",
+      "activo": true
+    },
+    {
+      "numero_cotizacion": 124,
+      "id_proyecto": 2,
+      "nombre_proyecto": "HOTEL RADISSON - CAMBIO DE 208 A 480 3F",
+      "estado": "GENERADA",
+      "fecha": "12/7/2021",
+      "activo": true
+    },
+    {
+      "numero_cotizacion": 125,
+      "id_proyecto": 31,
+      "nombre_proyecto": "PSF DOMINICUS 50MW",
+      "estado": "GENERADA",
+      "fecha": "12/8/2021",
+      "activo": true
+    },
+    {
+      "numero_cotizacion": 126,
+      "id_proyecto": 225,
+      "nombre_proyecto": "AYUNTAMIENTO",
+      "estado": "GENERADA",
+      "fecha": "12/8/2021",
+      "activo": true
+    },
+    {
+      "numero_cotizacion": 127,
+      "id_proyecto": 65,
+      "nombre_proyecto": "SPM-PLANTA BASURA @ ENERGÍA",
+      "estado": "GENERADA",
+      "fecha": "12/20/2021",
+      "activo": true
+    },
+    {
+      "numero_cotizacion": 128,
+      "id_proyecto": 2,
+      "nombre_proyecto": "HOTEL RADISSON - CAMBIO DE 208 A 480 3F",
+      "estado": "TERMINADA",
+      "fecha": "11/1/2021",
+      "activo": true
+    },
+    {
+      "numero_cotizacion": 129,
+      "id_proyecto": 66,
+      "nombre_proyecto": "DESARROLLO PROYECTO SOLAR PUERTO PLATA",
+      "estado": "GENERADA",
+      "fecha": "1/12/2022",
+      "activo": true
+    },
+    {
+      "numero_cotizacion": 130,
+      "id_proyecto": 100,
+      "nombre_proyecto": "RESIDENCIA DAVID",
+      "estado": "TERMINADA",
+      "fecha": "1/12/2022",
+      "activo": true
+    },
+    {
+      "numero_cotizacion": 131,
+      "id_proyecto": 2,
+      "nombre_proyecto": "HOTEL RADISSON - CAMBIO DE 208 A 480 3F",
+      "estado": "GENERADA",
+      "fecha": "1/14/2022",
+      "activo": true
+    },
+    {
+      "numero_cotizacion": 132,
+      "id_proyecto": 2,
+      "nombre_proyecto": "HOTEL RADISSON - CAMBIO DE 208 A 480 3F",
+      "estado": "GENERADA",
+      "fecha": "1/14/2022",
+      "activo": true
+    },
+    {
+      "numero_cotizacion": 133,
+      "id_proyecto": 2,
+      "nombre_proyecto": "HOTEL RADISSON - CAMBIO DE 208 A 480 3F",
+      "estado": "GENERADA",
+      "fecha": "1/14/2022",
+      "activo": true
+    },
+    {
+      "numero_cotizacion": 134,
+      "id_proyecto": 2,
+      "nombre_proyecto": "HOTEL RADISSON - CAMBIO DE 208 A 480 3F",
+      "estado": "GENERADA",
+      "fecha": "1/14/2022",
+      "activo": true
+    },
+    {
+      "numero_cotizacion": 135,
+      "id_proyecto": 2,
+      "nombre_proyecto": "HOTEL RADISSON - CAMBIO DE 208 A 480 3F",
+      "estado": "GENERADA",
+      "fecha": "1/14/2022",
+      "activo": true
+    },
+    {
+      "numero_cotizacion": 136,
+      "id_proyecto": 2,
+      "nombre_proyecto": "HOTEL RADISSON - CAMBIO DE 208 A 480 3F",
+      "estado": "GENERADA",
+      "fecha": "1/17/2022",
+      "activo": true
+    },
+    {
+      "numero_cotizacion": 137,
+      "id_proyecto": 101,
+      "nombre_proyecto": "RESIDENCIA DORALIS",
+      "estado": "GENERADA",
+      "fecha": "1/19/2022",
+      "activo": true
+    },
+    {
+      "numero_cotizacion": 138,
+      "id_proyecto": 2,
+      "nombre_proyecto": "HOTEL RADISSON - CAMBIO DE 208 A 480 3F",
+      "estado": "GENERADA",
+      "fecha": "1/31/2022",
+      "activo": true
+    },
+    {
+      "numero_cotizacion": 139,
+      "id_proyecto": 210,
+      "nombre_proyecto": "IGLESIA ADVENTISTA LINAJE REAL",
+      "estado": "GENERADA",
+      "fecha": "3/3/2022",
+      "activo": true
+    },
+    {
+      "numero_cotizacion": 140,
+      "id_proyecto": 117,
+      "nombre_proyecto": "DESARROLLO FOTOVOLTAICO SANTANA 1 - 1MW",
+      "estado": "GENERADA",
+      "fecha": "2/5/2022",
+      "activo": true
+    },
+    {
+      "numero_cotizacion": 141,
+      "id_proyecto": 37,
+      "nombre_proyecto": "KICKS MEGACENTRO",
+      "estado": "TERMINADA",
+      "fecha": "4/22/2022",
+      "activo": true
+    },
+    {
+      "numero_cotizacion": 142,
+      "id_proyecto": 38,
+      "nombre_proyecto": "SPORTLINE COLINA CENTRO",
+      "estado": "TERMINADA",
+      "fecha": "2/22/2022",
+      "activo": true
+    },
+    {
+      "numero_cotizacion": 143,
+      "id_proyecto": 172,
+      "nombre_proyecto": "MOON TOWER",
+      "estado": "TERMINADA",
+      "fecha": "2/22/2022",
+      "activo": true
+    },
+    {
+      "numero_cotizacion": 144,
+      "id_proyecto": 173,
+      "nombre_proyecto": "VIBIERA",
+      "estado": "TERMINADA",
+      "fecha": "2/23/2022",
+      "activo": true
+    },
+    {
+      "numero_cotizacion": 145,
+      "id_proyecto": 234,
+      "nombre_proyecto": "LEVANTAMIENTO AGUA POTABLE PARMALAT",
+      "estado": "GENERADA",
+      "fecha": "2/25/2022",
+      "activo": true
+    },
+    {
+      "numero_cotizacion": 146,
+      "id_proyecto": 266,
+      "nombre_proyecto": "DESARROLLO FOTOVOLTAICO SANTANA 1 - 1MW",
+      "estado": "APROBADA",
+      "fecha": "4/4/2022",
+      "activo": true
+    },
+    {
+      "numero_cotizacion": 147,
+      "id_proyecto": 229,
+      "nombre_proyecto": "VIVIENDAS SAN JUAN",
+      "estado": "APROBADA",
+      "fecha": "3/3/2022",
+      "activo": true
+    },
+    {
+      "numero_cotizacion": 148,
+      "id_proyecto": 211,
+      "nombre_proyecto": "MARINA PUERTO BAHIA - GENERACIÓN",
+      "estado": "GENERADA",
+      "fecha": "3/4/2022",
+      "activo": true
+    },
+    {
+      "numero_cotizacion": 149,
+      "id_proyecto": 211,
+      "nombre_proyecto": "MARINA PUERTO BAHIA - GENERACIÓN",
+      "estado": "GENERADA",
+      "fecha": "3/4/2022",
+      "activo": true
+    },
+    {
+      "numero_cotizacion": 150,
+      "id_proyecto": 102,
+      "nombre_proyecto": "VILLA YUDRY",
+      "estado": "TERMINADA",
+      "fecha": "3/7/2022",
+      "activo": true
+    },
+    {
+      "numero_cotizacion": 151,
+      "id_proyecto": 121,
+      "nombre_proyecto": "MINISO COLINA CENTRO",
+      "estado": "TERMINADA",
+      "fecha": "3/7/2022",
+      "activo": true
+    },
+    {
+      "numero_cotizacion": 152,
+      "id_proyecto": 32,
+      "nombre_proyecto": "RESIDENCIAL ZAYES - VISTA CANA",
+      "estado": "TERMINADA",
+      "fecha": "3/7/2022",
+      "activo": true
+    },
+    {
+      "numero_cotizacion": 153,
+      "id_proyecto": 17,
+      "nombre_proyecto": "SE PAYITA 138KV",
+      "estado": "APROBADA",
+      "fecha": "3/19/2022",
+      "activo": true
+    },
+    {
+      "numero_cotizacion": 154,
+      "id_proyecto": 103,
+      "nombre_proyecto": "RESIDENCIA VICTORIA",
+      "estado": "TERMINADA",
+      "fecha": "4/27/2022",
+      "activo": true
+    },
+    {
+      "numero_cotizacion": 155,
+      "id_proyecto": 104,
+      "nombre_proyecto": "VILLA FRANCIS",
+      "estado": "TERMINADA",
+      "fecha": "3/21/2022",
+      "activo": true
+    },
+    {
+      "numero_cotizacion": 156,
+      "id_proyecto": 241,
+      "nombre_proyecto": "SPA PLANTACIÓN DE MANGO",
+      "estado": "GENERADA",
+      "fecha": "3/24/2022",
+      "activo": true
+    },
+    {
+      "numero_cotizacion": 157,
+      "id_proyecto": 66,
+      "nombre_proyecto": "DESARROLLO PROYECTO SOLAR PUERTO PLATA",
+      "estado": "GENERADA",
+      "fecha": "3/30/2022",
+      "activo": true
+    },
+    {
+      "numero_cotizacion": 158,
+      "id_proyecto": 18,
+      "nombre_proyecto": "SE CUMAYASA 138kV",
+      "estado": "GENERADA",
+      "fecha": "4/5/2022",
+      "activo": true
+    },
+    {
+      "numero_cotizacion": 159,
+      "id_proyecto": 122,
+      "nombre_proyecto": "MINISO METRO PLAZA SAN ISIDRO",
+      "estado": "TERMINADA",
+      "fecha": "4/5/2022",
+      "activo": true
+    },
+    {
+      "numero_cotizacion": 160,
+      "id_proyecto": 174,
+      "nombre_proyecto": "SUITIC-SOL",
+      "estado": "GENERADA",
+      "fecha": "4/6/2022",
+      "activo": true
+    },
+    {
+      "numero_cotizacion": 161,
+      "id_proyecto": 2,
+      "nombre_proyecto": "HOTEL RADISSON - CAMBIO DE 208 A 480 3F",
+      "estado": "TERMINADA",
+      "fecha": "4/10/2022",
+      "activo": true
+    },
+    {
+      "numero_cotizacion": 162,
+      "id_proyecto": 2,
+      "nombre_proyecto": "HOTEL RADISSON - CAMBIO DE 208 A 480 3F",
+      "estado": "TERMINADA",
+      "fecha": "8/24/2022",
+      "activo": true
+    },
+    {
+      "numero_cotizacion": 163,
+      "id_proyecto": 2,
+      "nombre_proyecto": "HOTEL RADISSON - CAMBIO DE 208 A 480 3F",
+      "estado": "GENERADA",
+      "fecha": "7/1/2022",
+      "activo": true
+    },
+    {
+      "numero_cotizacion": 164,
+      "id_proyecto": 206,
+      "nombre_proyecto": "DESARROLLO ELECTRICO DE VILLA",
+      "estado": "GENERADA",
+      "fecha": "4/22/2022",
+      "activo": true
+    },
+    {
+      "numero_cotizacion": 165,
+      "id_proyecto": 105,
+      "nombre_proyecto": "RESIDENCIA FRANK",
+      "estado": "TERMINADA",
+      "fecha": "4/27/2022",
+      "activo": true
+    },
+    {
+      "numero_cotizacion": 166,
+      "id_proyecto": 62,
+      "nombre_proyecto": "PARQUE SOLAR SAMANÁ",
+      "estado": "GENERADA",
+      "fecha": "5/14/2023",
+      "activo": true
+    },
+    {
+      "numero_cotizacion": 167,
+      "id_proyecto": 62,
+      "nombre_proyecto": "PARQUE SOLAR SAMANÁ",
+      "estado": "GENERADA",
+      "fecha": "10/25/2022",
+      "activo": true
+    },
+    {
+      "numero_cotizacion": 168,
+      "id_proyecto": 266,
+      "nombre_proyecto": "DESARROLLO FOTOVOLTAICO SANTANA 1 - 1MW",
+      "estado": "GENERADA",
+      "fecha": "5/11/2022",
+      "activo": true
+    },
+    {
+      "numero_cotizacion": 169,
+      "id_proyecto": 266,
+      "nombre_proyecto": "DESARROLLO FOTOVOLTAICO SANTANA 1 - 1MW",
+      "estado": "GENERADA",
+      "fecha": "5/11/2022",
+      "activo": true
+    },
+    {
+      "numero_cotizacion": 170,
+      "id_proyecto": 16,
+      "nombre_proyecto": "AMPLIACION SE CEMEX 138KV",
+      "estado": "TERMINADA",
+      "fecha": "5/13/2022",
+      "activo": true
+    },
+    {
+      "numero_cotizacion": 171,
+      "id_proyecto": 19,
+      "nombre_proyecto": "BANCO DE CAPACITORES 69kV",
+      "estado": "TERMINADA",
+      "fecha": "5/13/2022",
+      "activo": true
+    },
+    {
+      "numero_cotizacion": 172,
+      "id_proyecto": 106,
+      "nombre_proyecto": "MOUNTAIN VILLAGE",
+      "estado": "TERMINADA",
+      "fecha": "5/17/2022",
+      "activo": true
+    },
+    {
+      "numero_cotizacion": 173,
+      "id_proyecto": 38,
+      "nombre_proyecto": "SPORTLINE COLINA CENTRO",
+      "estado": "GENERADA",
+      "fecha": "5/18/2022",
+      "activo": true
+    },
+    {
+      "numero_cotizacion": 174,
+      "id_proyecto": 38,
+      "nombre_proyecto": "SPORTLINE COLINA CENTRO",
+      "estado": "GENERADA",
+      "fecha": "5/18/2022",
+      "activo": true
+    },
+    {
+      "numero_cotizacion": 175,
+      "id_proyecto": 118,
+      "nombre_proyecto": "EXPANSIÓN DE LA TERMINAL DE GAS DE AES ANDRES.",
+      "estado": "TERMINADA",
+      "fecha": "6/24/2022",
+      "activo": true
+    },
+    {
+      "numero_cotizacion": 176,
+      "id_proyecto": 39,
+      "nombre_proyecto": "SPORTLINE MEGACENTRO",
+      "estado": "GENERADA",
+      "fecha": "5/23/2022",
+      "activo": true
+    },
+    {
+      "numero_cotizacion": 177,
+      "id_proyecto": 59,
+      "nombre_proyecto": "SE CALABAZA 138kV FASE I",
+      "estado": "APROBADA",
+      "fecha": "5/23/2022",
+      "activo": true
+    },
+    {
+      "numero_cotizacion": 178,
+      "id_proyecto": 64,
+      "nombre_proyecto": "SE QUISQUEYA I 138KV",
+      "estado": "GENERADA",
+      "fecha": "5/24/2022",
+      "activo": true
+    },
+    {
+      "numero_cotizacion": 179,
+      "id_proyecto": 107,
+      "nombre_proyecto": "RESIDENCIA PUEBLO BEACH",
+      "estado": "TERMINADA",
+      "fecha": "5/26/2022",
+      "activo": true
+    },
+    {
+      "numero_cotizacion": 180,
+      "id_proyecto": 119,
+      "nombre_proyecto": "PARQUE SOLAR SAMANÁ",
+      "estado": "GENERADA",
+      "fecha": "10/25/2022",
+      "activo": true
+    },
+    {
+      "numero_cotizacion": 181,
+      "id_proyecto": 175,
+      "nombre_proyecto": "VILLA CALETÓN - CAP CANA",
+      "estado": "APROBADA",
+      "fecha": "7/29/2022",
+      "activo": true
+    },
+    {
+      "numero_cotizacion": 182,
+      "id_proyecto": 39,
+      "nombre_proyecto": "SPORTLINE MEGACENTRO",
+      "estado": "TERMINADA",
+      "fecha": "4/22/2022",
+      "activo": true
+    },
+    {
+      "numero_cotizacion": 183,
+      "id_proyecto": 108,
+      "nombre_proyecto": "RESIDENCIA MINDRE",
+      "estado": "TERMINADA",
+      "fecha": "6/7/2022",
+      "activo": true
+    },
+    {
+      "numero_cotizacion": 184,
+      "id_proyecto": 109,
+      "nombre_proyecto": "RESIDENCIA REINOSO",
+      "estado": "TERMINADA",
+      "fecha": "6/14/2022",
+      "activo": true
+    },
+    {
+      "numero_cotizacion": 185,
+      "id_proyecto": 39,
+      "nombre_proyecto": "SPORTLINE MEGACENTRO",
+      "estado": "GENERADA",
+      "fecha": "6/10/2022",
+      "activo": true
+    },
+    {
+      "numero_cotizacion": 186,
+      "id_proyecto": 39,
+      "nombre_proyecto": "SPORTLINE MEGACENTRO",
+      "estado": "GENERADA",
+      "fecha": "6/10/2022",
+      "activo": true
+    },
+    {
+      "numero_cotizacion": 187,
+      "id_proyecto": 37,
+      "nombre_proyecto": "KICKS MEGACENTRO",
+      "estado": "TERMINADA",
+      "fecha": "6/10/2022",
+      "activo": true
+    },
+    {
+      "numero_cotizacion": 188,
+      "id_proyecto": 37,
+      "nombre_proyecto": "KICKS MEGACENTRO",
+      "estado": "TERMINADA",
+      "fecha": "6/14/2022",
+      "activo": true
+    },
+    {
+      "numero_cotizacion": 189,
+      "id_proyecto": 27,
+      "nombre_proyecto": "MINISO BRAVO LA VEGA",
+      "estado": "GENERADA",
+      "fecha": "6/15/2022",
+      "activo": true
+    },
+    {
+      "numero_cotizacion": 190,
+      "id_proyecto": 78,
+      "nombre_proyecto": "RESORT GUARIONEX",
+      "estado": "GENERADA",
+      "fecha": "6/14/2022",
+      "activo": true
+    },
+    {
+      "numero_cotizacion": 191,
+      "id_proyecto": 1,
+      "nombre_proyecto": "READECUACIÓN HOTEL RADISSON",
+      "estado": "GENERADA",
+      "fecha": "6/14/2022",
+      "activo": true
+    },
+    {
+      "numero_cotizacion": 192,
+      "id_proyecto": 118,
+      "nombre_proyecto": "EXPANSIÓN DE LA TERMINAL DE GAS DE AES ANDRES.",
+      "estado": "GENERADA",
+      "fecha": "6/14/2022",
+      "activo": true
+    },
+    {
+      "numero_cotizacion": 193,
+      "id_proyecto": 34,
+      "nombre_proyecto": "7 SOLES",
+      "estado": "GENERADA",
+      "fecha": "7/5/2022",
+      "activo": true
+    },
+    {
+      "numero_cotizacion": 194,
+      "id_proyecto": 119,
+      "nombre_proyecto": "PARQUE SOLAR SAMANÁ",
+      "estado": "GENERADA",
+      "fecha": "9/13/2022",
+      "activo": true
+    },
+    {
+      "numero_cotizacion": 195,
+      "id_proyecto": 176,
+      "nombre_proyecto": "VILLA ENCUENTRO",
+      "estado": "TERMINADA",
+      "fecha": "6/22/2022",
+      "activo": true
+    },
+    {
+      "numero_cotizacion": 196,
+      "id_proyecto": 34,
+      "nombre_proyecto": "7 SOLES",
+      "estado": "APROBADA",
+      "fecha": "5/2/2023",
+      "activo": true
+    },
+    {
+      "numero_cotizacion": 197,
+      "id_proyecto": 110,
+      "nombre_proyecto": "VIVIENDIA LINDA",
+      "estado": "TERMINADA",
+      "fecha": "6/24/2022",
+      "activo": true
+    },
+    {
+      "numero_cotizacion": 198,
+      "id_proyecto": 118,
+      "nombre_proyecto": "EXPANSIÓN DE LA TERMINAL DE GAS DE AES ANDRES.",
+      "estado": "GENERADA",
+      "fecha": "6/24/2022",
+      "activo": true
+    },
+    {
+      "numero_cotizacion": 199,
+      "id_proyecto": 79,
+      "nombre_proyecto": "EDIFICIO ROSALIA",
+      "estado": "GENERADA",
+      "fecha": "6/24/2022",
+      "activo": true
+    },
+    {
+      "numero_cotizacion": 200,
+      "id_proyecto": 37,
+      "nombre_proyecto": "KICKS MEGACENTRO",
+      "estado": "GENERADA",
+      "fecha": "6/24/2022",
+      "activo": true
+    },
+    {
+      "numero_cotizacion": 201,
+      "id_proyecto": 119,
+      "nombre_proyecto": "PARQUE SOLAR SAMANÁ",
+      "estado": "TERMINADA",
+      "fecha": "6/24/2022",
+      "activo": true
+    },
+    {
+      "numero_cotizacion": 202,
+      "id_proyecto": 2,
+      "nombre_proyecto": "HOTEL RADISSON - CAMBIO DE 208 A 480 3F",
+      "estado": "TERMINADA",
+      "fecha": "8/24/2022",
+      "activo": true
+    },
+    {
+      "numero_cotizacion": 203,
+      "id_proyecto": 177,
+      "nombre_proyecto": "TAMAN - DISEÑO ELECTRICO",
+      "estado": "TERMINADA",
+      "fecha": "7/6/2022",
+      "activo": true
+    },
+    {
+      "numero_cotizacion": 204,
+      "id_proyecto": 123,
+      "nombre_proyecto": "SE TAMARINDO 69kV - MANOGUAYABO 1 Y 2 69kV",
+      "estado": "GENERADA",
+      "fecha": "7/20/2022",
+      "activo": true
+    },
+    {
+      "numero_cotizacion": 205,
+      "id_proyecto": 80,
+      "nombre_proyecto": "VIVIENDA SIMONE BAVARO",
+      "estado": "TERMINADA",
+      "fecha": "7/13/2022",
+      "activo": true
+    },
+    {
+      "numero_cotizacion": 206,
+      "id_proyecto": 81,
+      "nombre_proyecto": "VIVIENDA JOSE FAMILIA",
+      "estado": "TERMINADA",
+      "fecha": "7/13/2022",
+      "activo": true
+    },
+    {
+      "numero_cotizacion": 207,
+      "id_proyecto": 82,
+      "nombre_proyecto": "VIVIENDA JESUS JIMENEZ",
+      "estado": "TERMINADA",
+      "fecha": "7/13/2022",
+      "activo": true
+    },
+    {
+      "numero_cotizacion": 208,
+      "id_proyecto": 83,
+      "nombre_proyecto": "VIVIENDA ANTONIO JIMENEZ",
+      "estado": "TERMINADA",
+      "fecha": "7/13/2022",
+      "activo": true
+    },
+    {
+      "numero_cotizacion": 209,
+      "id_proyecto": 111,
+      "nombre_proyecto": "VILLAS PERLA MARINA",
+      "estado": "TERMINADA",
+      "fecha": "7/18/2022",
+      "activo": true
+    },
+    {
+      "numero_cotizacion": 210,
+      "id_proyecto": 178,
+      "nombre_proyecto": "SUITIC SOL",
+      "estado": "GENERADA",
+      "fecha": "7/18/2022",
+      "activo": true
+    },
+    {
+      "numero_cotizacion": 211,
+      "id_proyecto": 112,
+      "nombre_proyecto": "CASA COSTA AZUL",
+      "estado": "TERMINADA",
+      "fecha": "7/21/2022",
+      "activo": true
+    },
+    {
+      "numero_cotizacion": 212,
+      "id_proyecto": 28,
+      "nombre_proyecto": "MINISO SFM",
+      "estado": "GENERADA",
+      "fecha": "7/22/2022",
+      "activo": true
+    },
+    {
+      "numero_cotizacion": 213,
+      "id_proyecto": 74,
+      "nombre_proyecto": "CLUB BANRESERVAS",
+      "estado": "GENERADA",
+      "fecha": "7/25/2022",
+      "activo": true
+    },
+    {
+      "numero_cotizacion": 214,
+      "id_proyecto": 179,
+      "nombre_proyecto": "VITA NOVA - NADER VASDIKI",
+      "estado": "TERMINADA",
+      "fecha": "11/4/2022",
+      "activo": true
+    },
+    {
+      "numero_cotizacion": 215,
+      "id_proyecto": 180,
+      "nombre_proyecto": "THE VIEWS",
+      "estado": "GENERADA",
+      "fecha": "7/26/2022",
+      "activo": true
+    },
+    {
+      "numero_cotizacion": 216,
+      "id_proyecto": 124,
+      "nombre_proyecto": "PLANTA DE TRATAMIENTO DE AGUA ALASKA",
+      "estado": "TERMINADA",
+      "fecha": "7/26/2022",
+      "activo": true
+    },
+    {
+      "numero_cotizacion": 217,
+      "id_proyecto": 125,
+      "nombre_proyecto": "RESIDENCIAL SC",
+      "estado": "GENERADA",
+      "fecha": "7/29/2022",
+      "activo": true
+    },
+    {
+      "numero_cotizacion": 218,
+      "id_proyecto": 126,
+      "nombre_proyecto": "VIVIENDA JM",
+      "estado": "GENERADA",
+      "fecha": "7/29/2022",
+      "activo": true
+    },
+    {
+      "numero_cotizacion": 219,
+      "id_proyecto": 127,
+      "nombre_proyecto": "VILLA JM",
+      "estado": "GENERADA",
+      "fecha": "7/29/2022",
+      "activo": true
+    },
+    {
+      "numero_cotizacion": 220,
+      "id_proyecto": 128,
+      "nombre_proyecto": "APARTAMENTO DE 4 NIVELES",
+      "estado": "GENERADA",
+      "fecha": "7/29/2022",
+      "activo": true
+    },
+    {
+      "numero_cotizacion": 221,
+      "id_proyecto": 129,
+      "nombre_proyecto": "ESQUEMAS AM",
+      "estado": "GENERADA",
+      "fecha": "8/2/2022",
+      "activo": true
+    },
+    {
+      "numero_cotizacion": 222,
+      "id_proyecto": 123,
+      "nombre_proyecto": "SE TAMARINDO 69kV - MANOGUAYABO 1 Y 2 69kV",
+      "estado": "GENERADA",
+      "fecha": "9/1/2022",
+      "activo": true
+    },
+    {
+      "numero_cotizacion": 223,
+      "id_proyecto": 123,
+      "nombre_proyecto": "SE TAMARINDO 69kV - MANOGUAYABO 1 Y 2 69kV",
+      "estado": "GENERADA",
+      "fecha": "8/12/2022",
+      "activo": true
+    },
+    {
+      "numero_cotizacion": 224,
+      "id_proyecto": 123,
+      "nombre_proyecto": "SE TAMARINDO 69kV - MANOGUAYABO 1 Y 2 69kV",
+      "estado": "GENERADA",
+      "fecha": "8/12/2022",
+      "activo": true
+    },
+    {
+      "numero_cotizacion": 225,
+      "id_proyecto": 181,
+      "nombre_proyecto": "THE WINDS",
+      "estado": "GENERADA",
+      "fecha": "8/15/2022",
+      "activo": true
+    },
+    {
+      "numero_cotizacion": 226,
+      "id_proyecto": 218,
+      "nombre_proyecto": "LTAT MARANATHA 69KV",
+      "estado": "GENERADA",
+      "fecha": "8/15/2022",
+      "activo": true
+    },
+    {
+      "numero_cotizacion": 227,
+      "id_proyecto": 131,
+      "nombre_proyecto": "GLEIVYS OSVALDO BELLO RODRIGUEZ",
+      "estado": "TERMINADA",
+      "fecha": "8/17/2022",
+      "activo": true
+    },
+    {
+      "numero_cotizacion": 228,
+      "id_proyecto": 139,
+      "nombre_proyecto": "TEMPLO IGLESIA DE CRISTO",
+      "estado": "TERMINADA",
+      "fecha": "8/18/2022",
+      "activo": true
+    },
+    {
+      "numero_cotizacion": 229,
+      "id_proyecto": 132,
+      "nombre_proyecto": "EDIFICIO DE 4 NIVELES",
+      "estado": "TERMINADA",
+      "fecha": "8/19/2022",
+      "activo": true
+    },
+    {
+      "numero_cotizacion": 230,
+      "id_proyecto": 2,
+      "nombre_proyecto": "HOTEL RADISSON - CAMBIO DE 208 A 480 3F",
+      "estado": "APROBADA",
+      "fecha": "8/27/2022",
+      "activo": true
+    },
+    {
+      "numero_cotizacion": 231,
+      "id_proyecto": 133,
+      "nombre_proyecto": "VILLA AMARTE",
+      "estado": "GENERADA",
+      "fecha": "8/24/2022",
+      "activo": true
+    },
+    {
+      "numero_cotizacion": 232,
+      "id_proyecto": 2,
+      "nombre_proyecto": "HOTEL RADISSON - CAMBIO DE 208 A 480 3F",
+      "estado": "APROBADA",
+      "fecha": "8/31/2022",
+      "activo": true
+    },
+    {
+      "numero_cotizacion": 233,
+      "id_proyecto": 4,
+      "nombre_proyecto": "HOTEL RADISSON - GENERACIÓN",
+      "estado": "GENERADA",
+      "fecha": "9/2/2022",
+      "activo": true
+    },
+    {
+      "numero_cotizacion": 234,
+      "id_proyecto": 139,
+      "nombre_proyecto": "TEMPLO IGLESIA DE CRISTO",
+      "estado": "GENERADA",
+      "fecha": "9/2/2022",
+      "activo": true
+    },
+    {
+      "numero_cotizacion": 235,
+      "id_proyecto": 231,
+      "nombre_proyecto": "DESARROLLO INGENIERIA DE DETALLE",
+      "estado": "GENERADA",
+      "fecha": "9/5/2022",
+      "activo": true
+    },
+    {
+      "numero_cotizacion": 236,
+      "id_proyecto": 140,
+      "nombre_proyecto": "SISTEMA DE AIRE ACONDICIONADO",
+      "estado": "GENERADA",
+      "fecha": "9/6/2022",
+      "activo": true
+    },
+    {
+      "numero_cotizacion": 237,
+      "id_proyecto": 134,
+      "nombre_proyecto": "HOSPITAL 5 NIVELES",
+      "estado": "GENERADA",
+      "fecha": "9/12/2022",
+      "activo": true
+    },
+    {
+      "numero_cotizacion": 238,
+      "id_proyecto": 242,
+      "nombre_proyecto": "SUMINISTRO DE GENERADOR ALQUILADO",
+      "estado": "GENERADA",
+      "fecha": "9/22/2022",
+      "activo": true
+    },
+    {
+      "numero_cotizacion": 239,
+      "id_proyecto": 141,
+      "nombre_proyecto": "LAB. EL SEIBO E HIGUEY",
+      "estado": "TERMINADA",
+      "fecha": "10/3/2022",
+      "activo": true
+    },
+    {
+      "numero_cotizacion": 240,
+      "id_proyecto": 142,
+      "nombre_proyecto": "EL SEIBO - SISTEMA DE PUESTA A TIERRA",
+      "estado": "TERMINADA",
+      "fecha": "10/1/2022",
+      "activo": true
+    },
+    {
+      "numero_cotizacion": 241,
+      "id_proyecto": 143,
+      "nombre_proyecto": "HIGUEY - GENERACION",
+      "estado": "TERMINADA",
+      "fecha": "10/1/2022",
+      "activo": true
+    },
+    {
+      "numero_cotizacion": 242,
+      "id_proyecto": 60,
+      "nombre_proyecto": "SE CABO ROJO 138KV",
+      "estado": "GENERADA",
+      "fecha": "10/6/2022",
+      "activo": true
+    },
+    {
+      "numero_cotizacion": 243,
+      "id_proyecto": 84,
+      "nombre_proyecto": "VIVIENDA FELIX LORA",
+      "estado": "TERMINADA",
+      "fecha": "10/14/2022",
+      "activo": true
+    },
+    {
+      "numero_cotizacion": 244,
+      "id_proyecto": 113,
+      "nombre_proyecto": "VILLA LA MULATA",
+      "estado": "TERMINADA",
+      "fecha": "10/14/2022",
+      "activo": true
+    },
+    {
+      "numero_cotizacion": 245,
+      "id_proyecto": 60,
+      "nombre_proyecto": "SE CABO ROJO 138KV",
+      "estado": "GENERADA",
+      "fecha": "10/17/2022",
+      "activo": true
+    },
+    {
+      "numero_cotizacion": 246,
+      "id_proyecto": 162,
+      "nombre_proyecto": "INSTITUTO CHROMOMED",
+      "estado": "GENERADA",
+      "fecha": "10/18/2022",
+      "activo": true
+    },
+    {
+      "numero_cotizacion": 247,
+      "id_proyecto": 162,
+      "nombre_proyecto": "INSTITUTO CHROMOMED",
+      "estado": "GENERADA",
+      "fecha": "11/1/2022",
+      "activo": true
+    },
+    {
+      "numero_cotizacion": 248,
+      "id_proyecto": 135,
+      "nombre_proyecto": "CALL CENTER",
+      "estado": "TERMINADA",
+      "fecha": "10/18/2022",
+      "activo": true
+    },
+    {
+      "numero_cotizacion": 249,
+      "id_proyecto": 119,
+      "nombre_proyecto": "PARQUE SOLAR SAMANÁ",
+      "estado": "GENERADA",
+      "fecha": "7/3/2023",
+      "activo": true
+    },
+    {
+      "numero_cotizacion": 250,
+      "id_proyecto": 136,
+      "nombre_proyecto": "PROYECTO HALO",
+      "estado": "APROBADA",
+      "fecha": "10/21/2022",
+      "activo": true
+    },
+    {
+      "numero_cotizacion": 251,
+      "id_proyecto": 137,
+      "nombre_proyecto": "COMPLEJO CLINICA/HOSPITAL",
+      "estado": "GENERADA",
+      "fecha": "10/26/2022",
+      "activo": true
+    },
+    {
+      "numero_cotizacion": 252,
+      "id_proyecto": 119,
+      "nombre_proyecto": "PARQUE SOLAR SAMANÁ",
+      "estado": "GENERADA",
+      "fecha": "10/25/2022",
+      "activo": true
+    },
+    {
+      "numero_cotizacion": 253,
+      "id_proyecto": 119,
+      "nombre_proyecto": "PARQUE SOLAR SAMANÁ",
+      "estado": "GENERADA",
+      "fecha": "10/25/2022",
+      "activo": true
+    },
+    {
+      "numero_cotizacion": 254,
+      "id_proyecto": 185,
+      "nombre_proyecto": "VISTA CANA LOFT I",
+      "estado": "APROBADA",
+      "fecha": "10/26/2022",
+      "activo": true
+    },
+    {
+      "numero_cotizacion": 255,
+      "id_proyecto": 138,
+      "nombre_proyecto": "CLINICA/HISPITAL",
+      "estado": "TERMINADA",
+      "fecha": "10/26/2022",
+      "activo": true
+    },
+    {
+      "numero_cotizacion": 256,
+      "id_proyecto": 119,
+      "nombre_proyecto": "PARQUE SOLAR SAMANÁ",
+      "estado": "GENERADA",
+      "fecha": "9/13/2022",
+      "activo": true
+    },
+    {
+      "numero_cotizacion": 257,
+      "id_proyecto": 119,
+      "nombre_proyecto": "PARQUE SOLAR SAMANÁ",
+      "estado": "GENERADA",
+      "fecha": "10/26/2022",
+      "activo": true
+    },
+    {
+      "numero_cotizacion": 258,
+      "id_proyecto": 144,
+      "nombre_proyecto": "REPARACION UNIDAD GOODMAN CKL36 CON EVAPORADOR",
+      "estado": "GENERADA",
+      "fecha": "10/28/2022",
+      "activo": true
+    },
+    {
+      "numero_cotizacion": 259,
+      "id_proyecto": 145,
+      "nombre_proyecto": "INSTALACION DE UNIDAD NUEVA INNOVAIR SEER 16 CON EVAP.",
+      "estado": "GENERADA",
+      "fecha": "10/28/2022",
+      "activo": true
+    },
+    {
+      "numero_cotizacion": 260,
+      "id_proyecto": 146,
+      "nombre_proyecto": "EMERGENCIA ELECTRIC SUCURSAL PRINCIPAL",
+      "estado": "TERMINADA",
+      "fecha": "10/28/2022",
+      "activo": true
+    },
+    {
+      "numero_cotizacion": 261,
+      "id_proyecto": 182,
+      "nombre_proyecto": "VITA NOVA",
+      "estado": "GENERADA",
+      "fecha": "10/28/2022",
+      "activo": true
+    },
+    {
+      "numero_cotizacion": 262,
+      "id_proyecto": 182,
+      "nombre_proyecto": "VITA NOVA",
+      "estado": "GENERADA",
+      "fecha": "10/28/2022",
+      "activo": true
+    },
+    {
+      "numero_cotizacion": 263,
+      "id_proyecto": 182,
+      "nombre_proyecto": "VITA NOVA",
+      "estado": "GENERADA",
+      "fecha": "10/28/2022",
+      "activo": true
+    },
+    {
+      "numero_cotizacion": 264,
+      "id_proyecto": 182,
+      "nombre_proyecto": "VITA NOVA",
+      "estado": "GENERADA",
+      "fecha": "10/28/2022",
+      "activo": true
+    },
+    {
+      "numero_cotizacion": 265,
+      "id_proyecto": 182,
+      "nombre_proyecto": "VITA NOVA",
+      "estado": "GENERADA",
+      "fecha": "10/28/2022",
+      "activo": true
+    },
+    {
+      "numero_cotizacion": 266,
+      "id_proyecto": 182,
+      "nombre_proyecto": "VITA NOVA",
+      "estado": "GENERADA",
+      "fecha": "10/28/2022",
+      "activo": true
+    },
+    {
+      "numero_cotizacion": 267,
+      "id_proyecto": 4,
+      "nombre_proyecto": "HOTEL RADISSON - GENERACIÓN",
+      "estado": "GENERADA",
+      "fecha": "10/28/2022",
+      "activo": true
+    },
+    {
+      "numero_cotizacion": 268,
+      "id_proyecto": 4,
+      "nombre_proyecto": "HOTEL RADISSON - GENERACIÓN",
+      "estado": "GENERADA",
+      "fecha": "10/28/2022",
+      "activo": true
+    },
+    {
+      "numero_cotizacion": 269,
+      "id_proyecto": 163,
+      "nombre_proyecto": "MINISO SIRENA MOCA",
+      "estado": "TERMINADA",
+      "fecha": "11/3/2022",
+      "activo": true
+    },
+    {
+      "numero_cotizacion": 270,
+      "id_proyecto": 29,
+      "nombre_proyecto": "MINISO SIRENA ARROYO HONDO",
+      "estado": "GENERADA",
+      "fecha": "11/3/2022",
+      "activo": true
+    },
+    {
+      "numero_cotizacion": 271,
+      "id_proyecto": 147,
+      "nombre_proyecto": "VILLA MELLA - GENERADOR MF-930-10",
+      "estado": "TERMINADA",
+      "fecha": "11/14/2022",
+      "activo": true
+    },
+    {
+      "numero_cotizacion": 272,
+      "id_proyecto": 148,
+      "nombre_proyecto": "SUCURSAL PRINCIPAL - GENERADOR GEP110-2",
+      "estado": "TERMINADA",
+      "fecha": "11/15/2022",
+      "activo": true
+    },
+    {
+      "numero_cotizacion": 273,
+      "id_proyecto": 164,
+      "nombre_proyecto": "SUMINISTRO TRANSFORMADOR CPEM",
+      "estado": "GENERADA",
+      "fecha": "11/10/2022",
+      "activo": true
+    },
+    {
+      "numero_cotizacion": 274,
+      "id_proyecto": 165,
+      "nombre_proyecto": "RESIDENCIA BLANCHERY",
+      "estado": "TERMINADA",
+      "fecha": "12/13/2022",
+      "activo": true
+    },
+    {
+      "numero_cotizacion": 275,
+      "id_proyecto": 153,
+      "nombre_proyecto": "SUCURSAL PRINCIPAL",
+      "estado": "TERMINADA",
+      "fecha": "12/30/2022",
+      "activo": true
+    },
+    {
+      "numero_cotizacion": 276,
+      "id_proyecto": 85,
+      "nombre_proyecto": "APARTAMENTOS RAFAEL GUERRERO",
+      "estado": "TERMINADA",
+      "fecha": "12/1/2022",
+      "activo": true
+    },
+    {
+      "numero_cotizacion": 277,
+      "id_proyecto": 185,
+      "nombre_proyecto": "VISTA CANA LOFT I",
+      "estado": "GENERADA",
+      "fecha": "11/29/2022",
+      "activo": true
+    },
+    {
+      "numero_cotizacion": 278,
+      "id_proyecto": 219,
+      "nombre_proyecto": "VIVIENDA UNIFAMILIAR VACACIONAL",
+      "estado": "GENERADA",
+      "fecha": "12/1/2022",
+      "activo": true
+    },
+    {
+      "numero_cotizacion": 279,
+      "id_proyecto": 86,
+      "nombre_proyecto": "CASA JUAN BAUTISTA",
+      "estado": "TERMINADA",
+      "fecha": "12/1/2022",
+      "activo": true
+    },
+    {
+      "numero_cotizacion": 280,
+      "id_proyecto": 20,
+      "nombre_proyecto": "LSAT 69/138kV LINEA 2C METRO SANTO DOMINGO",
+      "estado": "TERMINADA",
+      "fecha": "6/15/2023",
+      "activo": true
+    },
+    {
+      "numero_cotizacion": 281,
+      "id_proyecto": 183,
+      "nombre_proyecto": "VILLAS CHABÁN",
+      "estado": "GENERADA",
+      "fecha": "12/13/2022",
+      "activo": true
+    },
+    {
+      "numero_cotizacion": 282,
+      "id_proyecto": 52,
+      "nombre_proyecto": "SE 69kV",
+      "estado": "GENERADA",
+      "fecha": "12/28/2022",
+      "activo": true
+    },
+    {
+      "numero_cotizacion": 283,
+      "id_proyecto": 149,
+      "nombre_proyecto": "SUCURSAL VERÓN",
+      "estado": "GENERADA",
+      "fecha": "12/29/2022",
+      "activo": true
+    },
+    {
+      "numero_cotizacion": 284,
+      "id_proyecto": 150,
+      "nombre_proyecto": "MANTENIMIENTO CORRECTIVO - VARIOS",
+      "estado": "TERMINADA",
+      "fecha": "12/30/2022",
+      "activo": true
+    },
+    {
+      "numero_cotizacion": 285,
+      "id_proyecto": 151,
+      "nombre_proyecto": "SUCURSAL ENSANCHE OZAMA",
+      "estado": "TERMINADA",
+      "fecha": "1/13/2023",
+      "activo": true
+    },
+    {
+      "numero_cotizacion": 286,
+      "id_proyecto": 151,
+      "nombre_proyecto": "SUCURSAL ENSANCHE OZAMA",
+      "estado": "GENERADA",
+      "fecha": "1/13/2023",
+      "activo": true
+    },
+    {
+      "numero_cotizacion": 287,
+      "id_proyecto": 166,
+      "nombre_proyecto": "VIVIENDA UNIFAMILIAR DE 2 NIVELES, 4 HABITACIONES",
+      "estado": "GENERADA",
+      "fecha": "1/18/2023",
+      "activo": true
+    },
+    {
+      "numero_cotizacion": 288,
+      "id_proyecto": 152,
+      "nombre_proyecto": "HATO MAYOR",
+      "estado": "TERMINADA",
+      "fecha": "1/23/2023",
+      "activo": true
+    },
+    {
+      "numero_cotizacion": 289,
+      "id_proyecto": 153,
+      "nombre_proyecto": "SUCURSAL PRINCIPAL",
+      "estado": "TERMINADA",
+      "fecha": "1/23/2023",
+      "activo": true
+    },
+    {
+      "numero_cotizacion": 290,
+      "id_proyecto": 154,
+      "nombre_proyecto": "LOS ALCARRIZOS",
+      "estado": "TERMINADA",
+      "fecha": "1/23/2023",
+      "activo": true
+    },
+    {
+      "numero_cotizacion": 291,
+      "id_proyecto": 155,
+      "nombre_proyecto": "VILLA MELLA",
+      "estado": "TERMINADA",
+      "fecha": "1/23/2023",
+      "activo": true
+    },
+    {
+      "numero_cotizacion": 292,
+      "id_proyecto": 156,
+      "nombre_proyecto": "SUCURSAL PRINCIPAL - GENERACION",
+      "estado": "TERMINADA",
+      "fecha": "1/23/2023",
+      "activo": true
+    },
+    {
+      "numero_cotizacion": 293,
+      "id_proyecto": 153,
+      "nombre_proyecto": "SUCURSAL PRINCIPAL",
+      "estado": "GENERADA",
+      "fecha": "1/23/2023",
+      "activo": true
+    },
+    {
+      "numero_cotizacion": 294,
+      "id_proyecto": 194,
+      "nombre_proyecto": "SE 69KV JAMBOLAN",
+      "estado": "GENERADA",
+      "fecha": "",
+      "activo": true
+    },
+    {
+      "numero_cotizacion": 295,
+      "id_proyecto": 158,
+      "nombre_proyecto": "REPARACION UNIDAD EVAPORADOR 4 TON",
+      "estado": "GENERADA",
+      "fecha": "1/24/2023",
+      "activo": true
+    },
+    {
+      "numero_cotizacion": 296,
+      "id_proyecto": 159,
+      "nombre_proyecto": "SAN CRISTOBAL",
+      "estado": "TERMINADA",
+      "fecha": "2/14/2023",
+      "activo": true
+    },
+    {
+      "numero_cotizacion": 297,
+      "id_proyecto": 152,
+      "nombre_proyecto": "HATO MAYOR",
+      "estado": "TERMINADA",
+      "fecha": "2/14/2023",
+      "activo": true
+    },
+    {
+      "numero_cotizacion": 298,
+      "id_proyecto": 167,
+      "nombre_proyecto": "CASA NIZAO",
+      "estado": "TERMINADA",
+      "fecha": "2/10/2023",
+      "activo": true
+    },
+    {
+      "numero_cotizacion": 299,
+      "id_proyecto": 184,
+      "nombre_proyecto": "PARQUE SOLAR DF 100MW",
+      "estado": "GENERADA",
+      "fecha": "2/10/2023",
+      "activo": true
+    },
+    {
+      "numero_cotizacion": 300,
+      "id_proyecto": 184,
+      "nombre_proyecto": "PARQUE SOLAR DF 100MW",
+      "estado": "GENERADA",
+      "fecha": "2/10/2023",
+      "activo": true
+    },
+    {
+      "numero_cotizacion": 301,
+      "id_proyecto": 160,
+      "nombre_proyecto": "SUCURSAL HERRERA",
+      "estado": "TERMINADA",
+      "fecha": "2/14/2023",
+      "activo": true
+    },
+    {
+      "numero_cotizacion": 302,
+      "id_proyecto": 161,
+      "nombre_proyecto": "VERON",
+      "estado": "TERMINADA",
+      "fecha": "2/14/2023",
+      "activo": true
+    },
+    {
+      "numero_cotizacion": 303,
+      "id_proyecto": 184,
+      "nombre_proyecto": "PARQUE SOLAR DF 100MW",
+      "estado": "GENERADA",
+      "fecha": "2/15/2023",
+      "activo": true
+    },
+    {
+      "numero_cotizacion": 304,
+      "id_proyecto": 66,
+      "nombre_proyecto": "DESARROLLO PROYECTO SOLAR PUERTO PLATA",
+      "estado": "TERMINADA",
+      "fecha": "2/24/2023",
+      "activo": true
+    },
+    {
+      "numero_cotizacion": 305,
+      "id_proyecto": 66,
+      "nombre_proyecto": "DESARROLLO PROYECTO SOLAR PUERTO PLATA",
+      "estado": "TERMINADA",
+      "fecha": "2/24/2023",
+      "activo": true
+    },
+    {
+      "numero_cotizacion": 306,
+      "id_proyecto": 118,
+      "nombre_proyecto": "EXPANSIÓN DE LA TERMINAL DE GAS DE AES ANDRES.",
+      "estado": "TERMINADA",
+      "fecha": "2/23/2023",
+      "activo": true
+    },
+    {
+      "numero_cotizacion": 307,
+      "id_proyecto": 87,
+      "nombre_proyecto": "EDIFICIO DARLIN",
+      "estado": "TERMINADA",
+      "fecha": "3/15/2023",
+      "activo": true
+    },
+    {
+      "numero_cotizacion": 308,
+      "id_proyecto": 88,
+      "nombre_proyecto": "CASA JARABACOA",
+      "estado": "TERMINADA",
+      "fecha": "3/15/2023",
+      "activo": true
+    },
+    {
+      "numero_cotizacion": 309,
+      "id_proyecto": 184,
+      "nombre_proyecto": "PARQUE SOLAR DF 100MW",
+      "estado": "GENERADA",
+      "fecha": "3/20/2023",
+      "activo": true
+    },
+    {
+      "numero_cotizacion": 310,
+      "id_proyecto": 186,
+      "nombre_proyecto": "HOTEL DADAM",
+      "estado": "GENERADA",
+      "fecha": "3/26/2023",
+      "activo": true
+    },
+    {
+      "numero_cotizacion": 311,
+      "id_proyecto": 89,
+      "nombre_proyecto": "VIVIENDA ANNY WILLIAMS",
+      "estado": "TERMINADA",
+      "fecha": "3/26/2023",
+      "activo": true
+    },
+    {
+      "numero_cotizacion": 312,
+      "id_proyecto": 186,
+      "nombre_proyecto": "HOTEL DADAM",
+      "estado": "GENERADA",
+      "fecha": "3/27/2023",
+      "activo": true
+    },
+    {
+      "numero_cotizacion": 313,
+      "id_proyecto": 186,
+      "nombre_proyecto": "HOTEL DADAM",
+      "estado": "TERMINADA",
+      "fecha": "3/27/2023",
+      "activo": true
+    },
+    {
+      "numero_cotizacion": 314,
+      "id_proyecto": 130,
+      "nombre_proyecto": "CENTRO DE IMAGENES DIAGNOTICAS Y CONSULTAS CMDMR",
+      "estado": "GENERADA",
+      "fecha": "4/3/2023",
+      "activo": true
+    },
+    {
+      "numero_cotizacion": 315,
+      "id_proyecto": 187,
+      "nombre_proyecto": "BON AGRO INDUSTRIAL S A KM22",
+      "estado": "TERMINADA",
+      "fecha": "4/12/2023",
+      "activo": true
+    },
+    {
+      "numero_cotizacion": 316,
+      "id_proyecto": 188,
+      "nombre_proyecto": "VIVIENDA PAMELYN SANCHEZ",
+      "estado": "TERMINADA",
+      "fecha": "4/17/2023",
+      "activo": true
+    },
+    {
+      "numero_cotizacion": 317,
+      "id_proyecto": 35,
+      "nombre_proyecto": "VEREDA 27",
+      "estado": "APROBADA",
+      "fecha": "4/23/2023",
+      "activo": true
+    },
+    {
+      "numero_cotizacion": 318,
+      "id_proyecto": 189,
+      "nombre_proyecto": "BAYAGUANA PE - 50MW",
+      "estado": "GENERADA",
+      "fecha": "4/21/2023",
+      "activo": true
+    },
+    {
+      "numero_cotizacion": 319,
+      "id_proyecto": 222,
+      "nombre_proyecto": "VILLA GEROSA",
+      "estado": "GENERADA",
+      "fecha": "4/24/2023",
+      "activo": true
+    },
+    {
+      "numero_cotizacion": 320,
+      "id_proyecto": 222,
+      "nombre_proyecto": "VILLA GEROSA",
+      "estado": "GENERADA",
+      "fecha": "4/24/2023",
+      "activo": true
+    },
+    {
+      "numero_cotizacion": 321,
+      "id_proyecto": 191,
+      "nombre_proyecto": "MRPC 14.6MW",
+      "estado": "GENERADA",
+      "fecha": "6/15/2023",
+      "activo": true
+    },
+    {
+      "numero_cotizacion": 322,
+      "id_proyecto": 66,
+      "nombre_proyecto": "DESARROLLO PROYECTO SOLAR PUERTO PLATA",
+      "estado": "GENERADA",
+      "fecha": "4/25/2023",
+      "activo": true
+    },
+    {
+      "numero_cotizacion": 323,
+      "id_proyecto": 53,
+      "nombre_proyecto": "SE PUERTO PLATA-PLAYA DORADA 69kV",
+      "estado": "GENERADA",
+      "fecha": "5/17/2023",
+      "activo": true
+    },
+    {
+      "numero_cotizacion": 324,
+      "id_proyecto": 230,
+      "nombre_proyecto": "CURSO OPERACION Y GESTION DE MANTENIMIENTO",
+      "estado": "GENERADA",
+      "fecha": "5/8/2023",
+      "activo": true
+    },
+    {
+      "numero_cotizacion": 325,
+      "id_proyecto": 119,
+      "nombre_proyecto": "PARQUE SOLAR SAMANÁ",
+      "estado": "TERMINADA",
+      "fecha": "5/14/2023",
+      "activo": true
+    },
+    {
+      "numero_cotizacion": 326,
+      "id_proyecto": 54,
+      "nombre_proyecto": "SE GUERRA 69KV 15MW",
+      "estado": "GENERADA",
+      "fecha": "5/17/2023",
+      "activo": true
+    },
+    {
+      "numero_cotizacion": 327,
+      "id_proyecto": 190,
+      "nombre_proyecto": "LOCAL DE COMIDA MEGACENTRO",
+      "estado": "GENERADA",
+      "fecha": "5/23/2023",
+      "activo": true
+    },
+    {
+      "numero_cotizacion": 328,
+      "id_proyecto": 61,
+      "nombre_proyecto": "CABO ROJO",
+      "estado": "GENERADA",
+      "fecha": "5/23/2023",
+      "activo": true
+    },
+    {
+      "numero_cotizacion": 329,
+      "id_proyecto": 55,
+      "nombre_proyecto": "SE MACAO PUNTA CANA CEPM",
+      "estado": "GENERADA",
+      "fecha": "5/30/2023",
+      "activo": true
+    },
+    {
+      "numero_cotizacion": 330,
+      "id_proyecto": 114,
+      "nombre_proyecto": "VILLA LAS COLINAS LOTE 9",
+      "estado": "TERMINADA",
+      "fecha": "6/6/2023",
+      "activo": true
+    },
+    {
+      "numero_cotizacion": 331,
+      "id_proyecto": 223,
+      "nombre_proyecto": "CASA CRISTOBAL",
+      "estado": "GENERADA",
+      "fecha": "6/9/2023",
+      "activo": true
+    },
+    {
+      "numero_cotizacion": 332,
+      "id_proyecto": 223,
+      "nombre_proyecto": "CASA CRISTOBAL",
+      "estado": "GENERADA",
+      "fecha": "6/9/2023",
+      "activo": true
+    },
+    {
+      "numero_cotizacion": 333,
+      "id_proyecto": 195,
+      "nombre_proyecto": "SE MONTE CRISTI 138KV",
+      "estado": "TERMINADA",
+      "fecha": "6/12/2023",
+      "activo": true
+    },
+    {
+      "numero_cotizacion": 334,
+      "id_proyecto": 60,
+      "nombre_proyecto": "SE CABO ROJO 138KV",
+      "estado": "APROBADA",
+      "fecha": "6/14/2023",
+      "activo": true
+    },
+    {
+      "numero_cotizacion": 335,
+      "id_proyecto": 223,
+      "nombre_proyecto": "CASA CRISTOBAL",
+      "estado": "GENERADA",
+      "fecha": "6/9/2023",
+      "activo": true
+    },
+    {
+      "numero_cotizacion": 336,
+      "id_proyecto": 115,
+      "nombre_proyecto": "VILLA OCEAN VILLAGE",
+      "estado": "TERMINADA",
+      "fecha": "6/14/2023",
+      "activo": true
+    },
+    {
+      "numero_cotizacion": 337,
+      "id_proyecto": 90,
+      "nombre_proyecto": "CASA ANTOINE SOSUA",
+      "estado": "GENERADA",
+      "fecha": "6/21/2023",
+      "activo": true
+    },
+    {
+      "numero_cotizacion": 338,
+      "id_proyecto": 30,
+      "nombre_proyecto": "MINISO BLUEMALL",
+      "estado": "TERMINADA",
+      "fecha": "6/22/2023",
+      "activo": true
+    },
+    {
+      "numero_cotizacion": 339,
+      "id_proyecto": 56,
+      "nombre_proyecto": "CONVATEC",
+      "estado": "GENERADA",
+      "fecha": "6/20/2023",
+      "activo": true
+    },
+    {
+      "numero_cotizacion": 340,
+      "id_proyecto": 196,
+      "nombre_proyecto": "MATAFONGO - TORRE METEOROLOGICA 11",
+      "estado": "GENERADA",
+      "fecha": "6/23/2023",
+      "activo": true
+    },
+    {
+      "numero_cotizacion": 341,
+      "id_proyecto": 196,
+      "nombre_proyecto": "MATAFONGO - TORRE METEOROLOGICA 11",
+      "estado": "GENERADA",
+      "fecha": "6/23/2023",
+      "activo": true
+    },
+    {
+      "numero_cotizacion": 342,
+      "id_proyecto": 197,
+      "nombre_proyecto": "MATAFONGO - TORRE METEOROLOGICA 17",
+      "estado": "GENERADA",
+      "fecha": "6/23/2023",
+      "activo": true
+    },
+    {
+      "numero_cotizacion": 343,
+      "id_proyecto": 197,
+      "nombre_proyecto": "MATAFONGO - TORRE METEOROLOGICA 17",
+      "estado": "GENERADA",
+      "fecha": "6/23/2023",
+      "activo": true
+    },
+    {
+      "numero_cotizacion": 344,
+      "id_proyecto": 198,
+      "nombre_proyecto": "PARQUE TABARA ABAJO SOLAR",
+      "estado": "GENERADA",
+      "fecha": "6/28/2023",
+      "activo": true
+    },
+    {
+      "numero_cotizacion": 345,
+      "id_proyecto": 91,
+      "nombre_proyecto": "CASA BILLY JOEL",
+      "estado": "GENERADA",
+      "fecha": "7/4/2023",
+      "activo": true
+    },
+    {
+      "numero_cotizacion": 346,
+      "id_proyecto": 21,
+      "nombre_proyecto": "NAVE ALMACEN BM",
+      "estado": "TERMINADA",
+      "fecha": "7/7/2023",
+      "activo": true
+    },
+    {
+      "numero_cotizacion": 347,
+      "id_proyecto": 116,
+      "nombre_proyecto": "RESIDENCIA MIRELSA",
+      "estado": "TERMINADA",
+      "fecha": "7/17/2023",
+      "activo": true
+    },
+    {
+      "numero_cotizacion": 348,
+      "id_proyecto": 57,
+      "nombre_proyecto": "EMBAJADA ESPAÑOLA",
+      "estado": "GENERADA",
+      "fecha": "7/11/2023",
+      "activo": true
+    },
+    {
+      "numero_cotizacion": 349,
+      "id_proyecto": 221,
+      "nombre_proyecto": "LOTE 1 - SE GIS 138/12.5KV CENTRO DE OPERACIONES DE HERRERA.",
+      "estado": "APROBADA",
+      "fecha": "8/15/2023",
+      "activo": true
+    },
+    {
+      "numero_cotizacion": 350,
+      "id_proyecto": 220,
+      "nombre_proyecto": "BLANQUIZALES SOLAR",
+      "estado": "GENERADA",
+      "fecha": "7/14/2023",
+      "activo": true
+    },
+    {
+      "numero_cotizacion": 351,
+      "id_proyecto": 66,
+      "nombre_proyecto": "DESARROLLO PROYECTO SOLAR PUERTO PLATA",
+      "estado": "TERMINADA",
+      "fecha": "7/14/2023",
+      "activo": true
+    },
+    {
+      "numero_cotizacion": 352,
+      "id_proyecto": 58,
+      "nombre_proyecto": "PARQUE EOLICO GRANADILLOS 50MW",
+      "estado": "GENERADA",
+      "fecha": "7/19/2023",
+      "activo": true
+    },
+    {
+      "numero_cotizacion": 353,
+      "id_proyecto": 195,
+      "nombre_proyecto": "SE MONTE CRISTI 138KV",
+      "estado": "TERMINADA",
+      "fecha": "7/19/2023",
+      "activo": true
+    },
+    {
+      "numero_cotizacion": 354,
+      "id_proyecto": 245,
+      "nombre_proyecto": "RABO RECYCLING",
+      "estado": "GENERADA",
+      "fecha": "11/09/2023",
+      "activo": true
+    },
+    {
+      "numero_cotizacion": 355,
+      "id_proyecto": 244,
+      "nombre_proyecto": "BE LIVE COLLECTION PUNTA CANA",
+      "estado": "APROBADA",
+      "fecha": "7/21/2023",
+      "activo": true
+    },
+    {
+      "numero_cotizacion": 356,
+      "id_proyecto": 244,
+      "nombre_proyecto": "BE LIVE COLLECTION PUNTA CANA",
+      "estado": "GENERADA",
+      "fecha": "7/21/2023",
+      "activo": true
+    },
+    {
+      "numero_cotizacion": 357,
+      "id_proyecto": 246,
+      "nombre_proyecto": "BE LIVE EXPERIENCE HAMACA BEACH",
+      "estado": "GENERADA",
+      "fecha": "7/31/2023",
+      "activo": true
+    },
+    {
+      "numero_cotizacion": 358,
+      "id_proyecto": 244,
+      "nombre_proyecto": "BE LIVE COLLECTION PUNTA CANA",
+      "estado": "GENERADA",
+      "fecha": "7/31/2023",
+      "activo": true
+    },
+    {
+      "numero_cotizacion": 359,
+      "id_proyecto": 119,
+      "nombre_proyecto": "PARQUE SOLAR SAMANÁ",
+      "estado": "GENERADA",
+      "fecha": "7/03/2023",
+      "activo": true
+    },
+    {
+      "numero_cotizacion": 360,
+      "id_proyecto": 249,
+      "nombre_proyecto": "LOTE 3 - AMPLIACIÓN SE METROPOLITANO 138KV",
+      "estado": "APROBADA",
+      "fecha": "8/03/2023",
+      "activo": true
+    },
+    {
+      "numero_cotizacion": 361,
+      "id_proyecto": 250,
+      "nombre_proyecto": "LOTE 4 - AMPLIACION SE ARROYO HONDO 138KV",
+      "estado": "APROBADA",
+      "fecha": "8/03/2023",
+      "activo": true
+    },
+    {
+      "numero_cotizacion": 362,
+      "id_proyecto": 252,
+      "nombre_proyecto": "EDIFICIO HERMANAS II",
+      "estado": "GENERADA",
+      "fecha": "7/08/2023",
+      "activo": true
+    },
+    {
+      "numero_cotizacion": 363,
+      "id_proyecto": 252,
+      "nombre_proyecto": "EDIFICIO HERMANAS II",
+      "estado": "GENERADA",
+      "fecha": "7/08/2023",
+      "activo": true
+    },
+    {
+      "numero_cotizacion": 364,
+      "id_proyecto": 66,
+      "nombre_proyecto": "DESARROLLO PROYECTO SOLAR PUERTO PLATA",
+      "estado": "APROBADA",
+      "fecha": "12/08/2023",
+      "activo": true
+    },
+    {
+      "numero_cotizacion": 365,
+      "id_proyecto": 254,
+      "nombre_proyecto": "SE BOCA CHICA 10-14 MVA 69KV",
+      "estado": "GENERADA",
+      "fecha": "7/11/2023",
+      "activo": true
+    },
+    {
+      "numero_cotizacion": 366,
+      "id_proyecto": 254,
+      "nombre_proyecto": "SE BOCA CHICA 10-14 MVA 69KV",
+      "estado": "GENERADA",
+      "fecha": "7/11/2023",
+      "activo": true
+    },
+    {
+      "numero_cotizacion": 367,
+      "id_proyecto": 254,
+      "nombre_proyecto": "SE BOCA CHICA 10-14 MVA 69KV",
+      "estado": "GENERADA",
+      "fecha": "7/11/2023",
+      "activo": true
+    },
+    {
+      "numero_cotizacion": 368,
+      "id_proyecto": 253,
+      "nombre_proyecto": "EDIFICIO DE 4 NIVELES - 12 APARTAMENTOS",
+      "estado": "GENERADA",
+      "fecha": "8/15/2023",
+      "activo": true
+    },
+    {
+      "numero_cotizacion": 369,
+      "id_proyecto": 255,
+      "nombre_proyecto": "CASA JBC",
+      "estado": "GENERADA",
+      "fecha": "8/17/2023",
+      "activo": true
+    },
+    {
+      "numero_cotizacion": 370,
+      "id_proyecto": 251,
+      "nombre_proyecto": "ANTON PLANTATION",
+      "estado": "TERMINADA",
+      "fecha": "8/03/2023",
+      "activo": true
+    },
+    {
+      "numero_cotizacion": 371,
+      "id_proyecto": 256,
+      "nombre_proyecto": "JUAN ALONZO",
+      "estado": "TERMINADA",
+      "fecha": "8/03/2023",
+      "activo": true
+    },
+    {
+      "numero_cotizacion": 372,
+      "id_proyecto": 257,
+      "nombre_proyecto": "SUN VILLAGE",
+      "estado": "TERMINADA",
+      "fecha": "8/30/2023",
+      "activo": true
+    },
+    {
+      "numero_cotizacion": 373,
+      "id_proyecto": 258,
+      "nombre_proyecto": "PARQUE FOTOVOLTAICO JAMBOLÁN SOLAR",
+      "estado": "GENERADA",
+      "fecha": "9/01/2023",
+      "activo": true
+    },
+    {
+      "numero_cotizacion": 374,
+      "id_proyecto": 259,
+      "nombre_proyecto": "PLANTA DE AGUA 2 PLANETA AZUL ",
+      "estado": "GENERADA",
+      "fecha": "9/01/2023",
+      "activo": true
+    },
+    {
+      "numero_cotizacion": 375,
+      "id_proyecto": 30,
+      "nombre_proyecto": "MINISO BLUEMALL",
+      "estado": "TERMINADA",
+      "fecha": "06/15/2022",
+      "activo": true
+    },
+    {
+      "numero_cotizacion": 376,
+      "id_proyecto": 30,
+      "nombre_proyecto": "MINISO BLUEMALL",
+      "estado": "TERMINADA",
+      "fecha": "06/15/2022",
+      "activo": true
+    },
+    {
+      "numero_cotizacion": 377,
+      "id_proyecto": 265,
+      "nombre_proyecto": "CERANTOLA DISPLAYS",
+      "estado": "GENERADA",
+      "fecha": "09/09/2023",
+      "activo": true
+    },
+    {
+      "numero_cotizacion": 378,
+      "id_proyecto": 265,
+      "nombre_proyecto": "CERANTOLA DISPLAYS",
+      "estado": "GENERADA",
+      "fecha": "09/09/2023",
+      "activo": true
+    },
+    {
+      "numero_cotizacion": 379,
+      "id_proyecto": 259,
+      "nombre_proyecto": "PLANTA DE AGUA 2 PLANETA AZUL ",
+      "estado": "GENERADA",
+      "fecha": "09/09/2023",
+      "activo": true
+    },
+    {
+      "numero_cotizacion": 380,
+      "id_proyecto": 259,
+      "nombre_proyecto": "PLANTA DE AGUA 2 PLANETA AZUL ",
+      "estado": "GENERADA",
+      "fecha": "09/09/2023",
+      "activo": true
+    },
+    {
+      "numero_cotizacion": 381,
+      "id_proyecto": 259,
+      "nombre_proyecto": "PLANTA DE AGUA 2 PLANETA AZUL ",
+      "estado": "GENERADA",
+      "fecha": "09/09/2023",
+      "activo": true
+    },
+    {
+      "numero_cotizacion": 382,
+      "id_proyecto": 259,
+      "nombre_proyecto": "PLANTA DE AGUA 2 PLANETA AZUL ",
+      "estado": "GENERADA",
+      "fecha": "09/10/2023",
+      "activo": true
+    },
+    {
+      "numero_cotizacion": 383,
+      "id_proyecto": 261,
+      "nombre_proyecto": "CALENTADOR DE AGUA",
+      "estado": "GENERADA",
+      "fecha": "09/20/2023",
+      "activo": true
+    },
+    {
+      "numero_cotizacion": 384,
+      "id_proyecto": 262,
+      "nombre_proyecto": "CUESTA HERMOSA GARDENS",
+      "estado": "GENERADA",
+      "fecha": "09/28/2023",
+      "activo": true
+    },
+    {
+      "numero_cotizacion": 385,
+      "id_proyecto": 195,
+      "nombre_proyecto": "SE MONTE CRISTI 138KV",
+      "estado": "GENERADA",
+      "fecha": "09/22/2023",
+      "activo": true
+    },
+    {
+      "numero_cotizacion": 386,
+      "id_proyecto": 195,
+      "nombre_proyecto": "SE MONTE CRISTI 138KV",
+      "estado": "GENERADA",
+      "fecha": "09/22/2023",
+      "activo": true
+    },
+    {
+      "numero_cotizacion": 387,
+      "id_proyecto": 30,
+      "nombre_proyecto": "MINISO BLUEMALL",
+      "estado": "TERMINADA",
+      "fecha": "09/28/2023",
+      "activo": true
+    },
+    {
+      "numero_cotizacion": 388,
+      "id_proyecto": 267,
+      "nombre_proyecto": "SE MIRASOL 138KV",
+      "estado": "APROBADA",
+      "fecha": "09/26/2023",
+      "activo": true
+    },
+    {
+      "numero_cotizacion": 389,
+      "id_proyecto": 245,
+      "nombre_proyecto": "RABO RECYCLING",
+      "estado": "GENERADA",
+      "fecha": "09/26/2023",
+      "activo": true
+    },
+    {
+      "numero_cotizacion": 390,
+      "id_proyecto": 245,
+      "nombre_proyecto": "RABO RECYCLING",
+      "estado": "GENERADA",
+      "fecha": "09/26/2023",
+      "activo": true
+    },
+    {
+      "numero_cotizacion": 391,
+      "id_proyecto": 250,
+      "nombre_proyecto": "LOTE 4 - AMPLIACION SE ARROYO HONDO 138KV",
+      "estado": "TERMINADA",
+      "fecha": "09/28/2023",
+      "activo": true
+    },
+    {
+      "numero_cotizacion": 392,
+      "id_proyecto": 249,
+      "nombre_proyecto": "LOTE 3 - AMPLIACIÓN SE METROPOLITANO 138KV",
+      "estado": "TERMINADA",
+      "fecha": "09/28/2023",
+      "activo": true
+    },
+    {
+      "numero_cotizacion": 393,
+      "id_proyecto": 268,
+      "nombre_proyecto": "SE CARRETERA MELLA",
+      "estado": "GENERADA",
+      "fecha": "09/28/2023",
+      "activo": true
+    },
+    {
+      "numero_cotizacion": 394,
+      "id_proyecto": 268,
+      "nombre_proyecto": "SE CARRETERA MELLA",
+      "estado": "GENERADA",
+      "fecha": "09/28/2023",
+      "activo": true
+    },
+    {
+      "numero_cotizacion": 395,
+      "id_proyecto": 248,
+      "nombre_proyecto": "SE MIRASOL 138KV",
+      "estado": "TERMINADA",
+      "fecha": "10/05/2023",
+      "activo": true
+    },
+    {
+      "numero_cotizacion": 396,
+      "id_proyecto": 16,
+      "nombre_proyecto": "AMPLIACION SE CEMEX 138KV",
+      "estado": "TERMINADA",
+      "fecha": "10/05/2023",
+      "activo": true
+    },
+    {
+      "numero_cotizacion": 397,
+      "id_proyecto": 248,
+      "nombre_proyecto": "SE MIRASOL 138KV",
+      "estado": "APROBADA",
+      "fecha": "10/05/2023",
+      "activo": true
+    },
+    {
+      "numero_cotizacion": 398,
+      "id_proyecto": 269,
+      "nombre_proyecto": "LT MIRASOL 138KV",
+      "estado": "TERMINADA",
+      "fecha": "07/20/2023",
+      "activo": true
+    },
+    {
+      "numero_cotizacion": 399,
+      "id_proyecto": 271,
+      "nombre_proyecto": "TORRE METEOROLOGICA 125M DE ALTURA",
+      "estado": "GENERADA",
+      "fecha": "10/06/2023",
+      "activo": true
+    },
+    {
+      "numero_cotizacion": 400,
+      "id_proyecto": 272,
+      "nombre_proyecto": "PROYECTO LT 69KV NIZAO",
+      "estado": "GENERADA",
+      "fecha": "10/16/2023",
+      "activo": true
+    },
+    {
+      "numero_cotizacion": 401,
+      "id_proyecto": 273,
+      "nombre_proyecto": "DESARROLLO PROYECTO FOTOVOLTAICO 6MVA",
+      "estado": "GENERADA",
+      "fecha": "10/24/2023",
+      "activo": true
+    },
+    {
+      "numero_cotizacion": 402,
+      "id_proyecto": 263,
+      "nombre_proyecto": "HOTEL RADISSON - PARQUEO Y AREA COMUN",
+      "estado": "GENERADA",
+      "fecha": "11/07/2023",
+      "activo": true
+    },
+    {
+      "numero_cotizacion": 403,
+      "id_proyecto": 274,
+      "nombre_proyecto": "SUBESTACIÓN AEROPUERTO DE HERRERA 138KV",
+      "estado": "GENERADA",
+      "fecha": "11/07/2023",
+      "activo": true
+    },
+    {
+      "numero_cotizacion": 404,
+      "id_proyecto": 275,
+      "nombre_proyecto": "REMODELACION NAVE",
+      "estado": "GENERADA",
+      "fecha": "11/02/2023",
+      "activo": true
+    },
+    {
+      "numero_cotizacion": 405,
+      "id_proyecto": 196,
+      "nombre_proyecto": "MATAFONGO - TORRE METEOROLOGICA 11",
+      "estado": "GENERADA",
+      "fecha": "11/07/2023",
+      "activo": true
+    },
+    {
+      "numero_cotizacion": 406,
+      "id_proyecto": 197,
+      "nombre_proyecto": "MATAFONGO - TORRE METEOROLOGICA 17",
+      "estado": "GENERADA",
+      "fecha": "11/07/2023",
+      "activo": true
+    },
+    {
+      "numero_cotizacion": 407,
+      "id_proyecto": 276,
+      "nombre_proyecto": "RESIDENCIAL DE 3 NIVELES",
+      "estado": "GENERADA",
+      "fecha": "11/17/2023",
+      "activo": true
+    },
+    {
+      "numero_cotizacion": 408,
+      "id_proyecto": 277,
+      "nombre_proyecto": "MINISO JUMBO LUPERÓN",
+      "estado": "TERMINADA",
+      "fecha": "11/17/2023",
+      "activo": true
+    },
+    {
+      "numero_cotizacion": 409,
+      "id_proyecto": 244,
+      "nombre_proyecto": "BE LIVE COLLECTION PUNTA CANA",
+      "estado": "GENERADA",
+      "fecha": "11/23/2023",
+      "activo": true
+    },
+    {
+      "numero_cotizacion": 410,
+      "id_proyecto": 277,
+      "nombre_proyecto": "MINISO JUMBO LUPERÓN",
+      "estado": "GENERADA",
+      "fecha": "11/21/2023",
+      "activo": true
+    },
+    {
+      "numero_cotizacion": 411,
+      "id_proyecto": 278,
+      "nombre_proyecto": "LOTE 1 - GIS AEROPUERTO DE HERRERA 138/12.5KV",
+      "estado": "GENERADA",
+      "fecha": "11/27/2023",
+      "activo": true
+    },
+    {
+      "numero_cotizacion": 412,
+      "id_proyecto": 279,
+      "nombre_proyecto": "LOTE 2 - GIS GRANITO BOJOS HAINA 138/12.5KV",
+      "estado": "GENERADA",
+      "fecha": "11/29/2023",
+      "activo": true
+    },
+    {
+      "numero_cotizacion": 413,
+      "id_proyecto": 280,
+      "nombre_proyecto": "LOTE 3 - AIS ENGOMBE MANOGUAYABO 138/12.5KV",
+      "estado": "GENERADA",
+      "fecha": "11/29/2023",
+      "activo": true
+    },
+    {
+      "numero_cotizacion": 414,
+      "id_proyecto": 281,
+      "nombre_proyecto": "LOTE 4 - AIS ARROYO MANZANO 138/12.5KV",
+      "estado": "GENERADA",
+      "fecha": "11/29/2023",
+      "activo": true
+    },
+    {
+      "numero_cotizacion": 415,
+      "id_proyecto": 249,
+      "nombre_proyecto": "LOTE 3 - AMPLIACIÓN SE METROPOLITANO 138KV",
+      "estado": "GENERADA",
+      "fecha": "11/29/2023",
+      "activo": true
+    },
+    {
+      "numero_cotizacion": 416,
+      "id_proyecto": 282,
+      "nombre_proyecto": "CRISTIAN LIQUOR LA GUAYIGA",
+      "estado": "GENERADA",
+      "fecha": "12/01/2023",
+      "activo": true
+    },
+    {
+      "numero_cotizacion": 417,
+      "id_proyecto": 283,
+      "nombre_proyecto": "CULTIVO DE BATATA EN LA VEGA",
+      "estado": "GENERADA",
+      "fecha": "02/16/2024",
+      "activo": true
+    },
+    {
+      "numero_cotizacion": 418,
+      "id_proyecto": 250,
+      "nombre_proyecto": "LOTE 4 - AMPLIACION SE ARROYO HONDO 138KV",
+      "estado": "APROBADA",
+      "fecha": "12/05/2023",
+      "activo": true
+    },
+    {
+      "numero_cotizacion": 419,
+      "id_proyecto": 284,
+      "nombre_proyecto": "VIVIENDA PAMELYN SANCHEZ",
+      "estado": "GENERADA",
+      "fecha": "12/05/2023",
+      "activo": true
+    },
+    {
+      "numero_cotizacion": 420,
+      "id_proyecto": 288,
+      "nombre_proyecto": "LOTE 3 - AMPLIACIÓN SE METROPOLITANO 138KV",
+      "estado": "APROBADA",
+      "fecha": "12/06/2023",
+      "activo": true
+    },
+    {
+      "numero_cotizacion": 421,
+      "id_proyecto": 249,
+      "nombre_proyecto": "LOTE 3 - AMPLIACIÓN SE METROPOLITANO 138KV",
+      "estado": "GENERADA",
+      "fecha": "12/06/2023",
+      "activo": true
+    },
+    {
+      "numero_cotizacion": 422,
+      "id_proyecto": 250,
+      "nombre_proyecto": "LOTE 4 - AMPLIACION SE ARROYO HONDO 138KV",
+      "estado": "GENERADA",
+      "fecha": "12/06/2023",
+      "activo": true
+    },
+    {
+      "numero_cotizacion": 423,
+      "id_proyecto": 282,
+      "nombre_proyecto": "CRISTIAN LIQUOR LA GUAYIGA",
+      "estado": "GENERADA",
+      "fecha": "12/06/2023",
+      "activo": true
+    },
+    {
+      "numero_cotizacion": 424,
+      "id_proyecto": 249,
+      "nombre_proyecto": "LOTE 3 - AMPLIACIÓN SE METROPOLITANO 138KV",
+      "estado": "APROBADA",
+      "fecha": "12/08/2023",
+      "activo": true
+    },
+    {
+      "numero_cotizacion": 425,
+      "id_proyecto": 285,
+      "nombre_proyecto": "CASA RAFAEL SANTOS",
+      "estado": "APROBADA",
+      "fecha": "12/12/2023",
+      "activo": true
+    },
+    {
+      "numero_cotizacion": 426,
+      "id_proyecto": 269,
+      "nombre_proyecto": "LT MIRASOL 138KV",
+      "estado": "TERMINADA",
+      "fecha": "12/13/2023",
+      "activo": true
+    },
+    {
+      "numero_cotizacion": 427,
+      "id_proyecto": 286,
+      "nombre_proyecto": "LT MATA DE PALMA 138KV",
+      "estado": "GENERADA",
+      "fecha": "12/13/2023",
+      "activo": true
+    },
+    {
+      "numero_cotizacion": 428,
+      "id_proyecto": 269,
+      "nombre_proyecto": "LT MIRASOL 138KV",
+      "estado": "TERMINADA",
+      "fecha": "12/14/2023",
+      "activo": true
+    },
+    {
+      "numero_cotizacion": 429,
+      "id_proyecto": 287,
+      "nombre_proyecto": "PROYECTO SOLAR PEDRO CORTO 65MW",
+      "estado": "GENERADA",
+      "fecha": "12/19/2023",
+      "activo": true
+    },
+    {
+      "numero_cotizacion": 430,
+      "id_proyecto": 287,
+      "nombre_proyecto": "PROYECTO SOLAR PEDRO CORTO 65MW",
+      "estado": "GENERADA",
+      "fecha": "12/19/2023",
+      "activo": true
+    },
+    {
+      "numero_cotizacion": 431,
+      "id_proyecto": 249,
+      "nombre_proyecto": "LOTE 3 - AMPLIACIÓN SE METROPOLITANO 138KV",
+      "estado": "APROBADA",
+      "fecha": "12/22/2023",
+      "activo": true
+    },
+    {
+      "numero_cotizacion": 432,
+      "id_proyecto": 289,
+      "nombre_proyecto": "LOTE 4 - AMPLIACIÓN SE ARROYO HONDO 138/69KV",
+      "estado": "APROBADA",
+      "fecha": "01/02/2024",
+      "activo": true
+    },
+    {
+      "numero_cotizacion": 433,
+      "id_proyecto": 249,
+      "nombre_proyecto": "LOTE 3 - AMPLIACIÓN SE METROPOLITANO 138KV",
+      "estado": "APROBADA",
+      "fecha": "01/02/2024",
+      "activo": true
+    },
+    {
+      "numero_cotizacion": 434,
+      "id_proyecto": 250,
+      "nombre_proyecto": "LOTE 4 - AMPLIACION SE ARROYO HONDO 138KV",
+      "estado": "APROBADA",
+      "fecha": "01/02/2024",
+      "activo": true
+    },
+    {
+      "numero_cotizacion": 435,
+      "id_proyecto": 249,
+      "nombre_proyecto": "LOTE 3 - AMPLIACIÓN SE METROPOLITANO 138KV",
+      "estado": "APROBADA",
+      "fecha": "01/04/2024",
+      "activo": true
+    },
+    {
+      "numero_cotizacion": 436,
+      "id_proyecto": 249,
+      "nombre_proyecto": "LOTE 3 - AMPLIACIÓN SE METROPOLITANO 138KV",
+      "estado": "APROBADA",
+      "fecha": "01/16/2024",
+      "activo": true
+    },
+    {
+      "numero_cotizacion": 437,
+      "id_proyecto": 291,
+      "nombre_proyecto": "APARTAMENTO LUCIANO",
+      "estado": "TERMINADA",
+      "fecha": "01/17/2024",
+      "activo": true
+    },
+    {
+      "numero_cotizacion": 438,
+      "id_proyecto": 292,
+      "nombre_proyecto": "PFV PERAVIA , LT Y SE 138KV",
+      "estado": "APROBADA",
+      "fecha": "01/24/2024",
+      "activo": true
+    },
+    {
+      "numero_cotizacion": 439,
+      "id_proyecto": 293,
+      "nombre_proyecto": "MINISO LA SIRENA SAN CRISTOBAL ",
+      "estado": "APROBADA",
+      "fecha": "02/01/2024",
+      "activo": true
+    },
+    {
+      "numero_cotizacion": 440,
+      "id_proyecto": 250,
+      "nombre_proyecto": "LOTE 4 - AMPLIACION SE ARROYO HONDO 138KV",
+      "estado": "GENERADA",
+      "fecha": "02/09/2024",
+      "activo": true
+    },
+    {
+      "numero_cotizacion": 441,
+      "id_proyecto": 295,
+      "nombre_proyecto": "VILLAS PUNTA CANA",
+      "estado": "GENERADA",
+      "fecha": "03/05/2024",
+      "activo": true
+    },
+    {
+      "numero_cotizacion": 442,
+      "id_proyecto": 296,
+      "nombre_proyecto": "PLANTA SOLAR SANCHEZ",
+      "estado": "GENERADA",
+      "fecha": "04/08/2024",
+      "activo": true
+    },
+    {
+      "numero_cotizacion": 443,
+      "id_proyecto": 297,
+      "nombre_proyecto": "CASA MELVIN VISTA CANA",
+      "estado": "APROBADA",
+      "fecha": "04/17/2024",
+      "activo": true
+    },
+    {
+      "numero_cotizacion": 444,
+      "id_proyecto": 299,
+      "nombre_proyecto": "RESIDENCIAL ZAYES II",
+      "estado": "APROBADA",
+      "fecha": "04/17/2024",
+      "activo": true
+    },
+    {
+      "numero_cotizacion": 445,
+      "id_proyecto": 299,
+      "nombre_proyecto": "RESIDENCIAL ZAYES II",
+      "estado": "TERMINADA",
+      "fecha": "04/17/2024",
+      "activo": true
+    },
+    {
+      "numero_cotizacion": 446,
+      "id_proyecto": 298,
+      "nombre_proyecto": "MINISO ACROPOLIS",
+      "estado": "GENERADA",
+      "fecha": "04/17/2024",
+      "activo": true
+    },
+    {
+      "numero_cotizacion": 447,
+      "id_proyecto": 300,
+      "nombre_proyecto": "VIVIENDA JULIO ARROYO",
+      "estado": "APROBADA",
+      "fecha": "04/17/2024",
+      "activo": true
+    },
+    {
+      "numero_cotizacion": 448,
+      "id_proyecto": 301,
+      "nombre_proyecto": "PARQUE SOLAR DRG DARGY I Y II",
+      "estado": "GENERADA",
+      "fecha": "04/20/2024",
+      "activo": true
+    },
+    {
+      "numero_cotizacion": 449,
+      "id_proyecto": 302,
+      "nombre_proyecto": "DARGY I Y II",
+      "estado": "GENERADA",
+      "fecha": "",
+      "activo": true
+    },
+    {
+      "numero_cotizacion": 450,
+      "id_proyecto": 303,
+      "nombre_proyecto": "ESPAZZO II",
+      "estado": "GENERADA",
+      "fecha": "05/03/2024",
+      "activo": true
+    },
+    {
+      "numero_cotizacion": 451,
+      "id_proyecto": 304,
+      "nombre_proyecto": "AUTOZAMA CHURCHILL",
+      "estado": "GENERADA",
+      "fecha": "05/09/2024",
+      "activo": true
+    },
+    {
+      "numero_cotizacion": 452,
+      "id_proyecto": 294,
+      "nombre_proyecto": "PLAZA PASEO 27 DE FEBRERO",
+      "estado": "APROBADA",
+      "fecha": "05/13/2024",
+      "activo": true
+    },
+    {
+      "numero_cotizacion": 453,
+      "id_proyecto": 292,
+      "nombre_proyecto": "PFV PERAVIA , LT Y SE 138KV",
+      "estado": "APROBADA",
+      "fecha": "05/15/2024",
+      "activo": true
+    },
+    {
+      "numero_cotizacion": 454,
+      "id_proyecto": 305,
+      "nombre_proyecto": "CLÍNICA ESTÉTICA MARLIN SOSA",
+      "estado": "GENERADA",
+      "fecha": "05/15/2024",
+      "activo": true
+    },
+    {
+      "numero_cotizacion": 455,
+      "id_proyecto": 306,
+      "nombre_proyecto": "URVA SOLAR",
+      "estado": "APROBADA",
+      "fecha": "05/31/2024",
+      "activo": true
+    },
+    {
+      "numero_cotizacion": 456,
+      "id_proyecto": 307,
+      "nombre_proyecto": "TIENDA SHOWROOM",
+      "estado": "GENERADA",
+      "fecha": "06/04/2024",
+      "activo": true
+    },
+    {
+      "numero_cotizacion": 457,
+      "id_proyecto": 308,
+      "nombre_proyecto": "IGUALA DE DISEÑO PARA DESARROLLO DE PROYECTOS.",
+      "estado": "APROBADA",
+      "fecha": "06/04/2024",
+      "activo": true
+    },
+    {
+      "numero_cotizacion": 458,
+      "id_proyecto": 309,
+      "nombre_proyecto": "MINISO BLUE MALL PUNTA CANA",
+      "estado": "APROBADA",
+      "fecha": "06/06/2024",
+      "activo": true
+    },
+    {
+      "numero_cotizacion": 459,
+      "id_proyecto": 195,
+      "nombre_proyecto": "SE MONTE CRISTI 138KV",
+      "estado": "GENERADA",
+      "fecha": "06/20/2024",
+      "activo": true
+    },
+    {
+      "numero_cotizacion": 460,
+      "id_proyecto": 310,
+      "nombre_proyecto": "LOTIFICACION MASTER IV - RIVERA DEL CARIBE",
+      "estado": "GENERADA",
+      "fecha": "06/17/2024",
+      "activo": true
+    },
+    {
+      "numero_cotizacion": 461,
+      "id_proyecto": 311,
+      "nombre_proyecto": "MINI CENTRAL HIDROELÉCTRICA BRAZO DERECHO",
+      "estado": "GENERADA",
+      "fecha": "06/19/2024",
+      "activo": true
+    },
+    {
+      "numero_cotizacion": 462,
+      "id_proyecto": 311,
+      "nombre_proyecto": "MINI CENTRAL HIDROELÉCTRICA BRAZO DERECHO",
+      "estado": "GENERADA",
+      "fecha": "06/25/2024",
+      "activo": true
+    },
+    {
+      "numero_cotizacion": 463,
+      "id_proyecto": 309,
+      "nombre_proyecto": "MINISO BLUE MALL PUNTA CANA",
+      "estado": "GENERADA",
+      "fecha": "07/05/2024",
+      "activo": true
+    },
+    {
+      "numero_cotizacion": 464,
+      "id_proyecto": 309,
+      "nombre_proyecto": "MINISO BLUE MALL PUNTA CANA",
+      "estado": "GENERADA",
+      "fecha": "07/05/2024",
+      "activo": true
+    },
+    {
+      "numero_cotizacion": 465,
+      "id_proyecto": 312,
+      "nombre_proyecto": "MINISO MEGACENTRO 2",
+      "estado": "APROBADA",
+      "fecha": "06/28/2024",
+      "activo": true
+    },
+    {
+      "numero_cotizacion": 466,
+      "id_proyecto": 309,
+      "nombre_proyecto": "MINISO BLUE MALL PUNTA CANA",
+      "estado": "GENERADA",
+      "fecha": "07/05/2024",
+      "activo": true
+    },
+    {
+      "numero_cotizacion": 467,
+      "id_proyecto": 309,
+      "nombre_proyecto": "MINISO BLUE MALL PUNTA CANA",
+      "estado": "GENERADA",
+      "fecha": "07/05/2024",
+      "activo": true
+    },
+    {
+      "numero_cotizacion": 468,
+      "id_proyecto": 313,
+      "nombre_proyecto": "WHITE OCEAN VILLAGE",
+      "estado": "GENERADA",
+      "fecha": "07/09/2024",
+      "activo": true
+    },
+    {
+      "numero_cotizacion": 469,
+      "id_proyecto": 313,
+      "nombre_proyecto": "WHITE OCEAN VILLAGE",
+      "estado": "GENERADA",
+      "fecha": "07/09/2024",
+      "activo": true
+    },
+    {
+      "numero_cotizacion": 470,
+      "id_proyecto": 314,
+      "nombre_proyecto": "SAIKO BUSINESS CENTER",
+      "estado": "GENERADA",
+      "fecha": "07/09/2024",
+      "activo": true
+    },
+    {
+      "numero_cotizacion": 471,
+      "id_proyecto": 314,
+      "nombre_proyecto": "SAIKO BUSINESS CENTER",
+      "estado": "GENERADA",
+      "fecha": "07/26/2024",
+      "activo": true
+    },
+    {
+      "numero_cotizacion": 472,
+      "id_proyecto": 315,
+      "nombre_proyecto": "ONOMA I",
+      "estado": "GENERADA",
+      "fecha": "07/12/2024",
+      "activo": true
+    },
+    {
+      "numero_cotizacion": 473,
+      "id_proyecto": 315,
+      "nombre_proyecto": "ONOMA I",
+      "estado": "GENERADA",
+      "fecha": "07/12/2024",
+      "activo": true
+    },
+    {
+      "numero_cotizacion": 474,
+      "id_proyecto": 315,
+      "nombre_proyecto": "ONOMA I",
+      "estado": "GENERADA",
+      "fecha": "07/12/2024",
+      "activo": true
+    },
+    {
+      "numero_cotizacion": 475,
+      "id_proyecto": 316,
+      "nombre_proyecto": "PROYECTO FOTOVOLTAICO 40KW PANTOJA",
+      "estado": "GENERADA",
+      "fecha": "07/16/2024",
+      "activo": true
+    },
+    {
+      "numero_cotizacion": 476,
+      "id_proyecto": 318,
+      "nombre_proyecto": "GUSTAVO 148",
+      "estado": "GENERADA",
+      "fecha": "07/19/2024",
+      "activo": true
+    },
+    {
+      "numero_cotizacion": 477,
+      "id_proyecto": 319,
+      "nombre_proyecto": "CAS PIANO",
+      "estado": "GENERADA",
+      "fecha": "07/25/2024",
+      "activo": true
+    },
+    {
+      "numero_cotizacion": 478,
+      "id_proyecto": 320,
+      "nombre_proyecto": " PFV RAYO VERDE 55MW ",
+      "estado": "APROBADA",
+      "fecha": "07/29/2024",
+      "activo": true
+    },
+    {
+      "numero_cotizacion": 479,
+      "id_proyecto": 321,
+      "nombre_proyecto": "PFV TERRENOS MC 200MW",
+      "estado": "GENERADA",
+      "fecha": "08/01/2024",
+      "activo": true
+    },
+    {
+      "numero_cotizacion": 480,
+      "id_proyecto": 322,
+      "nombre_proyecto": "CARREFOUR 03",
+      "estado": "GENERADA",
+      "fecha": "08/03/2024",
+      "activo": true
+    },
+    {
+      "numero_cotizacion": 481,
+      "id_proyecto": 320,
+      "nombre_proyecto": " PFV RAYO VERDE 55MW ",
+      "estado": "GENERADA",
+      "fecha": "08/08/2024",
+      "activo": true
+    },
+    {
+      "numero_cotizacion": 482,
+      "id_proyecto": 321,
+      "nombre_proyecto": "PFV TERRENOS MC 200MW",
+      "estado": "GENERADA",
+      "fecha": "08/08/2024",
+      "activo": true
+    },
+    {
+      "numero_cotizacion": 483,
+      "id_proyecto": 323,
+      "nombre_proyecto": "PLANTA SOLAR MARTI 50.32MW",
+      "estado": "GENERADA",
+      "fecha": "08/08/2024",
+      "activo": true
+    },
+    {
+      "numero_cotizacion": 484,
+      "id_proyecto": 324,
+      "nombre_proyecto": "PROYECTO PFV INDEPENDENCIA",
+      "estado": "GENERADA",
+      "fecha": "08/12/2024",
+      "activo": true
+    },
+    {
+      "numero_cotizacion": 485,
+      "id_proyecto": 325,
+      "nombre_proyecto": "ARENA RESIDENCES",
+      "estado": "APROBADA",
+      "fecha": "08/12/2024",
+      "activo": true
+    },
+    {
+      "numero_cotizacion": 486,
+      "id_proyecto": 326,
+      "nombre_proyecto": "DESARROLLO FOTOVOLTAICO 50MW",
+      "estado": "GENERADA",
+      "fecha": "08/22/2024",
+      "activo": true
+    },
+    {
+      "numero_cotizacion": 487,
+      "id_proyecto": 327,
+      "nombre_proyecto": "GYM PLAZA MERENGUE",
+      "estado": "GENERADA",
+      "fecha": "09/04/2024",
+      "activo": true
+    },
+    {
+      "numero_cotizacion": 488,
+      "id_proyecto": 328,
+      "nombre_proyecto": "MONTE CRISTI SOLAR 2",
+      "estado": "GENERADA",
+      "fecha": "09/10/2024",
+      "activo": true
+    },
+    {
+      "numero_cotizacion": 489,
+      "id_proyecto": 329,
+      "nombre_proyecto": "MINISO SANTIAGO CENTER",
+      "estado": "GENERADA",
+      "fecha": "",
+      "activo": true
+    },
+    {
+      "numero_cotizacion": 490,
+      "id_proyecto": 330,
+      "nombre_proyecto": "CENTRO DE DATOS PRINCIPAL",
+      "estado": "GENERADA",
+      "fecha": "09/20/2024",
+      "activo": true
+    },
+    {
+      "numero_cotizacion": 491,
+      "id_proyecto": 331,
+      "nombre_proyecto": "PFV AZUA 3",
+      "estado": "GENERADA",
+      "fecha": "09/30/2024",
+      "activo": true
+    },
+    {
+      "numero_cotizacion": 492,
+      "id_proyecto": 332,
+      "nombre_proyecto": "DESARROLLO DE PROYECTOS FOTOVOLTAICOS",
+      "estado": "GENERADA",
+      "fecha": "10/08/2024",
+      "activo": true
+    },
+    {
+      "numero_cotizacion": 493,
+      "id_proyecto": 333,
+      "nombre_proyecto": "DESARROLLO FOTOVOLTAICO",
+      "estado": "GENERADA",
+      "fecha": "10/08/2024",
+      "activo": true
+    },
+    {
+      "numero_cotizacion": 494,
+      "id_proyecto": 334,
+      "nombre_proyecto": "CONVERSE - SPORTLINE KIDS",
+      "estado": "GENERADA",
+      "fecha": "10/09/2024",
+      "activo": true
+    },
+    {
+      "numero_cotizacion": 495,
+      "id_proyecto": 317,
+      "nombre_proyecto": "ESTACION METEOROLOGICA",
+      "estado": "GENERADA",
+      "fecha": "10/17/2024",
+      "activo": true
+    },
+    {
+      "numero_cotizacion": 496,
+      "id_proyecto": 317,
+      "nombre_proyecto": "ESTACION METEOROLOGICA",
+      "estado": "GENERADA",
+      "fecha": "10/17/2024",
+      "activo": true
+    },
+    {
+      "numero_cotizacion": 497,
+      "id_proyecto": 335,
+      "nombre_proyecto": "INSTALACIÓN DE EMERGENCIA DE READECUACIÓN ELÉCTRICA DE SISTEMA DE POTENCIA DE BAJA TENSIÓN",
+      "estado": "GENERADA",
+      "fecha": "10/19/2024",
+      "activo": true
+    },
+    {
+      "numero_cotizacion": 498,
+      "id_proyecto": 336,
+      "nombre_proyecto": "CORTE FIEL",
+      "estado": "GENERADA",
+      "fecha": "10/21/2024",
+      "activo": true
+    },
+    {
+      "numero_cotizacion": 499,
+      "id_proyecto": 337,
+      "nombre_proyecto": "PROYECTO INDUSTRIAL LA FABRIL",
+      "estado": "GENERADA",
+      "fecha": "10/31/2024",
+      "activo": true
+    },
+    {
+      "numero_cotizacion": 500,
+      "id_proyecto": 337,
+      "nombre_proyecto": "PROYECTO INDUSTRIAL LA FABRIL",
+      "estado": "GENERADA",
+      "fecha": "10/31/2024",
+      "activo": true
+    },
+    {
+      "numero_cotizacion": 501,
+      "id_proyecto": 252,
+      "nombre_proyecto": "EDIFICIO HERMANAS II",
+      "estado": "APROBADA",
+      "fecha": "11/01/2024",
+      "activo": true
+    },
+    {
+      "numero_cotizacion": 502,
+      "id_proyecto": 338,
+      "nombre_proyecto": "GESTION DE TERRENOS PARA DESARROLLO DE PROYECTOS",
+      "estado": "GENERADA",
+      "fecha": "11/06/2024",
+      "activo": true
+    },
+    {
+      "numero_cotizacion": 503,
+      "id_proyecto": 339,
+      "nombre_proyecto": "CASA UNIFAMILIAR VILLA",
+      "estado": "GENERADA",
+      "fecha": "11/11/2024",
+      "activo": true
+    },
+    {
+      "numero_cotizacion": 504,
+      "id_proyecto": 340,
+      "nombre_proyecto": "SUBESTACIÓN DE MANIOBRA 69KV",
+      "estado": "GENERADA",
+      "fecha": "11/15/2024",
+      "activo": true
+    },
+    {
+      "numero_cotizacion": 505,
+      "id_proyecto": 341,
+      "nombre_proyecto": "SUBESTACION CERRO DE MAIMON T1 10MVA 69/4.16KV",
+      "estado": "GENERADA",
+      "fecha": "11/19/2024",
+      "activo": true
+    },
+    {
+      "numero_cotizacion": 506,
+      "id_proyecto": 342,
+      "nombre_proyecto": "PFV PUEBLO VIEJO 100MW",
+      "estado": "GENERADA",
+      "fecha": "11/21/2024",
+      "activo": true
+    },
+    {
+      "numero_cotizacion": 507,
+      "id_proyecto": 343,
+      "nombre_proyecto": "SE 69KV CAMBIO DE 4 A 7MVA",
+      "estado": "GENERADA",
+      "fecha": "11/21/2024",
+      "activo": true
+    },
+    {
+      "numero_cotizacion": 508,
+      "id_proyecto": 344,
+      "nombre_proyecto": "SE 69KV RADIAL 24-28MVA",
+      "estado": "GENERADA",
+      "fecha": "11/22/2024",
+      "activo": true
+    },
+    {
+      "numero_cotizacion": 509,
+      "id_proyecto": 344,
+      "nombre_proyecto": "SE 69KV RADIAL 24-28MVA",
+      "estado": "GENERADA",
+      "fecha": "11/22/2024",
+      "activo": true
+    },
+    {
+      "numero_cotizacion": 510,
+      "id_proyecto": 345,
+      "nombre_proyecto": "LICITACION OZAMA",
+      "estado": "GENERADA",
+      "fecha": "11/22/2024",
+      "activo": true
+    },
+    {
+      "numero_cotizacion": 511,
+      "id_proyecto": 294,
+      "nombre_proyecto": "PLAZA PASEO 27 DE FEBRERO",
+      "estado": "APROBADA",
+      "fecha": "11/29/2024",
+      "activo": true
+    },
+    {
+      "numero_cotizacion": 512,
+      "id_proyecto": 346,
+      "nombre_proyecto": "PFS ECO SUR 20.10MWN",
+      "estado": "GENERADA",
+      "fecha": "12/02/2024",
+      "activo": true
+    },
+    {
+      "numero_cotizacion": 513,
+      "id_proyecto": 346,
+      "nombre_proyecto": "PFS ECO SUR 20.10MWN",
+      "estado": "GENERADA",
+      "fecha": "12/02/2024",
+      "activo": true
+    },
+    {
+      "numero_cotizacion": 514,
+      "id_proyecto": 344,
+      "nombre_proyecto": "SE 69KV RADIAL 24-28MVA",
+      "estado": "GENERADA",
+      "fecha": "12/03/2024",
+      "activo": true
+    },
+    {
+      "numero_cotizacion": 515,
+      "id_proyecto": 347,
+      "nombre_proyecto": "MINISO AGORA MALL",
+      "estado": "GENERADA",
+      "fecha": "12/05/2024",
+      "activo": true
+    },
+    {
+      "numero_cotizacion": 516,
+      "id_proyecto": 348,
+      "nombre_proyecto": "DESARROLLO DE PSF JIMANI",
+      "estado": "GENERADA",
+      "fecha": "12/09/2024",
+      "activo": true
+    },
+    {
+      "numero_cotizacion": 517,
+      "id_proyecto": 348,
+      "nombre_proyecto": "DESARROLLO DE PSF JIMANI",
+      "estado": "GENERADA",
+      "fecha": "12/09/2024",
+      "activo": true
+    },
+    {
+      "numero_cotizacion": 518,
+      "id_proyecto": 348,
+      "nombre_proyecto": "DESARROLLO DE PSF JIMANI",
+      "estado": "GENERADA",
+      "fecha": "12/09/2024",
+      "activo": true
+    },
+    {
+      "numero_cotizacion": 519,
+      "id_proyecto": 294,
+      "nombre_proyecto": "PLAZA PASEO 27 DE FEBRERO",
+      "estado": "GENERADA",
+      "fecha": "12/16/2024",
+      "activo": true
+    },
+    {
+      "numero_cotizacion": 520,
+      "id_proyecto": 349,
+      "nombre_proyecto": "DESARROLLO PLANTA FOTOVOLTAICA EN PUNTA CATALINA ",
+      "estado": "GENERADA",
+      "fecha": "01/10/2025",
+      "activo": true
+    },
+    {
+      "numero_cotizacion": 521,
+      "id_proyecto": 328,
+      "nombre_proyecto": "MONTE CRISTI SOLAR 2",
+      "estado": "GENERADA",
+      "fecha": "01/10/2025",
+      "activo": true
+    },
+    {
+      "numero_cotizacion": 522,
+      "id_proyecto": 329,
+      "nombre_proyecto": "MINISO SANTIAGO CENTER",
+      "estado": "GENERADA",
+      "fecha": "01/10/2025",
+      "activo": true
+    },
+    {
+      "numero_cotizacion": 523,
+      "id_proyecto": 329,
+      "nombre_proyecto": "MINISO SANTIAGO CENTER",
+      "estado": "GENERADA",
+      "fecha": "01/10/2025",
+      "activo": true
+    },
+    {
+      "numero_cotizacion": 524,
+      "id_proyecto": 350,
+      "nombre_proyecto": "MINISO PATIO EMBAJADA",
+      "estado": "GENERADA",
+      "fecha": "01/29/2025",
+      "activo": true
+    },
+    {
+      "numero_cotizacion": 525,
+      "id_proyecto": 350,
+      "nombre_proyecto": "MINISO PATIO EMBAJADA",
+      "estado": "GENERADA",
+      "fecha": "02/12/2025",
+      "activo": true
+    },
+    {
+      "numero_cotizacion": 526,
+      "id_proyecto": 351,
+      "nombre_proyecto": "CASAS LOS PINOS ",
+      "estado": "GENERADA",
+      "fecha": "01/31/2025",
+      "activo": true
+    },
+    {
+      "numero_cotizacion": 527,
+      "id_proyecto": 352,
+      "nombre_proyecto": "PROYECTO 10 CASAS 110M2",
+      "estado": "GENERADA",
+      "fecha": "01/31/2025",
+      "activo": true
+    },
+    {
+      "numero_cotizacion": 528,
+      "id_proyecto": 353,
+      "nombre_proyecto": "TORRE DE APARTAMENTOS",
+      "estado": "GENERADA",
+      "fecha": "01/31/2025",
+      "activo": true
+    },
+    {
+      "numero_cotizacion": 529,
+      "id_proyecto": 354,
+      "nombre_proyecto": "SUBESTACIÓN 138KV PARQUE FOTOVOLTAICO",
+      "estado": "GENERADA",
+      "fecha": "01/31/2025",
+      "activo": true
+    },
+    {
+      "numero_cotizacion": 530,
+      "id_proyecto": 356,
+      "nombre_proyecto": "VIVIENDA UNIFAMILIAR YOVANNY",
+      "estado": "GENERADA",
+      "fecha": "01/31/2025",
+      "activo": true
+    },
+    {
+      "numero_cotizacion": 531,
+      "id_proyecto": 357,
+      "nombre_proyecto": "PFV JIMANÍ",
+      "estado": "GENERADA",
+      "fecha": "02/04/2025",
+      "activo": true
+    },
+    {
+      "numero_cotizacion": 532,
+      "id_proyecto": 344,
+      "nombre_proyecto": "SE 69KV RADIAL 24-28MVA",
+      "estado": "GENERADA",
+      "fecha": "02/04/2025",
+      "activo": true
+    },
+    {
+      "numero_cotizacion": 533,
+      "id_proyecto": 358,
+      "nombre_proyecto": "VIVIENDA UNIFAMILIAR MARISOL",
+      "estado": "GENERADA",
+      "fecha": "02/12/2025",
+      "activo": true
+    },
+    {
+      "numero_cotizacion": 534,
+      "id_proyecto": 355,
+      "nombre_proyecto": "SEAT SANTA CLARA 138kV PARA PFV",
+      "estado": "GENERADA",
+      "fecha": "05/22/2025",
+      "activo": true
+    },
+    {
+      "numero_cotizacion": 535,
+      "id_proyecto": 292,
+      "nombre_proyecto": "PFV PERAVIA , LT Y SE 138KV",
+      "estado": "GENERADA",
+      "fecha": "05/23/2025",
+      "activo": true
+    },
+    {
+      "numero_cotizacion": 536,
+      "id_proyecto": 361,
+      "nombre_proyecto": "VIVIENDA UNIFAMILIAR DANIA",
+      "estado": "GENERADA",
+      "fecha": "05/23/2025",
+      "activo": true
+    },
+    {
+      "numero_cotizacion": 537,
+      "id_proyecto": 320,
+      "nombre_proyecto": " PFV RAYO VERDE 55MW ",
+      "estado": "TERMINADA",
+      "fecha": "06/05/2025",
+      "activo": true
+    },
+    {
+      "numero_cotizacion": 538,
+      "id_proyecto": 362,
+      "nombre_proyecto": "NAVE ONA CENTER",
+      "estado": "APROBADA",
+      "fecha": "06/05/2025",
+      "activo": true
+    },
+    {
+      "numero_cotizacion": 539,
+      "id_proyecto": 320,
+      "nombre_proyecto": " PFV RAYO VERDE 55MW ",
+      "estado": "GENERADA",
+      "fecha": "06/06/2025",
+      "activo": true
+    },
+    {
+      "numero_cotizacion": 540,
+      "id_proyecto": 363,
+      "nombre_proyecto": "PFV PAYITA",
+      "estado": "GENERADA",
+      "fecha": "06/06/2025",
+      "activo": true
+    },
+    {
+      "numero_cotizacion": 541,
+      "id_proyecto": 364,
+      "nombre_proyecto": "HOTEL FOUR SEASONS",
+      "estado": "GENERADA",
+      "fecha": "06/13/2025",
+      "activo": true
+    },
+    {
+      "numero_cotizacion": 542,
+      "id_proyecto": 365,
+      "nombre_proyecto": "ESTUDIO DE RECURSO SOLAR",
+      "estado": "GENERADA",
+      "fecha": "06/21/2025",
+      "activo": true
+    },
+    {
+      "numero_cotizacion": 543,
+      "id_proyecto": 366,
+      "nombre_proyecto": "GUAYUBIN",
+      "estado": "GENERADA",
+      "fecha": "07/01/2025",
+      "activo": true
+    },
+    {
+      "numero_cotizacion": 544,
+      "id_proyecto": 367,
+      "nombre_proyecto": "DESARROLLO SOLAR EN JIMANI",
+      "estado": "GENERADA",
+      "fecha": "07/03/2025",
+      "activo": true
+    },
+    {
+      "numero_cotizacion": 545,
+      "id_proyecto": 368,
+      "nombre_proyecto": "DESARROLLO SOLAR EN MONTE CRISTI",
+      "estado": "GENERADA",
+      "fecha": "07/03/2025",
+      "activo": true
+    },
+    {
+      "numero_cotizacion": 546,
+      "id_proyecto": 369,
+      "nombre_proyecto": "NEW MINISO GALERIA 360",
+      "estado": "GENERADA",
+      "fecha": "07/04/2025",
+      "activo": true
+    },
+    {
+      "numero_cotizacion": 547,
+      "id_proyecto": 370,
+      "nombre_proyecto": "CAMPAMENTO MONTE GRANDE",
+      "estado": "GENERADA",
+      "fecha": "07/09/2025",
+      "activo": true
+    },
+    {
+      "numero_cotizacion": 548,
+      "id_proyecto": 371,
+      "nombre_proyecto": "SERVICIO GENERAL",
+      "estado": "GENERADA",
+      "fecha": "07/11/2025",
+      "activo": true
+    },
+    {
+      "numero_cotizacion": 549,
+      "id_proyecto": 372,
+      "nombre_proyecto": "ALMACEN MINISO AGORA SANTIAGO CENTER",
+      "estado": "GENERADA",
+      "fecha": "07/15/2025",
+      "activo": true
+    },
+    {
+      "numero_cotizacion": 550,
+      "id_proyecto": 373,
+      "nombre_proyecto": "IMPLEMETACION DE BATERIAS TERMICAS",
+      "estado": "GENERADA",
+      "fecha": "07/17/2025",
+      "activo": true
+    },
+    {
+      "numero_cotizacion": 551,
+      "id_proyecto": 374,
+      "nombre_proyecto": "NAVE L20mxW10.3mxH5m",
+      "estado": "GENERADA",
+      "fecha": "07/18/2025",
+      "activo": true
+    },
+    {
+      "numero_cotizacion": 552,
+      "id_proyecto": 377,
+      "nombre_proyecto": "RECLAMACION DE FACTUACION Y REVISION DE SISTEMA ELECTRICO",
+      "estado": "GENERADA",
+      "fecha": "2025-10-11",
+      "activo": true
+    }
+  ]
+}
