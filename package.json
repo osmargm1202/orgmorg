@@ -1,9 +1,13 @@
 {
   "name": "orgmorg",
-  "version": "1.0.0",
+  "version": "1.1.0",
   "description": "Organizador de archivos y creador de carpetas de proyectos.",
   "type": "module",
   "main": "dist/index.js",
+  "files": [
+    "dist",
+    "template"
+  ],
   "bin": {
     "orgmorg": "dist/index.js"
   },
