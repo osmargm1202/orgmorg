@@ -5,6 +5,14 @@ alwaysApply: false
 ---
 # Neon Auth Guidelines
 
+## orgmorg CLI Session Model
+
+- This project uses `@neondatabase/neon-js` as the primary SDK.
+- For CLI auth flows, prefer `@neondatabase/neon-js/auth` over importing `@neondatabase/auth` directly.
+- Persist the Better Auth session token as `sessionToken`; treat the JWT only as a cache for Neon Data API requests.
+- Do not model this CLI as classic OAuth with `refresh_token`.
+- Reopen the browser only when the stored Better Auth session can no longer be rehydrated.
+
 > **For AI Agents with file access (Claude Code, etc.):**
 > For complete documentation without summarization, fetch references using:
 > ```bash
@@ -17,6 +25,8 @@ alwaysApply: false
 Neon Auth provides authentication for your application. It's available as:
 - `@neondatabase/auth` - Auth only (smaller bundle)
 - `@neondatabase/neon-js` - Auth + Data API (full SDK)
+
+For this repository, use the second option and keep the auth flow aligned with Better Auth session semantics.
 
 ## Package Selection
 

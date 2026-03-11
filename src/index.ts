@@ -9,6 +9,7 @@ import { runDbSeed, runDbLast, runDbList } from "./db-cmd.js"
 import { runDbInit } from "./db-init.js"
 import { runMenu } from "./cli/runMenu.js"
 import { getSessionStatus, logout, runOAuthLogin } from "./auth/neon.js"
+import { getEffectiveSessionExpiry, hasCachedAccessToken, hasSessionToken, isLegacySession } from "./data-api.js"
 
 const [, , cmd, sub, value, ...extraArgs] = process.argv
 const ANSI = {
@@ -187,7 +188,12 @@ async function main(): Promise<void> {
     }
     console.log(`Sesión activa: ${session.user.email ?? session.user.name ?? session.user.id}`)
     console.log(`Proveedor: ${session.provider}`)
-    console.log(`Expira: ${session.expiresAt ?? "desconocido"}`)
+    console.log(`Session token: ${hasSessionToken(session) ? "guardado" : "no disponible"}`)
+    console.log(`JWT cacheado: ${hasCachedAccessToken(session) ? "disponible" : "no disponible"}`)
+    console.log(`Expira JWT cacheado: ${getEffectiveSessionExpiry(session) ?? "desconocido"}`)
+    if (isLegacySession(session)) {
+      console.log("Modo de sesión: legacy JWT-only")
+    }
     return
   }
   if (cmd === "logout") {

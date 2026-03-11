@@ -2,7 +2,13 @@ import React, { useEffect, useState } from "react"
 import { Box, Text, useApp, useInput } from "ink"
 import { getSessionStatus } from "../../../auth/neon.js"
 import { type StoredSession, getSessionPath, loadConfig } from "../../../config.js"
-import { getEffectiveSessionExpiry, isSessionExpired } from "../../../data-api.js"
+import {
+  getEffectiveSessionExpiry,
+  hasCachedAccessToken,
+  hasSessionToken,
+  isLegacySession,
+  isSessionExpired,
+} from "../../../data-api.js"
 import { ACCENT_COLOR, ScreenFrame } from "../components/ScreenFrame.js"
 
 function formatExpiry(value: number | null): string {
@@ -56,14 +62,21 @@ export function AuthStatusScreen({ onBack }: { onBack: () => void }) {
         <Box flexDirection="column">
           <Text>Usuario: {session.user.email ?? session.user.name ?? session.user.id}</Text>
           <Text>Proveedor: {session.provider}</Text>
-          <Text>Expira: {formatExpiry(getEffectiveSessionExpiry(session))}</Text>
+          <Text>Session token: {hasSessionToken(session) ? "guardado" : "no disponible"}</Text>
+          <Text>Expira sesión Better Auth: {formatExpiry(session.sessionExpiresAt ?? null)}</Text>
+          <Text>JWT cacheado: {hasCachedAccessToken(session) ? "disponible" : "no disponible"}</Text>
+          <Text>Expira JWT cacheado: {formatExpiry(getEffectiveSessionExpiry(session))}</Text>
           <Text color={isSessionExpired(session) ? "yellow" : "green"}>
-            Estado: {isSessionExpired(session) ? "Sesión expirada, inicia sesión de nuevo." : "Sesión lista para usar."}
+            Estado:{" "}
+            {isLegacySession(session) && isSessionExpired(session)
+              ? "Sesión legacy expirada. Debes iniciar sesión de nuevo."
+              : hasSessionToken(session) && isSessionExpired(session)
+                ? "El JWT cacheado expiró, pero la sesión Better Auth puede rehidratarlo."
+                : "Sesión lista para usar."}
           </Text>
           <Text>Sesión local: {getSessionPath()}</Text>
           <Text color="gray">
-            Nota: este repo solo inicia login social OAuth. Si Neon muestra fallos de sign-up/sign-in,
-            normalmente vienen de la configuración o políticas externas de Neon Auth.
+            Nota: este CLI guarda una sesión Better Auth y usa el JWT solo como caché para Neon Data API.
           </Text>
         </Box>
       ) : null}

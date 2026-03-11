@@ -5,7 +5,7 @@ import { loadConfig, saveConfig, getConfigPath } from "./config.js"
 export async function runConfig(sub: string, value: string | undefined): Promise<void> {
   if (sub === "jwks-url") {
     console.error(
-      "La opción `jwks-url` fue retirada. Este CLI usa Neon Data API autenticada con bearer OAuth; configura `auth-url` y `api-url`."
+      "La opción `jwks-url` fue retirada. Este CLI usa una sesión Better Auth y obtiene el JWT para Neon Data API desde `auth-url`; configura `auth-url` y `api-url`."
     )
     process.exit(1)
   }

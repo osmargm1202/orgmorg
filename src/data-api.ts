@@ -1,5 +1,5 @@
-import { canOpenBrowserAutomatically, runOAuthLogin } from "./auth/neon.js"
-import { loadConfig, loadSession, type Config, type StoredSession } from "./config.js"
+import { canOpenBrowserAutomatically, rehydrateSession, runOAuthLogin } from "./auth/neon.js"
+import { loadConfig, loadSession, saveSession, type Config, type StoredSession } from "./config.js"
 
 export type DataApiErrorKind =
   | "session-expired"
@@ -62,15 +62,29 @@ function getAccessTokenExpiryMs(accessToken: string): number | null {
   }
 }
 
+export function hasSessionToken(session: StoredSession): boolean {
+  return typeof session.sessionToken === "string" && session.sessionToken.trim().length > 0
+}
+
+export function hasCachedAccessToken(session: StoredSession): boolean {
+  return typeof session.accessToken === "string" && session.accessToken.trim().length > 0
+}
+
+export function isLegacySession(session: StoredSession): boolean {
+  return !hasSessionToken(session) && hasCachedAccessToken(session)
+}
+
 export function getEffectiveSessionExpiry(session: StoredSession): number | null {
-  const candidates = [normalizeEpochMs(session.expiresAt), getAccessTokenExpiryMs(session.accessToken)].filter(
-    (value): value is number => value != null
-  )
+  const candidates = [
+    normalizeEpochMs(session.expiresAt),
+    hasCachedAccessToken(session) ? getAccessTokenExpiryMs(session.accessToken as string) : null,
+  ].filter((value): value is number => value != null)
   if (candidates.length === 0) return null
   return Math.min(...candidates)
 }
 
 export function isSessionExpired(session: StoredSession): boolean {
+  if (!hasCachedAccessToken(session)) return true
   const expiresAtMs = getEffectiveSessionExpiry(session)
   if (expiresAtMs == null) return false
   return Date.now() >= expiresAtMs
@@ -82,9 +96,9 @@ function buildInteractiveLoginHint(reason: ReauthReason, resource?: string): str
     case "missing":
       return `No hay sesión activa${resourceHint} y el comando se está ejecutando en modo no interactivo. Ejecuta \`orgmorg login\` en una terminal interactiva y vuelve a intentar.`
     case "expired":
-      return `La sesión guardada ya expiró${resourceHint} y el comando se está ejecutando en modo no interactivo. Ejecuta \`orgmorg login\` en una terminal interactiva y vuelve a intentar.`
+      return `El JWT cacheado ya expiró${resourceHint} y el comando se está ejecutando en modo no interactivo. Ejecuta \`orgmorg login\` en una terminal interactiva y vuelve a intentar.`
     default:
-      return `Neon rechazó el token actual${resourceHint}, pero el comando se está ejecutando en modo no interactivo. Ejecuta \`orgmorg login\` en una terminal interactiva y vuelve a intentar.`
+      return `Neon rechazó el JWT actual${resourceHint}, pero el comando se está ejecutando en modo no interactivo. Ejecuta \`orgmorg login\` en una terminal interactiva y vuelve a intentar.`
   }
 }
 
@@ -92,17 +106,51 @@ function toErrorMessage(error: unknown): string {
   return error instanceof Error ? error.message : String(error)
 }
 
-async function reauthenticateSession(reason: ReauthReason, resource?: string): Promise<StoredSession> {
-  if (!canOpenBrowserAutomatically()) {
-    throw new Error(buildInteractiveLoginHint(reason, resource))
-  }
+async function persistRehydratedSession(
+  config: Config,
+  currentSession: StoredSession
+): Promise<StoredSession> {
+  const hydratedSession = await rehydrateSession(config.authUrl, currentSession)
+  await saveSession(hydratedSession)
+  return hydratedSession
+}
+
+async function reauthenticateSession(
+  config: Config,
+  reason: ReauthReason,
+  resource?: string,
+  currentSession?: StoredSession
+): Promise<StoredSession> {
+  const rehydrateCandidate = reason === "missing" ? null : currentSession ?? null
 
   if (!reauthenticationPromise) {
-    // Serializa la reautenticación para que múltiples requests compartan el mismo login.
-    reauthenticationPromise = runOAuthLogin({
-      allowBrowser: true,
-      preferExistingBrowserSession: true,
-    })
+    // Serializa la recuperación de sesión para que múltiples requests compartan el mismo refresh/login.
+    reauthenticationPromise = (async () => {
+      if (rehydrateCandidate && hasSessionToken(rehydrateCandidate)) {
+        try {
+          return await persistRehydratedSession(config, rehydrateCandidate)
+        } catch (error) {
+          if (!canOpenBrowserAutomatically()) {
+            throw new Error(
+              `${buildInteractiveLoginHint(reason, resource)} Detalle de la rehidratación: ${toErrorMessage(error)}`
+            )
+          }
+        }
+      }
+
+      if (!canOpenBrowserAutomatically()) {
+        const legacyHint =
+          rehydrateCandidate && isLegacySession(rehydrateCandidate)
+            ? " La sesión local es legacy y no tiene session token para renovarse automáticamente."
+            : ""
+        throw new Error(`${buildInteractiveLoginHint(reason, resource)}${legacyHint}`)
+      }
+
+      return runOAuthLogin({
+        allowBrowser: true,
+        preferExistingBrowserSession: true,
+      })
+    })()
       .catch((error) => {
         throw new Error(`No se pudo reautenticar automáticamente. ${toErrorMessage(error)}`)
       })
@@ -126,26 +174,52 @@ async function resolveAuthenticatedContext(
     return {
       context: {
         config,
-        session: await reauthenticateSession("missing", resource),
+        session: await reauthenticateSession(config, "missing", resource),
       },
       reauthenticated: true,
     }
   }
-  if (isSessionExpired(session)) {
-    if (!allowReauth) {
-      throw new Error("La sesión expiró. Ejecuta: orgmorg login")
-    }
+  if (!isSessionExpired(session)) {
     return {
-      context: {
-        config,
-        session: await reauthenticateSession("expired", resource),
-      },
-      reauthenticated: true,
+      context: { config, session },
+      reauthenticated: false,
     }
   }
+
+  if (hasSessionToken(session)) {
+    try {
+      return {
+        context: {
+          config,
+          session: await persistRehydratedSession(config, session),
+        },
+        reauthenticated: true,
+      }
+    } catch (error) {
+      if (!allowReauth) {
+        throw new Error(
+          `El JWT cacheado expiró y no pudo rehidratarse desde Better Auth. Ejecuta: orgmorg login. Detalle: ${toErrorMessage(error)}`
+        )
+      }
+    }
+  }
+
+  if (!allowReauth) {
+    if (isLegacySession(session)) {
+      throw new Error(
+        "La sesión local solo tiene un JWT legacy y no puede rehidratarse automáticamente. Ejecuta: orgmorg login"
+      )
+    }
+
+    throw new Error("La sesión guardada no puede rehidratarse automáticamente. Ejecuta: orgmorg login")
+  }
+
   return {
-    context: { config, session },
-    reauthenticated: false,
+    context: {
+      config,
+      session: await reauthenticateSession(config, "expired", resource, session),
+    },
+    reauthenticated: true,
   }
 }
 
@@ -281,9 +355,9 @@ function buildDataApiErrorMessage(
 
   switch (kind) {
     case "session-expired":
-      return `La sesión guardada ya no es válida para Neon Data API: ${resource} respondió con JWT vencido. Ejecuta: orgmorg login.${suffix}`
+      return `El JWT usado contra Neon Data API ya venció al consultar ${resource}. El CLI intentará renovarlo desde la sesión Better Auth guardada.${suffix}`
     case "auth":
-      return `Neon Data API rechazó el bearer token para ${resource}. Vuelve a iniciar sesión y revisa la configuración externa de Neon Auth.${suffix}`
+      return `Neon Data API rechazó el JWT enviado para ${resource}. Si la sesión Better Auth ya no puede rehidratarse, vuelve a iniciar sesión.${suffix}`
     case "permissions":
       return `Neon Data API rechazó el acceso a ${resource}. Revisa permisos o políticas RLS del token OAuth en Neon.${suffix}`
     case "config":
@@ -324,8 +398,12 @@ async function dataApiRequestInternal<T>(
 
   const headers: Record<string, string> = {
     Accept: "application/json",
-    Authorization: `Bearer ${session.accessToken}`,
+    Authorization: `Bearer ${session.accessToken ?? ""}`,
     ...options.headers,
+  }
+
+  if (!hasCachedAccessToken(session)) {
+    throw new Error("No hay un JWT disponible para consultar Neon Data API.")
   }
 
   let body: string | undefined
@@ -344,7 +422,7 @@ async function dataApiRequestInternal<T>(
   if (!res.ok) {
     const kind = classifyDataApiError(res.status, parsed)
     if (!hasRetried && !reauthenticated && (kind === "session-expired" || kind === "auth")) {
-      await reauthenticateSession(kind === "session-expired" ? "expired" : "rejected", resource)
+      await reauthenticateSession(config, kind === "session-expired" ? "expired" : "rejected", resource, session)
       return dataApiRequestInternal<T>(resource, options, true)
     }
     throw new DataApiError(

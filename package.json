@@ -1,6 +1,6 @@
 {
   "name": "orgmorg",
-  "version": "1.1.2",
+  "version": "1.2.0",
   "description": "Organizador de archivos y creador de carpetas de proyectos.",
   "type": "module",
   "main": "dist/index.js",
@@ -18,7 +18,6 @@
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "dependencies": {
-    "@neondatabase/auth": "^0.2.0-beta.1",
     "@neondatabase/neon-js": "^0.2.0-beta.1",
     "@types/react": "^19.2.14",
     "fs-extra": "^11.2.0",

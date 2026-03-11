@@ -1,5 +1,11 @@
 import { loadConfig, loadSession } from "./config.js"
-import { DataApiError, dataApiRequest, isLikelyRestApiUrl, isSessionExpired } from "./data-api.js"
+import {
+  DataApiError,
+  dataApiRequest,
+  hasSessionToken,
+  isLikelyRestApiUrl,
+  isSessionExpired,
+} from "./data-api.js"
 
 interface ProyectoRow {
   id: number | string
@@ -146,7 +152,9 @@ async function buildEmptyProjectsDiagnostic(filter?: string): Promise<ProyectoLi
   const hints: string[] = []
   if (session && isSessionExpired(session)) {
     hints.push(
-      "La sesión local ya figura expirada; Neon puede estar rechazando el JWT aunque todavía exista el archivo de sesión."
+      hasSessionToken(session)
+        ? "El JWT cacheado ya figura expirado; el CLI intentará renovarlo desde la sesión Better Auth guardada si esa sesión sigue vigente."
+        : "La sesión local ya figura expirada y no tiene session token para rehidratarse automáticamente."
     )
   }
   if (config && !isLikelyRestApiUrl(config.apiUrl)) {
