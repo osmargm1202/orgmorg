@@ -3,25 +3,8 @@ import { MenuScreen } from "../components/MenuScreen.js"
 
 const OPCIONES = [
   {
-    id: "auth-login",
-    label: "Iniciar sesión OAuth",
-    hint: "Abre el navegador y guarda la sesión local",
-  },
-  {
-    id: "auth-status",
-    label: "Ver estado de sesión",
-  },
-  {
-    id: "auth-logout",
-    label: "Cerrar sesión local",
-  },
-  {
-    id: "config-auth-url",
-    label: "Configurar Auth URL",
-  },
-  {
-    id: "config-api-url",
-    label: "Configurar API URL",
+    id: "config-db-path",
+    label: "Configurar ruta de base de datos",
   },
   {
     id: "config-path",

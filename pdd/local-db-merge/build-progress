@@ -1,0 +1,109 @@
+# Build Progress — local-db-merge
+
+## group: build-alpha
+**Status:** completed
+**Files changed:** [src/db.ts, src/db-init.ts, src/db-cmd.ts, src/config-cmd.ts, src/index.ts]
+
+**Completed:**
+- Implemented DB path precedence contract: explicit argument > `ORGMORG_DB_PATH` env override > configured `db-path` > default path.
+- Added shared DB path resolution contract exports in `src/db.ts` (`getDbPathResolution`, `describeDbPathSource`, `DB_PATH_ENV_VAR`).
+- Updated runtime connection handling to reopen DB if effective path changes and keep active path tracking.
+- Updated help/config surfaces to show env override support and current effective DB path source.
+- Updated DB error/init/seed CLI output to report effective DB path and source at runtime.
+- Updated `config db-path` command output to show effective DB path after save.
+
+**Validation:**
+- `npm run build` passes.
+- Manual checks:
+  - `help` shows env override + effective DB path.
+  - `db init` reports effective DB path.
+  - `db seed` reports effective DB path.
+  - `ORGMORG_DB_PATH` correctly overrides configured path.
+
+**Deviations:**
+- Plan artifact topic `pdd/local-db-merge/plan` not present in workspace filesystem; implemented strictly from user-provided build-alpha scope + approved design spec.
+
+**Blockers/Risks:**
+- None blocking for build-alpha.
+
+## group: build-beta
+**Status:** completed
+**Files changed:** [src/db.ts, src/import.ts, src/db-cmd.ts, exports/clientes_pendientes.json]
+
+**Completed:**
+- Rewrote seed merge flow to enforce new source-of-truth behavior: `proyectos.json` + `cotizaciones.json` always imported; old relation files only assist client match.
+- Added deterministic fallback for unmatched/invalid old matches: projects and linked cotizaciones assigned to cliente `55`.
+- Added explicit validation that cliente `55` exists before fallback assignment; seed fails fast with clear error if missing.
+- Changed import strategy to convergent upsert style:
+  - `proyectos` now `INSERT ... ON CONFLICT(id) DO UPDATE`
+  - `cotizaciones` now `INSERT ... ON CONFLICT(cotizacion) DO UPDATE`
+  - repeated seed runs converge, no duplicate rows.
+- Added cotización integrity validation: fail if any cotización references proyecto absent from `data/proyectos.json`.
+- Added overwrite-style pending export generation at `exports/clientes_pendientes.json` on every seed run.
+- Added runtime validation checks for pending assignments:
+  - pending project cotizaciones must keep cliente `55`
+  - pending export IDs must match DB pending IDs.
+- Updated `db seed` output summary with counts for projects/cotizaciones assigned to cliente `55` and export path.
+
+**Validation:**
+- `npm run build` passes.
+- Manual run with isolated config dir:
+  - `db init` + `db seed data`
+  - export generated at `exports/clientes_pendientes.json`
+  - pending counts reported (`41` proyectos, `42` cotizaciones).
+- Re-ran seed on same DB: totals stable (`148 clientes / 400 proyectos / 594 cotizaciones`) confirming convergent/idempotent behavior.
+
+**Deviations:**
+- Plan artifact topic `pdd/local-db-merge/plan` not present in filesystem; implemented strictly from assigned build-beta scope + approved design spec.
+
+**Blockers/Risks:**
+- Existing `db verify` command still targets legacy `import_mappings` workflow; not updated in this group scope.
+
+## group: build-alpha-fix
+**Status:** completed
+**Files changed:** [src/db.ts, src/index.ts, src/config-cmd.ts]
+
+**Completed:**
+- Ensured fresh no-config state resolves DB source as `default` by avoiding config override priming when `config.json` missing.
+- Fixed in-process `config db-path` reporting by updating override after save (`setDbPath`) before reading effective resolution.
+- Kept precedence contract intact via existing resolver order (`argument` > `env` > `config` > `default`).
+
+**Validation:**
+- `npm run build` passes.
+- Runtime (fresh ORGMORG_CONFIG_DIR):
+  - `help` shows `DB efectiva` with source `(ruta default)`.
+  - `config db-path <ruta>` prints `DB efectiva actual` with source `config db-path` and chosen path.
+
+**Deviations:**
+- `pdd/local-db-merge/plan` and `requirements` artifacts are missing in workspace; implementation followed approved spec + review findings.
+
+**Blockers/Risks:**
+- None blocking for build-alpha-fix.
+
+## group: run-seed
+**Status:** completed
+**Files changed:** [pdd/local-db-merge/build-progress]
+
+**Completed:**
+- Determined effective DB path from runtime config/env: `/tmp/orgmorg-final.db` (source: `config db-path`).
+- Built project (`npm run build`).
+- Database not present initially; executed `db init` then `db seed`.
+- Seed completed successfully against `data/` dataset and generated pending export.
+
+**Validation:**
+- `npm run build` passes.
+- `node dist/index.js help | grep 'DB efectiva'` → `DB efectiva: /tmp/orgmorg-final.db (config db-path)`.
+- `node dist/index.js db init` created DB at `/tmp/orgmorg-final.db`.
+- `node dist/index.js db seed` output summary:
+  - Clientes: 148
+  - Proyectos: 400
+  - Cotizaciones: 594
+  - Proyectos en cliente 55: 41
+  - Cotizaciones en cliente 55: 42
+  - Export pendientes: /home/osmarg/Hobby/orgmorg/exports/clientes_pendientes.json
+
+**Deviations:**
+- No code changes required; executed current seed flow.
+
+**Blockers/Risks:**
+- None blocking for run-seed.

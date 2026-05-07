@@ -1,7 +1,6 @@
 import React from "react"
 import { Box, Text } from "ink"
-
-export const ACCENT_COLOR = "blue"
+import { PRIMARY_COLOR } from "../theme.js"
 
 export function ScreenFrame({
   title,
@@ -13,27 +12,16 @@ export function ScreenFrame({
   children: React.ReactNode
 }) {
   return (
-    <Box flexDirection="column" paddingX={1} paddingY={1}>
-      <Box
-        borderStyle="round"
-        borderColor={ACCENT_COLOR}
-        flexDirection="column"
-        paddingX={1}
-        paddingY={0}
-      >
-        <Box>
-          <Text bold color={ACCENT_COLOR}>
-            orgmorg
-          </Text>
-          <Text color={ACCENT_COLOR}> · </Text>
-          <Text bold>{title}</Text>
-        </Box>
+    <Box flexDirection="column" marginTop={1}>
+      <Text bold color={PRIMARY_COLOR}>
+        {title}
+      </Text>
+      <Box marginTop={1} flexDirection="column">
         {children}
       </Box>
-
       {help ? (
-        <Box marginTop={1} paddingX={1}>
-          <Text color={ACCENT_COLOR}>{help}</Text>
+        <Box marginTop={1}>
+          <Text color="gray">{help}</Text>
         </Box>
       ) : null}
     </Box>

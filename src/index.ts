@@ -1,17 +1,26 @@
 #!/usr/bin/env node
 
-import readline from "node:readline"
 import { runConfig } from "./config-cmd.js"
-import { runProject, runProjectRecover } from "./project.js"
+import { runProjectRecover, runProjectRename, runQuotationCommand } from "./project.js"
 import { runOrganize } from "./organize.js"
 import { runOrganizeByDate, type DateGranularity } from "./organize-by-date.js"
-import { runDbSeed, runDbLast, runDbList } from "./db-cmd.js"
+import { runDbSeed, runDbLast, runDbList, runDbVerify } from "./db-cmd.js"
 import { runDbInit } from "./db-init.js"
+import fs from "fs-extra"
 import { runMenu } from "./cli/runMenu.js"
-import { getSessionStatus, logout, runOAuthLogin } from "./auth/neon.js"
-import { getEffectiveSessionExpiry, hasCachedAccessToken, hasSessionToken, isLegacySession } from "./data-api.js"
+import { CLI_VERSION } from "./version.js"
+import {
+  openDatabase,
+  databaseExists,
+  setDbPath,
+  getDbPathResolution,
+  describeDbPathSource,
+  DB_PATH_ENV_VAR,
+} from "./db.js"
+import { loadConfig, getConfigPath } from "./config.js"
 
-const [, , cmd, sub, value, ...extraArgs] = process.argv
+const cliArgs = process.argv.slice(2)
+const [cmd, sub, value, ...extraArgs] = cliArgs
 const ANSI = {
   reset: "\u001b[0m",
   bold: "\u001b[1m",
@@ -23,33 +32,6 @@ const ANSI = {
   cyan: "\u001b[36m",
   gray: "\u001b[90m",
 } as const
-
-function ask(question: string): Promise<string> {
-  const rl = readline.createInterface({ input: process.stdin, output: process.stdout })
-  return new Promise((resolve) => {
-    rl.question(question, (answer) => {
-      rl.close()
-      resolve((answer || "").trim())
-    })
-  })
-}
-
-async function askYesNo(question: string): Promise<boolean> {
-  while (true) {
-    const answer = (await ask(`${question} (yes/no): `)).toLowerCase()
-    if (["yes", "y", "si", "sí", "s"].includes(answer)) return true
-    if (["no", "n"].includes(answer)) return false
-    console.log("Respuesta inválida. Usa yes o no.")
-  }
-}
-
-async function confirmOrganizeAction(message: string): Promise<boolean> {
-  const confirmed = await askYesNo(message)
-  if (!confirmed) {
-    console.log("Operación cancelada.")
-  }
-  return confirmed
-}
 
 type OutputStream = "stdout" | "stderr"
 
@@ -82,51 +64,60 @@ function buildDetailedHelp(stream: OutputStream, errorMessage?: string): string[
     lines.push("")
   }
 
-  lines.push(`${paint(stream, "orgmorg", ANSI.blue, ANSI.bold)} ${paint(stream, "CLI para cotizaciones, organización de archivos y Neon.", ANSI.gray)}`)
+  lines.push(
+    `${paint(stream, "orgmorg", ANSI.blue, ANSI.bold)} ${paint(stream, `v${CLI_VERSION}`, ANSI.cyan, ANSI.bold)} ${paint(stream, "CLI para cotizaciones, organización de archivos y proyectos.", ANSI.gray)}`
+  )
   lines.push("")
   lines.push(paint(stream, "Uso", ANSI.yellow, ANSI.bold))
   lines.push(`  ${paint(stream, "orgmorg <comando> [opciones]", ANSI.green)}`)
   lines.push(`  ${paint(stream, "orgmorg help", ANSI.green)} ${paint(stream, "# muestra esta ayuda", ANSI.gray)}`)
   lines.push("")
-  lines.push(paint(stream, "Sesión", ANSI.yellow, ANSI.bold))
-  lines.push(formatCommand(stream, "orgmorg menu", "Abre el menú interactivo Ink."))
-  lines.push(formatCommand(stream, "orgmorg login", "Inicia sesión OAuth con Neon."))
-  lines.push(formatCommand(stream, "orgmorg status", "Muestra la sesión activa actual."))
-  lines.push(formatCommand(stream, "orgmorg logout", "Elimina la sesión local guardada."))
-  lines.push("")
-  lines.push(paint(stream, "Proyectos", ANSI.yellow, ANSI.bold))
-  lines.push(formatCommand(stream, "orgmorg project", "Crea una cotización y su carpeta de forma guiada."))
+  lines.push(paint(stream, "Principal", ANSI.yellow, ANSI.bold))
+  lines.push(formatCommand(stream, "orgmorg menu", "Abre el menú interactivo."))
+  lines.push(
+    formatCommand(
+      stream,
+      'orgmorg quotation --new "Proyecto" --cliente-id 1',
+      "Crea una cotización para un proyecto nuevo."
+    )
+  )
+  lines.push(
+    formatCommand(
+      stream,
+      "orgmorg quotation --project-id 123",
+      "Crea una cotización para un proyecto existente."
+    )
+  )
   lines.push(formatCommand(stream, "orgmorg project list [nombre]", "Lista proyectos y filtra opcionalmente por nombre."))
   lines.push(formatCommand(stream, "orgmorg project last", "Muestra el último número de cotización."))
   lines.push(formatCommand(stream, "orgmorg project recover <numero>", "Recrea la carpeta de una cotización existente."))
+  lines.push(formatCommand(stream, 'orgmorg project rename 123 "Nuevo nombre"', "Renombra un proyecto existente por id."))
   lines.push("")
   lines.push(paint(stream, "Organización", ANSI.yellow, ANSI.bold))
-  lines.push(formatCommand(stream, "orgmorg organize", "Organiza por extensión solo el directorio actual."))
-  lines.push(formatCommand(stream, "orgmorg organize-by-date year", "Agrupa por año usando mtime."))
-  lines.push(formatCommand(stream, "orgmorg organize-by-date month", "Agrupa por año/mes usando mtime."))
-  lines.push(formatCommand(stream, "orgmorg organize-by-date day", "Agrupa por año/mes/día usando mtime."))
-  lines.push(`  ${paint(stream, "Nota:", ANSI.blue, ANSI.bold)} estos comandos solo trabajan sobre ${paint(stream, process.cwd(), ANSI.green)} y piden confirmación ${paint(stream, "yes/no", ANSI.cyan)} antes de mover archivos.`)
+  lines.push(formatCommand(stream, "orgmorg organize --yes", "Organiza por extensión el directorio actual."))
+  lines.push(formatCommand(stream, "orgmorg organize-by-date <year|month|day> --yes", "Agrupa por fecha usando mtime."))
   lines.push("")
   lines.push(paint(stream, "Base de datos", ANSI.yellow, ANSI.bold))
-  lines.push(formatCommand(stream, "orgmorg db init", "Pide una URL Postgres efímera y aplica la migración inicial."))
-  lines.push(formatCommand(stream, "orgmorg db seed [ruta.json]", "Importa proyectos y cotizaciones desde un JSON."))
-  lines.push(formatCommand(stream, "orgmorg db last", "Muestra el último número guardado en la base."))
-  lines.push(formatCommand(stream, "orgmorg db list [nombre]", "Lista proyectos visibles con filtro opcional."))
+  lines.push(formatCommand(stream, "orgmorg db init", "Crea la base de datos SQLite local con el esquema."))
+  lines.push(formatCommand(stream, "orgmorg db seed [directorio]", "Importa clientes, proyectos y cotizaciones desde JSON."))
+  lines.push(formatCommand(stream, "orgmorg db last", "Muestra el último número de cotización en la base."))
+  lines.push(formatCommand(stream, "orgmorg db list [nombre]", "Lista proyectos con filtro opcional."))
+  lines.push(formatCommand(stream, "orgmorg db verify", "Verifica mapeos de importación (clientes reusados vs creados)."))
   lines.push("")
   lines.push(paint(stream, "Configuración", ANSI.yellow, ANSI.bold))
-  lines.push(formatCommand(stream, "orgmorg config auth-url <url>", "Guarda la URL base de Neon Auth."))
-  lines.push(formatCommand(stream, "orgmorg config api-url <url>", "Guarda la URL base de Neon Data API."))
-  lines.push(formatCommand(stream, "orgmorg config oauth-provider <id>", "Guarda el proveedor OAuth, por ejemplo google."))
-  lines.push(formatCommand(stream, "orgmorg config path <dir>", "Guarda un directorio base para otros flujos del CLI."))
+  lines.push(formatCommand(stream, "orgmorg config db-path <ruta>", "Ruta persistente de SQLite (si no hay override por entorno)."))
+  lines.push(formatCommand(stream, "orgmorg config path <dir>", "Directorio base para creación de carpetas de proyectos."))
+  lines.push(`  ${paint(stream, `${DB_PATH_ENV_VAR}=<ruta>`, ANSI.green)} ${paint(stream, "override temporal de db-path.", ANSI.gray)}`)
+  const dbResolution = getDbPathResolution()
+  lines.push(`  ${paint(stream, "DB efectiva:", ANSI.gray)} ${dbResolution.path} ${paint(stream, `(${describeDbPathSource(dbResolution.source)})`, ANSI.gray)}`)
   lines.push("")
   lines.push(paint(stream, "Ejemplos", ANSI.yellow, ANSI.bold))
-  lines.push(`  ${paint(stream, "orgmorg login", ANSI.green)}`)
   lines.push(`  ${paint(stream, "orgmorg db init", ANSI.green)}`)
-  lines.push(`  ${paint(stream, "orgmorg db seed cotizaciones_proyctos.json", ANSI.green)}`)
-  lines.push(`  ${paint(stream, "orgmorg organize", ANSI.green)}`)
-  lines.push(`  ${paint(stream, "orgmorg organize-by-date month", ANSI.green)}`)
+  lines.push(`  ${paint(stream, "orgmorg db seed data/", ANSI.green)}`)
+  lines.push(`  ${paint(stream, "orgmorg organize --yes", ANSI.green)}`)
+  lines.push(`  ${paint(stream, "orgmorg organize-by-date month --yes", ANSI.green)}`)
   lines.push("")
-  lines.push(`${paint(stream, "Tip:", ANSI.blue, ANSI.bold)} puedes usar ${paint(stream, "orgmorg help", ANSI.cyan)} o también ${paint(stream, "orgmorg -h", ANSI.cyan)} / ${paint(stream, "orgmorg --help", ANSI.cyan)}.`)
+  lines.push(`${paint(stream, "Tip:", ANSI.blue, ANSI.bold)} usa ${paint(stream, "orgmorg menu", ANSI.cyan)} para operaciones guiadas.`)
 
   return lines
 }
@@ -140,8 +131,8 @@ function printOrganizeUsage(message?: string): never {
   if (message) {
     console.error(message)
   }
-  console.error("Uso: orgmorg organize")
-  console.error("Organiza por extensión únicamente el directorio actual.")
+  console.error("Uso: orgmorg organize --yes")
+  console.error("Organiza por extensión el directorio actual. Requiere --yes para confirmar.")
   process.exit(1)
 }
 
@@ -153,56 +144,130 @@ function printOrganizeByDateUsage(message?: string): never {
   if (message) {
     console.error(message)
   }
-  console.error("Uso: orgmorg organize-by-date <year|month|day>")
-  console.error("Organiza por fecha usando mtime y únicamente el directorio actual.")
-  console.error("Subcomandos válidos: year, month, day.")
+  console.error("Uso: orgmorg organize-by-date <year|month|day> --yes")
+  console.error("Organiza por fecha usando mtime y el directorio actual.")
   process.exit(1)
 }
 
+/**
+ * Ensure the database is available. If missing, fail with a clear error
+ * pointing the user to `orgmorg db init` or `orgmorg menu`.
+ * No interactive prompts in non-menu paths.
+ */
+async function ensureDbAvailable(): Promise<void> {
+  if (databaseExists()) {
+    openDatabase()
+    return
+  }
+
+  const resolution = getDbPathResolution()
+  console.error(
+    `La base de datos no existe en ${resolution.path} (${describeDbPathSource(resolution.source)}).\n` +
+    `Ejecuta 'orgmorg db init' para crearla, o usa 'orgmorg menu' para operaciones guiadas.`
+  )
+  process.exit(1)
+}
+
+// Commands that do NOT require the database to exist
+const NO_DB_COMMANDS = new Set([
+  "help", "-h", "--help",
+  "config",
+  "organize", "organize-by-date",
+  "version",
+])
+
+// Commands that CREATE the database (bootstrap commands exempt from ensureDbAvailable)
+const BOOTSTRAP_COMMANDS = new Set(["db"])
+
+function hasFlag(args: string[], flag: string): boolean {
+  return args.includes(flag)
+}
+
+function isBootstrapCommand(): boolean {
+  if (BOOTSTRAP_COMMANDS.has(cmd ?? "")) {
+    return sub === "init" || sub === undefined
+  }
+  return false
+}
+
 async function main(): Promise<void> {
+  // Load config first and set the DB path for all db.ts operations
+  const config = await loadConfig()
+  const hasPersistentConfig = await fs.pathExists(getConfigPath())
+  setDbPath(hasPersistentConfig ? config.dbPath : undefined)
+
   if (cmd === "help" || cmd === "-h" || cmd === "--help") {
     printDetailedHelp("stdout", 0)
   }
-  if (cmd === "menu" || !cmd) {
-    if (process.stdin.isTTY) {
-      await runMenu()
-    } else {
-      await runProject()
-    }
-    return
-  }
+
+  // Config doesn't need DB
   if (cmd === "config") {
     await runConfig(sub, value)
     return
   }
-  if (cmd === "login") {
-    const session = await runOAuthLogin()
-    console.log(`Sesión iniciada como ${session.user.email ?? session.user.name ?? session.user.id}`)
+
+  // Organize commands — strict flag-driven, no prompts
+  if (cmd === "organize") {
+    if (!hasFlag(cliArgs, "--yes")) {
+      printOrganizeUsage("Falta el flag requerido --yes para confirmar la operación.")
+    }
+    if (sub || (value && value !== "--yes") || extraArgs.filter(a => a !== "--yes").length > 0) {
+      printOrganizeUsage(
+        "Sintaxis inválida: `orgmorg organize --yes` no acepta rutas ni argumentos adicionales."
+      )
+    }
+    await runOrganize(process.cwd())
     return
   }
-  if (cmd === "status") {
-    const session = await getSessionStatus()
-    if (!session) {
-      console.log("Sin sesión activa.")
+  if (cmd === "organize-by-date") {
+    if (!sub) {
+      printOrganizeByDateUsage("Falta el subcomando requerido para `organize-by-date`.")
+    }
+    if (!isDateGranularity(sub)) {
+      printOrganizeByDateUsage(
+        "Sintaxis inválida: usa un subcomando entre `year`, `month` o `day`."
+      )
+    }
+    if (!hasFlag(cliArgs, "--yes")) {
+      printOrganizeByDateUsage("Falta el flag requerido --yes para confirmar la operación.")
+    }
+    await runOrganizeByDate(process.cwd(), sub)
+    return
+  }
+
+  // Bootstrap commands (db init) run BEFORE the DB-exists guard
+  if (cmd === "db" && sub === "init") {
+    await runDbInit()
+    return
+  }
+
+  // All other DB-using commands require the database to exist
+  if (!NO_DB_COMMANDS.has(cmd ?? "")) {
+    await ensureDbAvailable()
+  }
+
+  if (cmd === "menu" || !cmd) {
+    if (process.stdin.isTTY) {
+      await runMenu()
+    } else {
+      console.error("El menú interactivo requiere una terminal TTY.")
+      console.error("Usa orgmorg help para ver los comandos disponibles.")
+      process.exit(1)
+    }
+    return
+  }
+
+  if (cmd === "project") {
+    if (sub === "rename") {
+      await runProjectRename([value, ...extraArgs].filter((item): item is string => Boolean(item)))
       return
     }
-    console.log(`Sesión activa: ${session.user.email ?? session.user.name ?? session.user.id}`)
-    console.log(`Proveedor: ${session.provider}`)
-    console.log(`Session token: ${hasSessionToken(session) ? "guardado" : "no disponible"}`)
-    console.log(`JWT cacheado: ${hasCachedAccessToken(session) ? "disponible" : "no disponible"}`)
-    console.log(`Expira JWT cacheado: ${getEffectiveSessionExpiry(session) ?? "desconocido"}`)
-    if (isLegacySession(session)) {
-      console.log("Modo de sesión: legacy JWT-only")
-    }
-    return
-  }
-  if (cmd === "logout") {
-    await logout()
-    console.log("Sesión local eliminada.")
-    return
-  }
-  if (cmd === "project") {
     if (sub === "recover") {
+      if (!value) {
+        console.error("Uso: orgmorg project recover <numero>")
+        console.error("Falta el número de cotización requerido.")
+        process.exit(1)
+      }
       await runProjectRecover(value)
       return
     }
@@ -214,49 +279,19 @@ async function main(): Promise<void> {
       await runDbLast()
       return
     }
-    await runProject()
+    console.error("Uso: orgmorg project list|last|recover|rename [opciones]")
+    console.error("Para crear cotizaciones interactivamente, usa: orgmorg menu")
+    console.error("Para creación directa: orgmorg quotation --new <nombre> --cliente-id <id>")
+    process.exit(1)
+  }
+  if (cmd === "quotation") {
+    await runQuotationCommand(cliArgs.slice(1))
     return
   }
-  if (cmd === "organize") {
-    if (sub || value || extraArgs.length > 0) {
-      printOrganizeUsage(
-        "Sintaxis inválida: `orgmorg organize` no acepta rutas ni argumentos adicionales."
-      )
-    }
-    const confirmed = await confirmOrganizeAction(
-      `Vas a organizar por tipo el directorio actual: ${process.cwd()}`
-    )
-    if (!confirmed) {
-      return
-    }
-    await runOrganize(process.cwd())
-    return
-  }
-  if (cmd === "organize-by-date") {
-    if (!sub) {
-      printOrganizeByDateUsage("Falta el subcomando requerido para `organize-by-date`.")
-    }
-    if (!isDateGranularity(sub) || value || extraArgs.length > 0) {
-      printOrganizeByDateUsage(
-        "Sintaxis inválida: usa exactamente un subcomando entre `year`, `month` o `day`."
-      )
-    }
-    const confirmed = await confirmOrganizeAction(
-      `Vas a organizar por fecha (${sub}) el directorio actual: ${process.cwd()}`
-    )
-    if (!confirmed) {
-      return
-    }
-    await runOrganizeByDate(process.cwd(), sub)
-    return
-  }
+
   if (cmd === "db") {
-    if (sub === "init") {
-      await runDbInit()
-      return
-    }
     if (sub === "seed") {
-      await runDbSeed(value)
+      await runDbSeed(value, false)
       return
     }
     if (sub === "last") {
@@ -267,7 +302,11 @@ async function main(): Promise<void> {
       await runDbList(value)
       return
     }
-    console.error("Uso: orgmorg db init | seed [ruta.json] | last | list [nombre]")
+    if (sub === "verify") {
+      await runDbVerify()
+      return
+    }
+    console.error("Uso: orgmorg db init | seed [directorio] | last | list [nombre] | verify")
     process.exit(1)
   }
   printDetailedHelp("stderr", 1, `Comando no reconocido: ${cmd}`)

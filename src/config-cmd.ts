@@ -1,18 +1,20 @@
 import fs from "fs-extra"
 import path from "path"
-import { loadConfig, saveConfig, getConfigPath } from "./config.js"
+import { loadConfig, saveConfig } from "./config.js"
+import { getDbPathResolution, describeDbPathSource, setDbPath } from "./db.js"
 
 export async function runConfig(sub: string, value: string | undefined): Promise<void> {
-  if (sub === "jwks-url") {
+  // Deprecated Neon config keys
+  if (["auth-url", "api-url", "oauth-provider", "jwks-url"].includes(sub)) {
     console.error(
-      "La opción `jwks-url` fue retirada. Este CLI usa una sesión Better Auth y obtiene el JWT para Neon Data API desde `auth-url`; configura `auth-url` y `api-url`."
+      `La opción de configuración '${sub}' ya no está disponible. Esta versión usa SQLite local.`
     )
     process.exit(1)
   }
 
-  if (!["auth-url", "api-url", "path", "oauth-provider"].includes(sub)) {
+  if (!["db-path", "path"].includes(sub)) {
     console.error(
-      "Uso: orgmorg config auth-url <url> | api-url <url> | oauth-provider <provider> | path <dir>"
+      "Uso: orgmorg config db-path <ruta> | path <dir>"
     )
     process.exit(1)
   }
@@ -22,22 +24,14 @@ export async function runConfig(sub: string, value: string | undefined): Promise
   }
 
   const config = await loadConfig()
-  if (sub === "auth-url") {
-    config.authUrl = value
+  if (sub === "db-path") {
+    const resolved = path.resolve(value)
+    config.dbPath = resolved
     await saveConfig(config)
-    console.log("authUrl guardado en", getConfigPath())
-    return
-  }
-  if (sub === "api-url") {
-    config.apiUrl = value
-    await saveConfig(config)
-    console.log("apiUrl guardado en", getConfigPath())
-    return
-  }
-  if (sub === "oauth-provider") {
-    config.oauthProvider = value
-    await saveConfig(config)
-    console.log("oauthProvider guardado en", getConfigPath())
+    setDbPath(resolved)
+    const effective = getDbPathResolution()
+    console.log("dbPath guardado:", resolved)
+    console.log(`DB efectiva actual: ${effective.path} (${describeDbPathSource(effective.source)}).`)
     return
   }
   if (sub === "path") {

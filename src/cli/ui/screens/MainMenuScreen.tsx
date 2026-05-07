@@ -5,27 +5,22 @@ const OPCIONES = [
   {
     id: "crear-cotizacion",
     label: "Crear cotización",
-    hint: "Proyecto nuevo o cotización para un proyecto existente",
   },
   {
     id: "consultar-menu",
     label: "Consultar proyectos",
-    hint: "Buscar proyectos, ver el último número y recrear carpetas",
   },
   {
     id: "organize-by-type",
     label: "Organizar por tipo",
-    hint: "Ordena el directorio actual por extensión sin pedir ruta",
   },
   {
     id: "organize-by-date-menu",
     label: "Organizar por fecha",
-    hint: "Ordena el directorio actual por año, mes o día",
   },
   {
     id: "configuraciones-menu",
     label: "Configuración",
-    hint: "Sesión OAuth, URLs de Neon y directorio base",
   },
   {
     id: "exit",

@@ -1,0 +1,59 @@
+area: import-mapping
+status: completed
+executive_summary:
+  - data/proyecto_clientes.json sí trae IDs propios (campo `id`) + `id_cliente` para 374 filas.
+  - import actual ignora esos IDs: en src/import.ts se reduce cada fila a `{ id_cliente, nombre_proyecto }`.
+  - resolución cliente en src/db.ts/importProyectos usa solo match por nombre normalizado (`buildProyectoClientesByNameMap`), no usa `id` ni `id_externo`.
+  - para pendientes actuales (`exports/clientes_pendientes.json`, 41 proyectos), regla por ID (`proyectos.id_externo -> proyecto_clientes.id`) resolvería 2 proyectos (IDs 53 y 374) / 3 cotizaciones.
+  - resto pendientes (39) no se resuelve con IDs legacy: 38 tienen `id_externo = null`, 1 tiene `id_externo` fuera de rango legacy.
+
+artifacts:
+  files_reviewed:
+    - data/proyecto_clientes.json
+    - data/proyectos.json
+    - data/cotizacion_clientes.json
+    - exports/clientes_pendientes.json
+    - src/import.ts
+    - src/db.ts
+  key_metrics:
+    proyecto_clientes_rows: 374
+    proyectos_rows: 400
+    pendientes_rows: 41
+    nombre_match_proyectos_to_proyecto_clientes: 359
+    idex_match_proyectos_to_proyecto_clientes_id: 361
+    pending_resolvable_by_idex_rule: 2
+    pending_remaining_after_idex_rule: 39
+    pending_cotizaciones_total: 42
+    pending_cotizaciones_resolvable_by_idex_rule: 3
+  pending_resolvable_examples:
+    - proyecto_id: 53
+      proyecto_nombre: RESIDENCIAL ZAYES I - VISTA CANA
+      id_externo: 32
+      inferred_cliente_id: 7
+      cotizaciones: [53, 152]
+    - proyecto_id: 374
+      proyecto_nombre: EDEESTE EDESUR EDENORTE
+      id_externo: 371
+      inferred_cliente_id: 124
+      cotizaciones: [548]
+  integrity_risk_found:
+    - current name-only map silently overwrites duplicate names in proyecto_clientes.
+    - 8 proyectos show mismatch between current name-only assignment vs id_externo-based assignment (same project title reused by different clients).
+
+technical_findings:
+  - src/import.ts/loadImportData descarta campos `id`, `id_tenant`, etc. de proyecto_clientes.
+  - src/db.ts/importProyectos asigna cliente con map por nombre normalizado; duplicates quedan por última fila cargada.
+  - src/db.ts/importCotizaciones construye `cotizacionClientesMap`, pero no lo usa para setear cliente final (solo métricas clientesResueltos/clientesInferidos).
+  - evidencia de enlace legacy robusto existe vía `proyectos.id_externo` (362 no-null; 361 con match en proyecto_clientes.id).
+
+risks:
+  - reseed inmediato con cambio de regla puede modificar cliente_id en proyectos ya importados (incluye casos ambiguos por nombre).
+  - sin priorizar ID sobre nombre, se mantienen asignaciones potencialmente incorrectas por nombres duplicados.
+  - export pendientes seguirá inflado en +2 proyectos mientras no se use enlace por ID.
+
+recommendation_for_planning:
+  - patch import logic: prioridad `id_externo -> proyecto_clientes.id`; fallback a nombre solo si no hay id_externo match.
+  - registrar conflicto cuando nombre y ID discrepan (auditoría), no resolver silencioso.
+  - correr reseed controlado tras patch.
+  - expected effect en exports/clientes_pendientes.json: 41 -> 39 proyectos, cotizaciones pendientes 42 -> 39.
+  - optional: usar `cotizacion_clientes.id` como señal secundaria cuando proyecto quede en fallback.

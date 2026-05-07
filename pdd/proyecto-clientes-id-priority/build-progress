@@ -1,0 +1,32 @@
+# Build Progress — proyecto-clientes-id-priority
+
+## group: build-main
+**Status:** completed
+**Files changed:** [src/db.ts, src/import.ts]
+
+**Completed:**
+- Added legacy exact linkage priority in import resolution: `proyectos.id_externo -> proyecto_clientes.id`.
+- Preserved fallback behavior by name (`normalizeForMatch(nombre_proyecto)`), with last-write-wins semantics.
+- Kept duplicate `nombre_proyecto` handling as fallback map overwrite semantics (last entry wins).
+- Preserved overwrite-style pending export via existing `runFullImport -> toPendingExportRows -> writeJson` flow.
+- Updated `ProyectoClienteJsonItem` to include `id` and mapped it in `loadImportData`.
+- Rebuilt project (`npm run build`) after code changes.
+- Ran reseed on effective DB path and validated pending/result counts before vs after.
+
+**Validation:**
+- `npm run build` passes.
+- Effective DB path from CLI: `/tmp/orgmorg-final.db` (`config db-path`).
+- Before reseed counts on effective DB:
+  - `{ clientes: 148, proyectos: 400, cotizaciones: 594, pendingProyectos: 41, pendingCotizaciones: 42 }`
+- `node dist/index.js db seed` completed with overwrite-style export to `/home/osmarg/Hobby/orgmorg/exports/clientes_pendientes.json`.
+- After reseed counts on same DB:
+  - `{ clientes: 148, proyectos: 400, cotizaciones: 594, pendingProyectos: 39, pendingCotizaciones: 39 }`
+
+**Deviations:**
+- `pdd/proyecto-clientes-id-priority/plan` and `requirements` artifacts were not present in workspace; implemented directly from user-assigned rules.
+
+**Blockers/Risks:**
+- None blocking.
+
+**Remaining:**
+- None in assigned group.

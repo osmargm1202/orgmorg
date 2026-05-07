@@ -1,6 +1,6 @@
 {
   "name": "orgmorg",
-  "version": "1.2.0",
+  "version": "1.3.9",
   "description": "Organizador de archivos y creador de carpetas de proyectos.",
   "type": "module",
   "main": "dist/index.js",
@@ -15,19 +15,19 @@
     "dev": "tsx src/index.ts",
     "start": "node dist/index.js",
     "build": "tsc",
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "npm run build && node dist/index.js"
   },
   "dependencies": {
-    "@neondatabase/neon-js": "^0.2.0-beta.1",
     "@types/react": "^19.2.14",
+    "better-sqlite3": "^12.8.0",
     "fs-extra": "^11.2.0",
     "ink": "^6.8.0",
     "ink-text-input": "^6.0.0",
     "open": "^11.0.0",
-    "postgres": "^3.4.8",
     "react": "^19.2.4"
   },
   "devDependencies": {
+    "@types/better-sqlite3": "^7.6.13",
     "@types/fs-extra": "^11.0.4",
     "@types/node": "^22.10.0",
     "tsx": "^4.19.2",

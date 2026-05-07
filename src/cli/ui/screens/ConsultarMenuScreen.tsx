@@ -5,7 +5,10 @@ const OPCIONES = [
   {
     id: "listar-proyectos",
     label: "Consultar proyectos",
-    hint: "Buscar por nombre o listar los primeros proyectos cargados",
+  },
+  {
+    id: "editar-proyecto",
+    label: "Editar nombre de proyecto",
   },
   {
     id: "ultimo-numero",
@@ -14,7 +17,6 @@ const OPCIONES = [
   {
     id: "recrear-carpeta",
     label: "Recrear carpeta",
-    hint: "Crear la carpeta de una cotización ya registrada",
   },
 ]
 

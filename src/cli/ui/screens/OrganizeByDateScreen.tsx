@@ -14,8 +14,8 @@ const MODE_LABELS: Record<DateGranularity, string> = {
 }
 
 const CONFIRM_ITEMS = [
-  { id: "yes", label: "Sí", hint: "Organizar ahora el directorio actual" },
-  { id: "no", label: "No", hint: "Cancelar y volver a elegir el modo" },
+  { id: "yes", label: "Sí" },
+  { id: "no", label: "No" },
 ]
 
 export function OrganizeByDateScreen({

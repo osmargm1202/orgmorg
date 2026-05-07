@@ -1,13 +1,10 @@
 import React from "react"
 import { Box, Text } from "ink"
-
-const ACCENT_COLOR = "blue"
-const SELECTED_TEXT_COLOR = "white"
+import { SELECTED_FG } from "../theme.js"
 
 export interface SelectItem {
   id: string
   label: string
-  hint?: string
 }
 
 function computeScrollWindow(
@@ -50,28 +47,11 @@ function SelectListComponent({
         const index = start + i
         const selected = index === selectedIndex
         return (
-          <Box
-            key={item.id}
-            flexDirection="column"
-            paddingX={boxed ? 1 : 0}
-          >
-            <Text
-              color={selected ? SELECTED_TEXT_COLOR : undefined}
-              backgroundColor={selected ? ACCENT_COLOR : undefined}
-              bold={selected}
-            >
+          <Box key={item.id} paddingX={boxed ? 1 : 0}>
+            <Text color={selected ? SELECTED_FG : undefined} bold={selected}>
               {selected ? "> " : "  "}
               {item.label}
             </Text>
-            {item.hint ? (
-              <Text
-                color={selected ? SELECTED_TEXT_COLOR : "gray"}
-                backgroundColor={selected ? ACCENT_COLOR : undefined}
-              >
-                {"  "}
-                {item.hint}
-              </Text>
-            ) : null}
           </Box>
         )
       })}
@@ -81,7 +61,7 @@ function SelectListComponent({
   if (!boxed) return content
 
   return (
-    <Box borderStyle="round" borderColor={ACCENT_COLOR} flexDirection="column" paddingY={0}>
+    <Box borderStyle="round" borderColor={SELECTED_FG} flexDirection="column" paddingY={0}>
       {content}
     </Box>
   )
@@ -95,8 +75,7 @@ function arePropsEqual(prev: Readonly<Parameters<typeof SelectListComponent>[0]>
     const nextItem = next.items[index]
     if (
       prevItem.id !== nextItem.id ||
-      prevItem.label !== nextItem.label ||
-      prevItem.hint !== nextItem.hint
+      prevItem.label !== nextItem.label
     ) {
       return false
     }

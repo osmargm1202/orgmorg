@@ -1,0 +1,50 @@
+# Review Report — local-db-merge
+
+## group: review-beta
+**Status:** PASS
+**Findings:**
+- [WARNING] `pdd/local-db-merge/requirements` missing in workspace. Review anchored to approved spec `docs/superpowers/specs/2026-04-22-db-local-merge-design.md` + `pdd/local-db-merge/build-progress`.
+- [WARNING] `pdd/local-db-merge/plan` missing in workspace. No review-group section available; validated only user-assigned build-beta scope.
+
+**Validated:**
+- New source-of-truth behavior: `src/db.ts` imports proyectos/cotizaciones only from new datasets; legacy relation files assist cliente resolution only.
+- Fallback to cliente `55`: enforced in `src/db.ts`; seed fails fast if cliente `55` absent.
+- Pending export overwrite semantics: `src/import.ts` uses full-file rewrite to `exports/clientes_pendientes.json`; repeated seed overwrites stale content, no append.
+- Idempotent/convergent seed behavior: `ON CONFLICT` upserts for proyectos/cotizaciones; repeated seed on same DB stayed stable at `148 clientes / 400 proyectos / 594 cotizaciones`.
+- Proyecto/cotización cliente integrity: cotizaciones inherit final proyecto `cliente_id`; DB validation on seeded dataset showed `0` mismatches between `cotizaciones.cliente_id` and linked `proyectos.cliente_id`.
+
+**Evidence:**
+- Real dataset seed in isolated DB:
+  - totals stable across 2 runs: `148 clientes / 400 proyectos / 594 cotizaciones`
+  - fallback counts stable: `41 proyectos / 42 cotizaciones` on cliente `55`
+  - export hash stable after overwrite: `1aaf5da93bbee3a06a25811f01a8fe556dbc194aa42dd2d292ce6ce33b76053c`
+- Targeted fixture seed:
+  - legacy `cotizacion_clientes` contradiction ignored; cotización followed proyecto final cliente
+  - missing legacy cliente mapping fell back to `55` with pending export row
+  - missing cliente `55` caused expected hard failure: `Cliente temporal 55 no existe en clientes. Seed abortado.`
+
+## group: review-alpha-fix
+**Status:** PASS
+**Findings:**
+- [WARNING] `pdd/local-db-merge/requirements` missing in workspace. Review anchored to approved spec `docs/superpowers/specs/2026-04-22-db-local-merge-design.md`, latest `build-progress`, latest `review-report`, and fixed alpha scope.
+- [WARNING] `pdd/local-db-merge/plan` missing in workspace. No review-group section available; validated only user-assigned alpha-fix scope.
+
+**Validated:**
+- Fresh no-config state reports default source correctly: `src/index.ts` primes DB path only when config file exists; fresh `help` output shows `DB efectiva: <tmp>/proyectos.db (ruta default)`.
+- `config db-path <ruta>` reports effective path correctly in same process: `src/config-cmd.ts` now calls `setDbPath(resolved)` before `getDbPathResolution()`, and runtime output reports saved path with source `config db-path`.
+- Precedence contract still holds in resolver: `src/db.ts` order remains `argument` > `env` > `config` > `default`.
+
+**Evidence:**
+- Fresh `ORGMORG_CONFIG_DIR` runtime:
+  - `node dist/index.js help` → `DB efectiva: /tmp/.../proyectos.db (ruta default)`
+- Same-process config runtime:
+  - `node dist/index.js config db-path /tmp/.../custom/review.db` → `DB efectiva actual: /tmp/.../custom/review.db (config db-path).`
+- Direct resolver validation after build:
+  - default case → `{ source: "default" }`
+  - config case → `{ source: "config" }`
+  - env case → `{ source: "env" }`
+  - arg case → `{ source: "argument" }`
+
+## Consolidated verdict
+- Overall status: PASS
+- Recommended next step: accept

@@ -6,7 +6,7 @@ import path from "path"
 import { loadConfig, saveConfig, type Config } from "../../../config.js"
 import { ScreenFrame } from "../components/ScreenFrame.js"
 
-type ConfigKey = keyof Pick<Config, "authUrl" | "apiUrl" | "path">
+type ConfigKey = keyof Pick<Config, "dbPath" | "path">
 
 export function ConfigValueScreen({
   onBack,

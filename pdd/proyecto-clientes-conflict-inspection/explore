@@ -1,0 +1,97 @@
+area: import-conflicts
+status: completed
+executive_summary:
+  - Found 8 conflicts where ID-based linkage (`proyectos.id_externo -> proyecto_clientes.id`) disagrees with current name-based linkage.
+  - All 8 caused by duplicate `nombre_proyecto` rows in `data/proyecto_clientes.json` with different `id_cliente`.
+  - Current importer uses name map with last-write-wins, so one duplicate silently overrides other.
+  - None of these 8 are pending in `exports/clientes_pendientes.json`; they are currently auto-assigned (not cliente 55 in import outcome).
+  - If patched to prioritize ID-based linkage, these 8 should likely flip to ID-based cliente.
+
+artifacts:
+  files_reviewed:
+    - data/proyectos.json
+    - data/proyecto_clientes.json
+    - data/cliente.json
+    - exports/clientes_pendientes.json
+    - src/import.ts
+    - src/db.ts
+  seeded_db_check:
+    default_db_path_checked: /home/osmarg/.config/orgmorg/proyectos.db
+    exists: false
+    note: live DB assignment not directly queryable in this workspace; status inferred from import logic + pending export.
+  conflicts_table:
+    - proyecto_id: 274
+      id_externo: 248
+      nombre: SE MIRASOL 138KV
+      cliente_id_based: 3
+      cliente_name_based: 106
+      current_status_determinable: assigned_other_not_pending
+      likely_cause: duplicate_name_two_legacy_rows
+      recommendation: trust_id_based
+    - proyecto_id: 258
+      id_externo: 249
+      nombre: LOTE 3 - AMPLIACIÓN SE METROPOLITANO 138KV
+      cliente_id_based: 76
+      cliente_name_based: 116
+      current_status_determinable: assigned_other_not_pending
+      likely_cause: duplicate_name_two_legacy_rows
+      recommendation: trust_id_based
+    - proyecto_id: 246
+      id_externo: 197
+      nombre: MATAFONGO - TORRE METEOROLOGICA 17
+      cliente_id_based: 105
+      cliente_name_based: 51
+      current_status_determinable: assigned_other_not_pending
+      likely_cause: duplicate_name_two_legacy_rows
+      recommendation: trust_id_based
+    - proyecto_id: 227
+      id_externo: 188
+      nombre: VIVIENDA PAMELYN SANCHEZ
+      cliente_id_based: 45
+      cliente_name_based: 115
+      current_status_determinable: assigned_other_not_pending
+      likely_cause: duplicate_name_two_legacy_rows
+      recommendation: trust_id_based
+    - proyecto_id: 145
+      id_externo: 34
+      nombre: 7 SOLES
+      cliente_id_based: 70
+      cliente_name_based: 7
+      current_status_determinable: assigned_other_not_pending
+      likely_cause: duplicate_name_two_legacy_rows
+      recommendation: trust_id_based
+    - proyecto_id: 113
+      id_externo: 117
+      nombre: DESARROLLO FOTOVOLTAICO SANTANA 1 - 1MW
+      cliente_id_based: 21
+      cliente_name_based: 22
+      current_status_determinable: assigned_other_not_pending
+      likely_cause: duplicate_name_two_legacy_rows
+      recommendation: trust_id_based
+    - proyecto_id: 47
+      id_externo: 62
+      nombre: PARQUE SOLAR SAMANÁ
+      cliente_id_based: 11
+      cliente_name_based: 24
+      current_status_determinable: assigned_other_not_pending
+      likely_cause: duplicate_name_two_legacy_rows
+      recommendation: trust_id_based
+    - proyecto_id: 33
+      id_externo: 7
+      nombre: SE STC 69KV.
+      cliente_id_based: 2
+      cliente_name_based: 3
+      current_status_determinable: assigned_other_not_pending
+      likely_cause: duplicate_name_two_legacy_rows
+      recommendation: trust_id_based
+
+  recommendation_buckets_count:
+    trust_id_based: 8
+    trust_name_based: 0
+    ambiguous_manual_review: 0
+
+next_recommended:
+  - Patch import resolution priority: `id_externo -> proyecto_clientes.id` first, name-match fallback second.
+  - Add conflict logging when ID-based and name-based disagree.
+  - Reseed after patch to correct 8 likely misassigned projects.
+  - Optional safety: export `conflicting_assignments.json` before reseed for audit signoff.

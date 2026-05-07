@@ -7,6 +7,7 @@ import {
   getNextCotizacion,
   insertCotizacionAndProyecto,
   insertCotizacionForExistingProyecto,
+  getClienteById,
   type CotizacionRecord,
   type InsertResult,
 } from "../db.js"
@@ -16,12 +17,14 @@ const PACKAGE_ROOT = path.join(__dirname, "../..")
 const TEMPLATE_DIR = path.join(PACKAGE_ROOT, "template")
 
 export type CreateCotizacionInput =
-  | { kind: "new"; nombre: string }
+  | { kind: "new"; nombre: string; clienteId: number }
   | { kind: "existing"; proyectoId: number; nombre: string }
 
 export interface CreateCotizacionPreview {
   numero: number
   nombre: string
+  clienteId: number
+  clienteNombre: string
   folderName: string
   targetDir: string
   baseDir: string
@@ -62,9 +65,12 @@ async function getBaseDir(): Promise<string> {
   return config.path ? path.resolve(config.path) : process.cwd()
 }
 
-async function ensureFolderCanBeCreated(targetDir: string): Promise<void> {
+async function ensureFolderCanBePrepared(targetDir: string): Promise<void> {
   if (await fs.pathExists(targetDir)) {
-    throw new Error(`El directorio ya existe: ${targetDir}`)
+    const stats = await fs.stat(targetDir)
+    if (!stats.isDirectory()) {
+      throw new Error(`La ruta ya existe y no es un directorio: ${targetDir}`)
+    }
   }
   if (!(await fs.pathExists(TEMPLATE_DIR))) {
     throw new Error(`No se encontró la carpeta template en: ${TEMPLATE_DIR}`)
@@ -73,7 +79,18 @@ async function ensureFolderCanBeCreated(targetDir: string): Promise<void> {
 
 async function createFolder(targetDir: string): Promise<void> {
   await fs.ensureDir(targetDir)
-  await fs.copy(TEMPLATE_DIR, targetDir)
+  await fs.copy(TEMPLATE_DIR, targetDir, {
+    overwrite: false,
+    errorOnExist: false,
+  })
+}
+
+function resolveClienteId(input: CreateCotizacionInput, proyectoClienteId?: number): number {
+  if (input.kind === "new") {
+    return input.clienteId
+  }
+  // For existing proyecto, cliente comes from the project itself
+  return proyectoClienteId ?? 0
 }
 
 export async function getCreateCotizacionPreview(
@@ -84,9 +101,29 @@ export async function getCreateCotizacionPreview(
   const folderName = buildFolderName(numero, nombre)
   const targetDir = path.join(baseDir, folderName)
 
+  let clienteId = 0
+  let clienteNombre = ""
+
+  if (input.kind === "new") {
+    clienteId = input.clienteId
+    const cliente = getClienteById(clienteId)
+    clienteNombre = cliente?.nombre ?? `Cliente ${clienteId}`
+  } else {
+    // For existing proyecto, we need to get the cliente from the project
+    const { getProyectoById } = await import("../db.js")
+    const proyecto = getProyectoById(input.proyectoId)
+    if (proyecto) {
+      clienteId = proyecto.cliente_id
+      const cliente = getClienteById(clienteId)
+      clienteNombre = cliente?.nombre ?? `Cliente ${clienteId}`
+    }
+  }
+
   return {
     numero,
     nombre,
+    clienteId,
+    clienteNombre,
     folderName,
     targetDir,
     baseDir,
@@ -102,11 +139,11 @@ export async function createCotizacionWithFolder(
 
   // Validamos antes de persistir para reducir fallos evitables, pero mantenemos
   // el orden requerido: primero la BD y después la creación física de la carpeta.
-  await ensureFolderCanBeCreated(preview.targetDir)
+  await ensureFolderCanBePrepared(preview.targetDir)
 
   const result =
     input.kind === "new"
-      ? await insertCotizacionAndProyecto(preview.nombre)
+      ? await insertCotizacionAndProyecto(preview.nombre, input.clienteId)
       : await insertCotizacionForExistingProyecto(input.proyectoId)
 
   const folderName = buildFolderName(result.cotizacion, result.proyectoNombre)
@@ -114,7 +151,7 @@ export async function createCotizacionWithFolder(
   const targetDir = path.join(baseDir, folderName)
 
   try {
-    await ensureFolderCanBeCreated(targetDir)
+    await ensureFolderCanBePrepared(targetDir)
     await createFolder(targetDir)
   } catch (error) {
     throw new FolderCreationAfterPersistError(
@@ -135,7 +172,7 @@ export async function recreateFolderFromCotizacion(numero: number): Promise<Coti
   folderName: string
   targetDir: string
 }> {
-  const record = await getCotizacionRecordByNumber(numero)
+  const record = getCotizacionRecordByNumber(numero)
   if (!record) {
     throw new Error(`No existe una cotización con el número ${numero}.`)
   }
@@ -144,7 +181,7 @@ export async function recreateFolderFromCotizacion(numero: number): Promise<Coti
   const folderName = buildFolderName(record.cotizacion, record.proyectoNombre)
   const targetDir = path.join(baseDir, folderName)
 
-  await ensureFolderCanBeCreated(targetDir)
+  await ensureFolderCanBePrepared(targetDir)
   await createFolder(targetDir)
 
   return {

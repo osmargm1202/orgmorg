@@ -8,8 +8,8 @@ import { captureConsoleOutput } from "../utils/captureConsoleOutput.js"
 type ScreenStatus = "confirm" | "loading" | "done" | "error"
 
 const CONFIRM_ITEMS = [
-  { id: "yes", label: "Sí", hint: "Organizar ahora el directorio actual" },
-  { id: "no", label: "No", hint: "Cancelar y volver al menú anterior" },
+  { id: "yes", label: "Sí" },
+  { id: "no", label: "No" },
 ]
 
 export function OrganizeByTypeScreen({ onBack }: { onBack: () => void }) {

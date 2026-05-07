@@ -3,8 +3,8 @@ import { useApp, useInput, useStdout } from "ink"
 import { ScreenFrame } from "./ScreenFrame.js"
 import { SelectList, type SelectItem } from "./SelectList.js"
 
-const FRAME_OVERHEAD_ROWS = 5
-const ROWS_PER_ITEM = 2
+const FRAME_OVERHEAD_ROWS = 4
+const ROWS_PER_ITEM = 1
 
 export function MenuScreen({
   title,

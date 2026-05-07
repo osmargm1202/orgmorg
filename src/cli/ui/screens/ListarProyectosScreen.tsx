@@ -7,8 +7,9 @@ import {
   type ProyectoWithCotizaciones,
 } from "../../../db.js"
 import { ScreenFrame } from "../components/ScreenFrame.js"
+import { PRIMARY_COLOR } from "../theme.js"
 
-type Phase = "input" | "loading" | "result" | "error"
+type Phase = "input" | "result" | "error"
 
 export function ListarProyectosScreen({ onBack }: { onBack: () => void }) {
   const { exit } = useApp()
@@ -24,16 +25,14 @@ export function ListarProyectosScreen({ onBack }: { onBack: () => void }) {
       return
     }
     if (key.ctrl && input === "c") exit()
-    if (phase !== "input") return
   })
 
-  const handleSubmit = async () => {
+  const handleSubmit = () => {
     const nombre = filter.trim()
-    setPhase("loading")
     setError(null)
     setDiagnostic(null)
     try {
-      const result = await listProyectosWithDiagnostics(nombre || undefined)
+      const result = listProyectosWithDiagnostics(nombre || undefined)
       setList(result.proyectos)
       setDiagnostic(result.diagnostic)
       setPhase("result")
@@ -63,14 +62,6 @@ export function ListarProyectosScreen({ onBack }: { onBack: () => void }) {
     )
   }
 
-  if (phase === "loading") {
-    return (
-      <ScreenFrame title="Consultar proyectos" help="Consultando Neon Data API...">
-        <Text color="yellow">Buscando proyectos…</Text>
-      </ScreenFrame>
-    )
-  }
-
   if (phase === "error") {
     return (
       <ScreenFrame title="Consultar proyectos" help="Esc volver · Ctrl+C salir">
@@ -83,12 +74,12 @@ export function ListarProyectosScreen({ onBack }: { onBack: () => void }) {
     <ScreenFrame title="Consultar proyectos" help="Esc volver · Ctrl+C salir">
       <Text>
         {filter.trim()
-          ? `Proyectos con “${filter.trim()}” (id, nombre, cotizaciones)`
-          : "Proyectos disponibles (id, nombre, cotizaciones)"}
+          ? `Proyectos con "${filter.trim()}" (id, nombre, cliente, cotizaciones)`
+          : "Proyectos disponibles (id, nombre, cliente, cotizaciones)"}
       </Text>
       <Box flexDirection="column" marginTop={1}>
         {list.length === 0 ? (
-          <Text color={diagnostic?.kind === "no-visible-rows" ? "yellow" : "gray"}>
+          <Text color={diagnostic?.kind === "empty" ? "yellow" : "gray"}>
             {diagnostic?.message ??
               (filter.trim() ? "Ningún proyecto coincide con ese nombre." : "No hay proyectos cargados.")}
           </Text>
@@ -100,6 +91,8 @@ export function ListarProyectosScreen({ onBack }: { onBack: () => void }) {
                 <Text color="yellow">{p.id}</Text>
                 <Text color="gray"> · </Text>
                 <Text>{p.nombre}</Text>
+                <Text color="gray"> · cliente: </Text>
+                <Text color={PRIMARY_COLOR}>{p.clienteNombre}</Text>
                 <Text color="gray"> · cotizaciones: </Text>
                 <Text color="cyan">
                   {p.cotizaciones.length > 5

@@ -5,17 +5,14 @@ const OPCIONES = [
   {
     id: "organize-by-date-year",
     label: "Año",
-    hint: "Agrupa las entradas del directorio actual por año",
   },
   {
     id: "organize-by-date-month",
     label: "Mes",
-    hint: "Agrupa las entradas del directorio actual por año y mes",
   },
   {
     id: "organize-by-date-day",
     label: "Día",
-    hint: "Agrupa las entradas del directorio actual por año, mes y día",
   },
 ]
 

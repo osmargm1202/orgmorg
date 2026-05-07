@@ -1,22 +1,22 @@
 import React from "react"
-import { Box, useApp } from "ink"
+import { useApp } from "ink"
 import { useScreenState } from "./hooks/useScreenState.js"
 import type { ScreenType } from "./types.js"
+import { AppShell } from "./components/AppShell.js"
 import { MainMenuScreen } from "./screens/MainMenuScreen.js"
 import { CrearCotizacionScreen } from "./screens/CrearProyectoScreen.js"
 import { UltimoNumeroScreen } from "./screens/UltimoNumeroScreen.js"
 import { ListarProyectosScreen } from "./screens/ListarProyectosScreen.js"
+import { EditarProyectoScreen } from "./screens/EditarProyectoScreen.js"
 import { ConfigPathScreen } from "./screens/ConfigPathScreen.js"
 import { ConsultarMenuScreen } from "./screens/ConsultarMenuScreen.js"
 import { ConfiguracionesMenuScreen } from "./screens/ConfiguracionesMenuScreen.js"
 import { ConfigValueScreen } from "./screens/ConfigValueScreen.js"
-import { AuthLoginScreen } from "./screens/AuthLoginScreen.js"
-import { AuthStatusScreen } from "./screens/AuthStatusScreen.js"
-import { AuthLogoutScreen } from "./screens/AuthLogoutScreen.js"
 import { RecrearCarpetaScreen } from "./screens/RecrearCarpetaScreen.js"
 import { OrganizeByTypeScreen } from "./screens/OrganizeByTypeScreen.js"
 import { OrganizeByDateMenuScreen } from "./screens/OrganizeByDateMenuScreen.js"
 import { OrganizeByDateScreen } from "./screens/OrganizeByDateScreen.js"
+import { CLI_VERSION } from "../../version.js"
 
 export function App() {
   const { exit } = useApp()
@@ -59,40 +59,30 @@ export function App() {
         return <UltimoNumeroScreen onBack={goBack} />
       case "listar-proyectos":
         return <ListarProyectosScreen onBack={goBack} />
+      case "editar-proyecto":
+        return <EditarProyectoScreen onBack={goBack} />
       case "recrear-carpeta":
         return <RecrearCarpetaScreen onBack={goBack} />
-      case "config-auth-url":
+      case "config-db-path":
         return (
           <ConfigValueScreen
             onBack={goBack}
-            configKey="authUrl"
-            title="Configurar Auth URL"
-            description="URL base de Neon Auth."
-            placeholder="https://.../auth"
-          />
-        )
-      case "config-api-url":
-        return (
-          <ConfigValueScreen
-            onBack={goBack}
-            configKey="apiUrl"
-            title="Configurar API URL"
-            description="URL base de Neon Data API."
-            placeholder="https://.../rest/v1"
+            configKey="dbPath"
+            title="Configurar ruta de base de datos"
+            description="Ruta del archivo SQLite."
+            placeholder="~/.config/orgmorg/proyectos.db"
           />
         )
       case "config-path":
         return <ConfigPathScreen onBack={goBack} />
-      case "auth-login":
-        return <AuthLoginScreen onBack={goBack} />
-      case "auth-status":
-        return <AuthStatusScreen onBack={goBack} />
-      case "auth-logout":
-        return <AuthLogoutScreen onBack={goBack} />
       default:
         return null
     }
   }
 
-  return <Box flexDirection="column">{renderScreen()}</Box>
+  return (
+    <AppShell appVersion={CLI_VERSION}>
+      {renderScreen()}
+    </AppShell>
+  )
 }
