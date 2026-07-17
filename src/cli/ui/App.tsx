@@ -8,6 +8,7 @@ import { ConfiguracionesMenuScreen } from "./screens/ConfiguracionesMenuScreen.j
 import { ConfigValueScreen } from "./screens/ConfigValueScreen.js"
 import { MainMenuScreen } from "./screens/MainMenuScreen.js"
 import { SearchQuotationScreen } from "./screens/SearchQuotationScreen.js"
+import { TokenLoginScreen } from "./screens/TokenLoginScreen.js"
 import type { ScreenType } from "./types.js"
 
 export function App() {
@@ -40,6 +41,8 @@ export function App() {
             onBack={goBack}
           />
         )
+      case "config-token-login":
+        return <TokenLoginScreen onBack={goBack} />
       case "config-api-url":
         return (
           <ConfigValueScreen
