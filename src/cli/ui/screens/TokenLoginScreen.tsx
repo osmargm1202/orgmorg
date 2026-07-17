@@ -1,5 +1,5 @@
-import React, { useEffect, useState } from "react"
-import { Text, useApp, useInput } from "ink"
+import React, { useCallback, useEffect, useRef, useState } from "react"
+import { Text, useApp, useInput, type Key } from "ink"
 import { AdminApiClient } from "../../../admin-api.js"
 import {
   loadConfig as defaultLoadConfig,
@@ -37,6 +37,15 @@ export function TokenLoginScreen({
   const [result, setResult] = useState<TokenLoginResult | null>(null)
   const [message, setMessage] = useState("")
   const [inputReady, setInputReady] = useState(false)
+  const statusRef = useRef(status)
+  const inputReadyRef = useRef(inputReady)
+  const onBackRef = useRef(onBack)
+  const exitRef = useRef(exit)
+  const handleLoginRef = useRef<() => Promise<void>>(async () => {})
+  statusRef.current = status
+  inputReadyRef.current = inputReady
+  onBackRef.current = onBack
+  exitRef.current = exit
 
   useEffect(() => {
     let cancelled = false
@@ -87,17 +96,23 @@ export function TokenLoginScreen({
     }
   }
 
-  useInput((input, key) => {
+  handleLoginRef.current = handleLogin
+
+  const handleInput = useCallback((input: string, key: Key) => {
     if (key.ctrl && input === "c") {
-      exit()
+      exitRef.current()
       return
     }
-    if (key.escape && status !== "working") {
-      onBack()
+    if (key.escape && statusRef.current !== "working") {
+      onBackRef.current()
       return
     }
-    if (key.return && status === "ready" && inputReady) void handleLogin()
-  })
+    if (key.return && statusRef.current === "ready" && inputReadyRef.current) {
+      void handleLoginRef.current()
+    }
+  }, [])
+
+  useInput(handleInput)
 
   if (status === "loading" || status === "working") {
     return (
