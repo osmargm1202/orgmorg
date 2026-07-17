@@ -4,6 +4,7 @@ import { describe, expect, it, vi } from "vitest"
 import { ConfiguracionesMenuScreen } from "../src/cli/ui/screens/ConfiguracionesMenuScreen.js"
 import { ApiKeyScreen } from "../src/cli/ui/screens/ApiKeyScreen.js"
 import { MainMenuScreen } from "../src/cli/ui/screens/MainMenuScreen.js"
+import { ConfigValueScreen } from "../src/cli/ui/screens/ConfigValueScreen.js"
 
 const wait = () => new Promise((resolve) => setTimeout(resolve, 30))
 
@@ -25,6 +26,38 @@ describe("settings UI", () => {
     expect(lastFrame()).toContain("Carpeta base")
     expect(lastFrame()).toContain("API key")
     expect(lastFrame()).not.toContain("base de datos")
+  })
+
+  it("revalida API key existente antes de guardar endpoint nuevo", async () => {
+    const saveConfig = vi.fn(async () => {})
+    const validateCredentials = vi.fn(async () => ({
+      email: "osmar@or-gm.com",
+      tenantId: 1,
+      expiresAt: null,
+      permissions: {},
+    }))
+    const { stdin } = render(
+      <ConfigValueScreen
+        onBack={() => {}}
+        configKey="apiBaseUrl"
+        title="Endpoint"
+        description="URL"
+        placeholder="https://admin-api.or-gm.com"
+        loadConfig={async () => ({ apiBaseUrl: "", basePath: "/tmp", apiKey: "orgm_valid" })}
+        saveConfig={saveConfig}
+        validateCredentials={validateCredentials}
+      />
+    )
+    await wait()
+    stdin.write("https://nuevo.or-gm.com")
+    await wait()
+    stdin.write("\r")
+    await wait()
+    expect(validateCredentials).toHaveBeenCalledWith({
+      apiBaseUrl: "https://nuevo.or-gm.com",
+      apiKey: "orgm_valid",
+    })
+    expect(saveConfig).toHaveBeenCalledOnce()
   })
 
   it("oculta key y guarda solo después de validarla", async () => {

@@ -106,4 +106,15 @@ describe("AdminApiClient", () => {
     await expect(client.validateCredentials()).rejects.toMatchObject({ kind: "permission" })
     expect(fetchMock).toHaveBeenCalledOnce()
   })
+
+  it("indica permiso requerido al buscar y descargar", async () => {
+    const fetchMock = vi.fn(async () => new Response("forbidden", { status: 403 }))
+    const client = new AdminApiClient(config, { fetch: fetchMock, sleep: async () => {} })
+    await expect(client.searchQuotationsByProjectName("torre")).rejects.toThrow(
+      "cotizaciones:ver"
+    )
+    await expect(client.downloadQuotationPdf(593, "/tmp/no-se-crea.pdf")).rejects.toThrow(
+      "cotizaciones:imprimir"
+    )
+  })
 })

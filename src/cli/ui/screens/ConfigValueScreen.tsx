@@ -5,9 +5,14 @@ import path from "node:path"
 import { Box, Text, useApp, useInput } from "ink"
 import TextInput from "ink-text-input"
 import {
-  loadConfig,
+  AdminApiClient,
+  type AdminApiConfig,
+  type AuthIdentity,
+} from "../../../admin-api.js"
+import {
+  loadConfig as defaultLoadConfig,
   normalizeApiBaseUrl,
-  saveConfig,
+  saveConfig as defaultSaveConfig,
   type Config,
 } from "../../../config.js"
 import { ScreenFrame } from "../components/ScreenFrame.js"
@@ -20,12 +25,18 @@ export function ConfigValueScreen({
   title,
   description,
   placeholder,
+  loadConfig = defaultLoadConfig,
+  saveConfig = defaultSaveConfig,
+  validateCredentials,
 }: {
   onBack: () => void
   configKey: ConfigKey
   title: string
   description: string
   placeholder: string
+  loadConfig?: typeof defaultLoadConfig
+  saveConfig?: typeof defaultSaveConfig
+  validateCredentials?: (config: AdminApiConfig) => Promise<AuthIdentity>
 }) {
   const { exit } = useApp()
   const [value, setValue] = useState("")
@@ -50,7 +61,7 @@ export function ConfigValueScreen({
     return () => {
       cancelled = true
     }
-  }, [configKey])
+  }, [configKey, loadConfig])
 
   useInput((input, key) => {
     if (key.ctrl && input === "c") {
@@ -74,6 +85,11 @@ export function ConfigValueScreen({
         normalized = path.resolve(trimmed)
         await fs.ensureDir(normalized)
         await fs.access(normalized, constants.W_OK)
+      }
+      if (configKey === "apiBaseUrl" && config.apiKey) {
+        const credentials = { apiBaseUrl: normalized, apiKey: config.apiKey }
+        if (validateCredentials) await validateCredentials(credentials)
+        else await new AdminApiClient(credentials).validateCredentials()
       }
       config[configKey] = normalized
       await saveConfig(config)

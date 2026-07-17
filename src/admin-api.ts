@@ -80,12 +80,13 @@ function normalizeText(value: string): string {
     .toLocaleLowerCase("es")
 }
 
-function errorForStatus(status: number): AdminApiError {
+function errorForStatus(status: number, requiredPermission?: string): AdminApiError {
   if (status === 401) {
     return new AdminApiError("API key inválida o revocada.", "auth", status)
   }
   if (status === 403) {
-    return new AdminApiError("La API key no tiene el permiso requerido.", "permission", status)
+    const detail = requiredPermission ? ` ${requiredPermission}` : " requerido"
+    return new AdminApiError(`La API key no tiene el permiso${detail}.`, "permission", status)
   }
   if (status === 404) {
     return new AdminApiError("El recurso solicitado no existe.", "not-found", status)
@@ -133,7 +134,8 @@ export class AdminApiClient {
   private async request(
     pathname: string,
     init: RequestInit = {},
-    timeoutMs = JSON_TIMEOUT_MS
+    timeoutMs = JSON_TIMEOUT_MS,
+    requiredPermission?: string
   ): Promise<Response> {
     let lastError: unknown
 
@@ -149,7 +151,7 @@ export class AdminApiClient {
 
         if (response.ok) return response
 
-        throw errorForStatus(response.status)
+        throw errorForStatus(response.status, requiredPermission)
       } catch (error) {
         if (error instanceof AdminApiError && error.kind !== "transient") {
           throw error
@@ -194,7 +196,12 @@ export class AdminApiClient {
     const searchUrl = new URL("/api/cotizaciones/search", this.config.apiBaseUrl)
     searchUrl.searchParams.set("q", trimmedQuery)
     const rawQuotations = await parseJson(
-      await this.request(`${searchUrl.pathname}${searchUrl.search}`)
+      await this.request(
+        `${searchUrl.pathname}${searchUrl.search}`,
+        {},
+        JSON_TIMEOUT_MS,
+        "cotizaciones:ver"
+      )
     )
     if (!Array.isArray(rawQuotations)) {
       throw new AdminApiError(
@@ -218,7 +225,12 @@ export class AdminApiClient {
     const projectEntries = await Promise.all(
       projectIds.map(async (projectId) => {
         const payload = (await parseJson(
-          await this.request(`/api/proyectos/${projectId}`)
+          await this.request(
+            `/api/proyectos/${projectId}`,
+            {},
+            JSON_TIMEOUT_MS,
+            "proyectos:ver"
+          )
         )) as ProjectResponse
         return [projectId, asString(payload.nombre_proyecto, "nombre_proyecto")] as const
       })
@@ -240,7 +252,8 @@ export class AdminApiClient {
       const response = await this.request(
         `/api/cotizaciones/${quotationId}/pdf`,
         {},
-        PDF_TIMEOUT_MS
+        PDF_TIMEOUT_MS,
+        "cotizaciones:imprimir"
       )
       const contentType = response.headers.get("content-type")?.toLowerCase() ?? ""
       if (!contentType.startsWith("application/pdf")) {

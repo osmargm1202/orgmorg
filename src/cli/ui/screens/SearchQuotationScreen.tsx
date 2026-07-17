@@ -3,6 +3,7 @@ import { Box, Text, useApp, useInput } from "ink"
 import TextInput from "ink-text-input"
 import {
   AdminApiClient,
+  AdminApiError,
   type QuotationSearchResult,
 } from "../../../admin-api.js"
 import {
@@ -80,6 +81,7 @@ export function SearchQuotationScreen({
   const [preview, setPreview] = useState<QuotationFolderPreview | null>(null)
   const [completed, setCompleted] = useState<QuotationFolderPreview | null>(null)
   const [message, setMessage] = useState("")
+  const [readyForQuery, setReadyForQuery] = useState(false)
   const [readyForSelection, setReadyForSelection] = useState(true)
 
   useEffect(() => {
@@ -89,6 +91,7 @@ export function SearchQuotationScreen({
       .then((loaded) => {
         if (cancelled) return
         if (!isConfigComplete(loaded)) {
+          setMessage("Configuración incompleta.")
           setPhase("config-error")
           return
         }
@@ -105,6 +108,15 @@ export function SearchQuotationScreen({
       cancelled = true
     }
   }, [dependencies])
+
+  useEffect(() => {
+    if (phase !== "query") {
+      setReadyForQuery(false)
+      return
+    }
+    const timer = setTimeout(() => setReadyForQuery(true), 50)
+    return () => clearTimeout(timer)
+  }, [phase])
 
   useEffect(() => {
     if (phase !== "results" && phase !== "confirm") {
@@ -137,7 +149,7 @@ export function SearchQuotationScreen({
       }
     } catch (error) {
       setMessage(error instanceof Error ? error.message : String(error))
-      setPhase("error")
+      setPhase(error instanceof AdminApiError && error.kind === "auth" ? "config-error" : "error")
     }
   }
 
@@ -159,7 +171,7 @@ export function SearchQuotationScreen({
       setPhase("done")
     } catch (error) {
       setMessage(error instanceof Error ? error.message : String(error))
-      setPhase("error")
+      setPhase(error instanceof AdminApiError && error.kind === "auth" ? "config-error" : "error")
     }
   }
 
@@ -223,7 +235,7 @@ export function SearchQuotationScreen({
   if (phase === "config-error") {
     return (
       <ScreenFrame title="Buscar cotización" help="Enter configurar · Esc volver · Ctrl+C salir">
-        <Text color="yellow">Configuración incompleta.</Text>
+        <Text color="yellow">{message || "Configuración incompleta."}</Text>
         <Text>Configura endpoint, carpeta base y API key antes de buscar.</Text>
       </ScreenFrame>
     )
@@ -261,6 +273,13 @@ export function SearchQuotationScreen({
   }
 
   if (phase === "query") {
+    if (!readyForQuery) {
+      return (
+        <ScreenFrame title="Buscar cotización" help="Preparando entrada...">
+          <Text color="yellow">Preparando búsqueda...</Text>
+        </ScreenFrame>
+      )
+    }
     return (
       <ScreenFrame
         title="Buscar cotización"
