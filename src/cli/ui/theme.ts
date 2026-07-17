@@ -1,5 +1,5 @@
 /**
- * ORGMcalc theme tokens.
+ * ORGMorg theme tokens.
  *
  * Single primary color drives branding (banner, borders, selection).
  * Semantic colors are separate for functional clarity.

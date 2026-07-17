@@ -2,7 +2,11 @@ import fs from "fs-extra"
 import os from "node:os"
 import path from "node:path"
 import { afterEach, describe, expect, it, vi } from "vitest"
-import { AdminApiClient, AdminApiError } from "../src/admin-api.js"
+import {
+  AdminApiClient,
+  AdminApiError,
+  selectLeastPrivilegeRole,
+} from "../src/admin-api.js"
 
 const config = {
   apiBaseUrl: "https://admin-api.or-gm.com",
@@ -20,11 +24,15 @@ describe("AdminApiClient", () => {
         email: "osmar@or-gm.com",
         tenant_id: 1,
         exp: null,
+        is_superadmin: true,
         permisos: {},
       })
     })
     const client = new AdminApiClient(config, { fetch: fetchMock, sleep: async () => {} })
-    await expect(client.validateCredentials()).resolves.toMatchObject({ tenantId: 1 })
+    await expect(client.validateCredentials()).resolves.toMatchObject({
+      tenantId: 1,
+      isSuperadmin: true,
+    })
   })
 
   it("deduplica proyectos, filtra solo por nombre y ordena ID descendente", async () => {
@@ -116,5 +124,95 @@ describe("AdminApiClient", () => {
     await expect(client.downloadQuotationPdf(593, "/tmp/no-se-crea.pdf")).rejects.toThrow(
       "cotizaciones:imprimir"
     )
+  })
+
+  it("elige rol activo compatible con menor privilegio y desempata por ID", () => {
+    const selected = selectLeastPrivilegeRole([
+      {
+        id: 9,
+        name: "Admin",
+        active: true,
+        permissions: {
+          cotizaciones: ["ver", "imprimir", "crear"],
+          proyectos: ["ver"],
+          usuarios: ["ver"],
+        },
+      },
+      {
+        id: 7,
+        name: "CLI 7",
+        active: true,
+        permissions: { cotizaciones: ["ver", "imprimir"], proyectos: ["ver"] },
+      },
+      {
+        id: 4,
+        name: "CLI 4",
+        active: true,
+        permissions: { cotizaciones: ["ver", "imprimir"], proyectos: ["ver"] },
+      },
+      {
+        id: 2,
+        name: "Inactivo",
+        active: false,
+        permissions: { cotizaciones: ["ver", "imprimir"], proyectos: ["ver"] },
+      },
+    ])
+    expect(selected).toMatchObject({ id: 4, name: "CLI 4" })
+  })
+
+  it("lista roles y crea API key con rol seleccionado", async () => {
+    const fetchMock = vi.fn(async (input: string | URL | Request, init?: RequestInit) => {
+      const url = new URL(String(input))
+      if (url.pathname === "/api/roles") {
+        return Response.json([
+          {
+            id: 4,
+            nombre: "CLI",
+            activo: true,
+            permisos: { cotizaciones: ["ver", "imprimir"], proyectos: ["ver"] },
+          },
+        ])
+      }
+      if (url.pathname === "/api/apikeys") {
+        expect(init?.method).toBe("POST")
+        expect(JSON.parse(String(init?.body))).toEqual({ nombre: "orgmorg-cli", rol_id: 4 })
+        return Response.json({ api_key: "orgm_created_secret" })
+      }
+      throw new Error(`URL inesperada: ${url}`)
+    })
+    const client = new AdminApiClient(config, { fetch: fetchMock, sleep: async () => {} })
+    await expect(client.listRoles()).resolves.toEqual([
+      expect.objectContaining({ id: 4, name: "CLI", active: true }),
+    ])
+    await expect(client.createApiKey("orgmorg-cli", 4)).resolves.toBe("orgm_created_secret")
+  })
+
+  it("informa permisos de aprovisionamiento y rechaza respuesta sin key", async () => {
+    const forbidden = new AdminApiClient(config, {
+      fetch: async () => new Response("forbidden", { status: 403 }),
+      sleep: async () => {},
+    })
+    await expect(forbidden.listRoles()).rejects.toThrow("roles:ver")
+    await expect(forbidden.createApiKey("orgmorg-cli", 4)).rejects.toThrow("usuarios:crear")
+
+    const invalid = new AdminApiClient(config, {
+      fetch: async () => Response.json({ id: 1 }),
+      sleep: async () => {},
+    })
+    await expect(invalid.createApiKey("orgmorg-cli", 4)).rejects.toMatchObject({
+      kind: "invalid-response",
+    })
+  })
+
+  it("no reintenta creación POST para evitar keys duplicadas", async () => {
+    const fetchMock = vi
+      .fn()
+      .mockResolvedValueOnce(new Response("busy", { status: 503 }))
+      .mockResolvedValueOnce(Response.json({ api_key: "orgm_duplicate" }))
+    const client = new AdminApiClient(config, { fetch: fetchMock, sleep: async () => {} })
+    await expect(client.createApiKey("orgmorg-cli", 4)).rejects.toMatchObject({
+      kind: "transient",
+    })
+    expect(fetchMock).toHaveBeenCalledOnce()
   })
 })

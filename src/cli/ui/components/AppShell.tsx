@@ -37,7 +37,7 @@ export function AppShell({ appVersion, children }: AppShellProps): React.JSX.Ele
             <Text color={PRIMARY_COLOR} bold>
               {"                      ORGM"}
             </Text>
-            <Text color={MUTED_COLOR}>calc</Text>
+            <Text color={MUTED_COLOR}>org</Text>
           </Box>
         </Box>
 
