@@ -273,19 +273,16 @@ export function SearchQuotationScreen({
   }
 
   if (phase === "query") {
-    if (!readyForQuery) {
-      return (
-        <ScreenFrame title="Buscar cotización" help="Preparando entrada...">
-          <Text color="yellow">Preparando búsqueda...</Text>
-        </ScreenFrame>
-      )
-    }
     return (
       <ScreenFrame
         title="Buscar cotización"
-        help="Escribe el nombre y presiona Enter · Esc volver · Ctrl+C salir"
+        help={
+          readyForQuery
+            ? "Escribe el nombre y presiona Enter · Esc volver · Ctrl+C salir"
+            : "Preparando entrada..."
+        }
       >
-        <Text>Nombre del proyecto</Text>
+        <Text>{readyForQuery ? "Nombre del proyecto" : "Preparando búsqueda..."}</Text>
         {message ? <Text color="yellow">{message}</Text> : null}
         <Box marginTop={1}>
           <Text color="gray">Proyecto: </Text>
