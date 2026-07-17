@@ -11,11 +11,51 @@ export interface AdminApiDependencies {
   sleep?: (milliseconds: number) => Promise<void>
 }
 
+export type Permissions = Record<string, string[]>
+
 export interface AuthIdentity {
   email: string
   tenantId: number
   expiresAt: number | null
-  permissions: Record<string, unknown>
+  permissions: Permissions
+}
+
+export interface AdminRole {
+  id: number
+  name: string
+  active: boolean
+  permissions: Permissions
+}
+
+export const FUNCTIONAL_PERMISSIONS = [
+  ["cotizaciones", "ver"],
+  ["proyectos", "ver"],
+  ["cotizaciones", "imprimir"],
+] as const
+
+export function hasPermissions(
+  permissions: Permissions,
+  required: readonly (readonly [string, string])[]
+): boolean {
+  return required.every(([category, action]) => permissions[category]?.includes(action))
+}
+
+export function selectLeastPrivilegeRole(roles: AdminRole[]): AdminRole | null {
+  const compatible = roles.filter(
+    (role) => role.active && hasPermissions(role.permissions, FUNCTIONAL_PERMISSIONS)
+  )
+  compatible.sort((left, right) => {
+    const leftCount = Object.values(left.permissions).reduce(
+      (total, actions) => total + actions.length,
+      0
+    )
+    const rightCount = Object.values(right.permissions).reduce(
+      (total, actions) => total + actions.length,
+      0
+    )
+    return leftCount - rightCount || left.id - right.id
+  })
+  return compatible[0] ?? null
 }
 
 export interface QuotationSearchResult {
@@ -65,6 +105,17 @@ interface ProjectResponse {
   nombre_proyecto?: unknown
 }
 
+interface RoleResponse {
+  id?: unknown
+  nombre?: unknown
+  activo?: unknown
+  permisos?: unknown
+}
+
+interface ApiKeyResponse {
+  api_key?: unknown
+}
+
 const RETRY_DELAYS = [500, 1500] as const
 const JSON_TIMEOUT_MS = 15_000
 const PDF_TIMEOUT_MS = 120_000
@@ -107,6 +158,17 @@ function asString(value: unknown, field: string): string {
   throw new AdminApiError(`La API devolvió un ${field} inválido.`, "invalid-response")
 }
 
+function normalizePermissions(value: unknown): Permissions {
+  if (!value || typeof value !== "object" || Array.isArray(value)) return {}
+  const permissions: Permissions = {}
+  for (const [category, actions] of Object.entries(value)) {
+    if (Array.isArray(actions) && actions.every((action) => typeof action === "string")) {
+      permissions[category] = actions
+    }
+  }
+  return permissions
+}
+
 async function parseJson(response: Response): Promise<unknown> {
   try {
     return await response.json()
@@ -138,8 +200,9 @@ export class AdminApiClient {
     requiredPermission?: string
   ): Promise<Response> {
     let lastError: unknown
+    const retryDelays = (init.method ?? "GET").toUpperCase() === "GET" ? RETRY_DELAYS : []
 
-    for (let attempt = 0; attempt <= RETRY_DELAYS.length; attempt += 1) {
+    for (let attempt = 0; attempt <= retryDelays.length; attempt += 1) {
       try {
         const headers = new Headers(init.headers)
         headers.set("Authorization", `Bearer ${this.config.apiKey}`)
@@ -157,8 +220,8 @@ export class AdminApiClient {
           throw error
         }
         lastError = error
-        if (attempt === RETRY_DELAYS.length) break
-        await this.wait(RETRY_DELAYS[attempt])
+        if (attempt === retryDelays.length) break
+        await this.wait(retryDelays[attempt])
       }
     }
 
@@ -171,10 +234,7 @@ export class AdminApiClient {
 
   async validateCredentials(): Promise<AuthIdentity> {
     const payload = (await parseJson(await this.request("/auth/me"))) as AuthResponse
-    const permissions =
-      payload.permisos && typeof payload.permisos === "object"
-        ? (payload.permisos as Record<string, unknown>)
-        : {}
+    const permissions = normalizePermissions(payload.permisos)
 
     return {
       email: asString(payload.email, "email"),
@@ -245,6 +305,47 @@ export class AdminApiClient {
       }))
       .filter((quotation) => normalizeText(quotation.projectName).includes(normalizedQuery))
       .sort((left, right) => right.id - left.id)
+  }
+
+  async listRoles(): Promise<AdminRole[]> {
+    const payload = await parseJson(
+      await this.request("/api/roles", {}, JSON_TIMEOUT_MS, "roles:ver")
+    )
+    if (!Array.isArray(payload)) {
+      throw new AdminApiError("La API devolvió roles inválidos.", "invalid-response")
+    }
+    return payload.map((raw) => {
+      const role = raw as RoleResponse
+      if (typeof role.activo !== "boolean") {
+        throw new AdminApiError("La API devolvió un estado de rol inválido.", "invalid-response")
+      }
+      return {
+        id: asNumber(role.id, "id de rol"),
+        name: asString(role.nombre, "nombre de rol"),
+        active: role.activo,
+        permissions: normalizePermissions(role.permisos),
+      }
+    })
+  }
+
+  async createApiKey(name: string, roleId: number): Promise<string> {
+    const payload = (await parseJson(
+      await this.request(
+        "/api/apikeys",
+        {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ nombre: name, rol_id: roleId }),
+        },
+        JSON_TIMEOUT_MS,
+        "usuarios:crear"
+      )
+    )) as ApiKeyResponse
+    const apiKey = asString(payload.api_key, "api_key")
+    if (!apiKey.startsWith("orgm_")) {
+      throw new AdminApiError("La API devolvió una API key inválida.", "invalid-response")
+    }
+    return apiKey
   }
 
   async downloadQuotationPdf(quotationId: number, destination: string): Promise<void> {
