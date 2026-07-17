@@ -1,6 +1,6 @@
 {
   "name": "orgmorg",
-  "version": "1.3.9",
+  "version": "2.0.0",
   "description": "Organizador de archivos y creador de carpetas de proyectos.",
   "type": "module",
   "main": "dist/index.js",
@@ -15,7 +15,9 @@
     "dev": "tsx src/index.ts",
     "start": "node dist/index.js",
     "build": "tsc",
-    "test": "npm run build && node dist/index.js"
+    "test": "vitest run",
+    "test:watch": "vitest",
+    "check": "npm run build && npm test"
   },
   "dependencies": {
     "@types/react": "^19.2.14",
@@ -30,8 +32,10 @@
     "@types/better-sqlite3": "^7.6.13",
     "@types/fs-extra": "^11.0.4",
     "@types/node": "^22.10.0",
+    "ink-testing-library": "^4.0.0",
     "tsx": "^4.19.2",
-    "typescript": "^5.7.0"
+    "typescript": "^5.7.0",
+    "vitest": "^4.1.10"
   },
   "repository": {
     "type": "git",

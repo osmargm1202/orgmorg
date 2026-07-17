@@ -1,57 +1,100 @@
 import fs from "fs-extra"
-import path from "path"
-import os from "os"
+import os from "node:os"
+import path from "node:path"
 
-const CONFIG_DIR =
-  process.env.ORGMORG_CONFIG_DIR || path.join(os.homedir(), ".config", "orgmorg")
-const CONFIG_FILE = path.join(CONFIG_DIR, "config.json")
-
-export const DEFAULT_DB_PATH = path.join(CONFIG_DIR, "proyectos.db")
+export const DEFAULT_API_BASE_URL = "https://admin-api.or-gm.com"
 
 export interface Config {
-  dbPath: string
+  apiBaseUrl: string
+  basePath: string | null
+  apiKey: string | null
+  // Transitional compatibility until legacy SQLite consumers are removed.
+  dbPath?: string
   path?: string | null
 }
 
+export interface CompleteConfig extends Config {
+  basePath: string
+  apiKey: string
+}
+
 const DEFAULT_CONFIG: Config = {
-  dbPath: DEFAULT_DB_PATH,
-  path: null,
+  apiBaseUrl: DEFAULT_API_BASE_URL,
+  basePath: null,
+  apiKey: null,
+}
+
+export function getConfigDir(): string {
+  return process.env.ORGMORG_CONFIG_DIR || path.join(os.homedir(), ".config", "orgmorg")
+}
+
+export function getConfigPath(): string {
+  return path.join(getConfigDir(), "config.json")
+}
+
+export function normalizeApiBaseUrl(value: string): string {
+  const url = new URL(value.trim())
+  const loopback = ["localhost", "127.0.0.1", "::1"].includes(url.hostname)
+  if (url.protocol !== "https:" && !(url.protocol === "http:" && loopback)) {
+    throw new Error("El endpoint debe usar HTTPS; HTTP solo se permite para loopback.")
+  }
+  url.search = ""
+  url.hash = ""
+  return url.toString().replace(/\/+$/, "")
 }
 
 function normalizeConfig(raw: unknown): Config {
-  const parsed = typeof raw === "object" && raw !== null ? (raw as Record<string, unknown>) : {}
-  return {
-    dbPath:
-      typeof parsed.dbPath === "string" && parsed.dbPath.trim()
-        ? parsed.dbPath
-        : DEFAULT_DB_PATH,
-    path: typeof parsed.path === "string" && parsed.path.trim() ? parsed.path : null,
+  const value = raw && typeof raw === "object" ? (raw as Record<string, unknown>) : {}
+  let apiBaseUrl = DEFAULT_API_BASE_URL
+  if (typeof value.apiBaseUrl === "string" && value.apiBaseUrl.trim()) {
+    try {
+      apiBaseUrl = normalizeApiBaseUrl(value.apiBaseUrl)
+    } catch {
+      apiBaseUrl = DEFAULT_API_BASE_URL
+    }
   }
+  return {
+    apiBaseUrl,
+    basePath:
+      typeof value.basePath === "string" && value.basePath.trim()
+        ? path.resolve(value.basePath)
+        : null,
+    apiKey:
+      typeof value.apiKey === "string" && value.apiKey.startsWith("orgm_")
+        ? value.apiKey
+        : null,
+    dbPath:
+      typeof value.dbPath === "string" && value.dbPath.trim() ? value.dbPath : undefined,
+    path: typeof value.path === "string" && value.path.trim() ? value.path : null,
+  }
+}
+
+export function isConfigComplete(config: Config): config is CompleteConfig {
+  return Boolean(config.apiBaseUrl && config.basePath && config.apiKey?.startsWith("orgm_"))
+}
+
+export function maskApiKey(apiKey: string | null): string {
+  return apiKey ? `${apiKey.slice(0, 9)}…` : "Sin configurar"
 }
 
 export async function loadConfig(): Promise<Config> {
   try {
-    const data = await fs.readFile(CONFIG_FILE, "utf-8")
-    return normalizeConfig(JSON.parse(data))
-  } catch (err) {
-    if (err instanceof Error && "code" in err && err.code === "ENOENT") {
+    return normalizeConfig(JSON.parse(await fs.readFile(getConfigPath(), "utf8")))
+  } catch (error) {
+    if (error instanceof Error && "code" in error && error.code === "ENOENT") {
       return { ...DEFAULT_CONFIG }
     }
-    throw err
+    throw error
   }
 }
 
 export async function saveConfig(config: Config): Promise<void> {
-  await fs.ensureDir(CONFIG_DIR)
-  await fs.writeFile(CONFIG_FILE, JSON.stringify(normalizeConfig(config), null, 2), "utf-8")
+  const normalized = normalizeConfig(config)
+  await fs.ensureDir(getConfigDir(), { mode: 0o700 })
+  await fs.chmod(getConfigDir(), 0o700)
+  await fs.writeFile(getConfigPath(), JSON.stringify(normalized, null, 2), {
+    encoding: "utf8",
+    mode: 0o600,
+  })
+  await fs.chmod(getConfigPath(), 0o600)
 }
-
-export function getConfigPath(): string {
-  return CONFIG_FILE
-}
-
-export function getConfigDir(): string {
-  return CONFIG_DIR
-}
-
-export { CONFIG_DIR, CONFIG_FILE }
