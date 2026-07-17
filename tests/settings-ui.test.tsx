@@ -114,6 +114,7 @@ describe("settings UI", () => {
       tenantId: 1,
       expiresAt: null,
       permissions: {},
+      isSuperadmin: false,
     }))
     const { stdin } = render(
       <ConfigValueScreen
@@ -146,6 +147,7 @@ describe("settings UI", () => {
       tenantId: 1,
       expiresAt: null,
       permissions: {},
+      isSuperadmin: false,
     }))
     const { stdin, lastFrame } = render(
       <ApiKeyScreen

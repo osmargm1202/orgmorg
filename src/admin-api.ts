@@ -18,6 +18,7 @@ export interface AuthIdentity {
   tenantId: number
   expiresAt: number | null
   permissions: Permissions
+  isSuperadmin: boolean
 }
 
 export interface AdminRole {
@@ -90,6 +91,7 @@ interface AuthResponse {
   tenant_id?: unknown
   exp?: unknown
   permisos?: unknown
+  is_superadmin?: unknown
 }
 
 interface QuotationResponse {
@@ -241,6 +243,7 @@ export class AdminApiClient {
       tenantId: asNumber(payload.tenant_id, "tenant_id"),
       expiresAt: typeof payload.exp === "number" ? payload.exp : null,
       permissions,
+      isSuperadmin: payload.is_superadmin === true,
     }
   }
 

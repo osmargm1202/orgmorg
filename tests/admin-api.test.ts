@@ -24,11 +24,15 @@ describe("AdminApiClient", () => {
         email: "osmar@or-gm.com",
         tenant_id: 1,
         exp: null,
+        is_superadmin: true,
         permisos: {},
       })
     })
     const client = new AdminApiClient(config, { fetch: fetchMock, sleep: async () => {} })
-    await expect(client.validateCredentials()).resolves.toMatchObject({ tenantId: 1 })
+    await expect(client.validateCredentials()).resolves.toMatchObject({
+      tenantId: 1,
+      isSuperadmin: true,
+    })
   })
 
   it("deduplica proyectos, filtra solo por nombre y ordena ID descendente", async () => {

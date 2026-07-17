@@ -9,8 +9,9 @@ const functionalPermissions = {
 
 const identity = (
   permissions: Record<string, string[]>,
-  email = "osmar@or-gm.com"
-): AuthIdentity => ({ email, tenantId: 1, expiresAt: null, permissions })
+  email = "osmar@or-gm.com",
+  isSuperadmin = false
+): AuthIdentity => ({ email, tenantId: 1, expiresAt: null, permissions, isSuperadmin })
 
 const client = (overrides: Partial<TokenLoginClient> = {}): TokenLoginClient => ({
   validateCredentials: vi.fn(async () => identity(functionalPermissions)),
@@ -121,6 +122,25 @@ describe("obtainApiKeyFromEnvironment", () => {
         createClient,
       })
     ).resolves.toMatchObject({ source: "environment-key" })
+  })
+
+  it("permite aprovisionamiento con JWT superadmin aunque permisos estén vacíos", async () => {
+    const jwtClient = client({
+      validateCredentials: vi.fn(async () => identity({}, "admin@or-gm.com", true)),
+      listRoles: vi.fn(async () => [
+        { id: 4, name: "CLI", active: true, permissions: functionalPermissions },
+      ]),
+      createApiKey: vi.fn(async () => "orgm_created"),
+    })
+    const finalClient = client()
+    await expect(
+      obtainApiKeyFromEnvironment({
+        config,
+        environmentToken: "jwt_superadmin",
+        createClient: (credential) =>
+          credential === "orgm_created" ? finalClient : jwtClient,
+      })
+    ).resolves.toMatchObject({ source: "environment-jwt", roleName: "CLI" })
   })
 
   it("rechaza JWT sin permisos de aprovisionamiento", async () => {

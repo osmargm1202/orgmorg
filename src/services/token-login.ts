@@ -48,6 +48,7 @@ function assertFunctionalPermissions(identity: AuthIdentity): void {
 }
 
 function assertProvisioningPermissions(identity: AuthIdentity): void {
+  if (identity.isSuperadmin) return
   for (const [category, action] of PROVISIONING_PERMISSIONS) {
     if (!identity.permissions[category]?.includes(action)) {
       throw new Error(`ORGM_TOKEN no tiene el permiso ${category}:${action}.`)
