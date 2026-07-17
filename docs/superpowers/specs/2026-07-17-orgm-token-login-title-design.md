@@ -69,7 +69,8 @@ Antes de crear una nueva key:
 1. cargar configuración;
 2. si existe `apiKey`, validarla con `/auth/me`;
 3. comprobar permisos requeridos;
-4. si es válida, terminar sin crear duplicado.
+4. si es válida y contiene tres permisos funcionales, terminar sin crear duplicado;
+5. si falla validación o permisos, conservar configuración anterior y continuar con `ORGM_TOKEN`.
 
 La entrada manual seguirá disponible para reemplazarla.
 
@@ -87,15 +88,16 @@ Si `ORGM_TOKEN` comienza con `orgm_`:
 Si no comienza con `orgm_`:
 
 1. validar JWT mediante `/auth/me`;
-2. consultar `GET /api/roles`;
-3. conservar roles activos que incluyan:
+2. comprobar en respuesta permisos `roles:ver` y `usuarios:crear`;
+3. consultar `GET /api/roles`;
+4. conservar roles activos que incluyan:
    - `cotizaciones:ver`;
    - `proyectos:ver`;
    - `cotizaciones:imprimir`;
-4. calcular total de acciones permitidas por rol;
-5. elegir rol con menor total;
-6. desempatar por ID ascendente;
-7. crear key mediante `POST /api/apikeys` con:
+5. calcular total como suma de longitudes de todos los arrays de acciones del rol;
+6. elegir rol con menor total;
+7. desempatar por ID ascendente;
+8. crear key mediante `POST /api/apikeys` con:
 
 ```json
 {
@@ -104,9 +106,11 @@ Si no comienza con `orgm_`:
 }
 ```
 
-1. validar la key recién creada y sus permisos;
-2. guardar únicamente la API key nueva;
-3. mostrar correo, nombre del rol y prefijo enmascarado.
+Después de crear:
+
+- validar la key recién creada y sus permisos;
+- guardar únicamente la API key nueva;
+- mostrar correo, nombre del rol y prefijo enmascarado.
 
 ## 6. Cliente API
 
