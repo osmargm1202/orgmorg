@@ -241,7 +241,7 @@ Procedimiento:
 1. validar `basePath` y `template/`;
 2. descargar PDF a un archivo temporal dentro del mismo sistema de archivos del destino;
 3. crear una carpeta temporal hermana;
-4. copiar estructura completa de `template/`;
+4. crear los directorios presentes en `template/`, sin copiar archivos marcadores `.gitkeep`;
 5. colocar PDF en `Oferta/cotizacion_<id>.pdf`;
 6. renombrar carpeta temporal al nombre final;
 7. limpiar temporales si cualquier paso falla.
@@ -255,7 +255,7 @@ Si la ruta final ya existe:
 1. no borrar ni reemplazar la carpeta;
 2. descargar y validar PDF antes de modificar contenido;
 3. crear únicamente directorios faltantes definidos por `template/`;
-4. no copiar `.gitkeep` cuando no sea necesario para operación;
+4. no copiar archivos marcadores `.gitkeep`;
 5. reemplazar `Oferta/cotizacion_<id>.pdf` mediante archivo temporal y `rename`;
 6. conservar todos los demás archivos.
 
@@ -267,7 +267,7 @@ La operación será idempotente: repetirla deja la misma estructura y un PDF act
 - `401`: informar key inválida o revocada.
 - `403`: informar permiso requerido según operación.
 - `404` de proyecto o PDF: no crear ni modificar carpeta.
-- `429` o `5xx`: reintentar GET hasta dos veces con espera incremental.
+- `429` o `5xx`: reintentar GET hasta dos veces, esperando 500 ms antes del primer reintento y 1.5 s antes del segundo.
 - Timeout o desconexión: reintentar; luego conservar estado anterior.
 - Respuesta PDF con tipo incorrecto: rechazar contenido y limpiar temporal.
 - `template/` ausente: bloquear creación con ruta esperada.
@@ -290,11 +290,11 @@ El nombre del proyecto:
 
 - elimina separadores `/` y `\\`;
 - elimina caracteres de control;
-- reemplaza caracteres inválidos por espacio o guion;
+- reemplaza cada grupo de caracteres inválidos por `-`;
 - colapsa espacios repetidos;
 - elimina puntos y espacios finales;
-- evita nombres reservados del sistema cuando corresponda;
-- aplica un límite razonable para mantener la ruta completa utilizable.
+- ante nombres reservados de Windows, agrega prefijo `_`;
+- limita el componente de nombre de proyecto a 120 caracteres después del saneamiento.
 
 La interfaz siempre mostrará nombre original y nombre final cuando sean distintos.
 
