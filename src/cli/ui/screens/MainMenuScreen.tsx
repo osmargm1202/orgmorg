@@ -3,23 +3,11 @@ import { MenuScreen } from "../components/MenuScreen.js"
 
 const OPCIONES = [
   {
-    id: "crear-cotizacion",
-    label: "Crear cotización",
+    id: "search-quotation",
+    label: "Buscar cotización",
   },
   {
-    id: "consultar-menu",
-    label: "Consultar proyectos",
-  },
-  {
-    id: "organize-by-type",
-    label: "Organizar por tipo",
-  },
-  {
-    id: "organize-by-date-menu",
-    label: "Organizar por fecha",
-  },
-  {
-    id: "configuraciones-menu",
+    id: "settings-menu",
     label: "Configuración",
   },
   {

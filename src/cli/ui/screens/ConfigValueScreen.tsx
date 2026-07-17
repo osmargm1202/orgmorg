@@ -12,7 +12,7 @@ import {
 } from "../../../config.js"
 import { ScreenFrame } from "../components/ScreenFrame.js"
 
-type ConfigKey = keyof Pick<Config, "apiBaseUrl" | "basePath" | "dbPath" | "path">
+type ConfigKey = keyof Pick<Config, "apiBaseUrl" | "basePath">
 
 export function ConfigValueScreen({
   onBack,
@@ -70,12 +70,10 @@ export function ConfigValueScreen({
       let normalized: string
       if (configKey === "apiBaseUrl") {
         normalized = normalizeApiBaseUrl(trimmed)
-      } else if (configKey === "basePath" || configKey === "path") {
+      } else {
         normalized = path.resolve(trimmed)
         await fs.ensureDir(normalized)
         await fs.access(normalized, constants.W_OK)
-      } else {
-        normalized = path.resolve(trimmed)
       }
       config[configKey] = normalized
       await saveConfig(config)

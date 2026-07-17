@@ -1,7 +1,7 @@
 {
   "name": "orgmorg",
   "version": "2.0.0",
-  "description": "Organizador de archivos y creador de carpetas de proyectos.",
+  "description": "Busca cotizaciones por proyecto y crea sus carpetas con el PDF de oferta.",
   "type": "module",
   "main": "dist/index.js",
   "files": [
@@ -17,19 +17,17 @@
     "build": "tsc",
     "test": "vitest run",
     "test:watch": "vitest",
-    "check": "npm run build && npm test"
+    "check": "npm run build && npm test",
+    "prebuild": "node -e \"require(\\\"node:fs\\\").rmSync(\\\"dist\\\", { recursive: true, force: true })\""
   },
   "dependencies": {
     "@types/react": "^19.2.14",
-    "better-sqlite3": "^12.8.0",
     "fs-extra": "^11.2.0",
     "ink": "^6.8.0",
     "ink-text-input": "^6.0.0",
-    "open": "^11.0.0",
     "react": "^19.2.4"
   },
   "devDependencies": {
-    "@types/better-sqlite3": "^7.6.13",
     "@types/fs-extra": "^11.0.4",
     "@types/node": "^22.10.0",
     "ink-testing-library": "^4.0.0",

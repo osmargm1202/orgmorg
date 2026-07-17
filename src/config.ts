@@ -8,9 +8,6 @@ export interface Config {
   apiBaseUrl: string
   basePath: string | null
   apiKey: string | null
-  // Transitional compatibility until legacy SQLite consumers are removed.
-  dbPath?: string
-  path?: string | null
 }
 
 export interface CompleteConfig extends Config {
@@ -63,9 +60,6 @@ function normalizeConfig(raw: unknown): Config {
       typeof value.apiKey === "string" && value.apiKey.startsWith("orgm_")
         ? value.apiKey
         : null,
-    dbPath:
-      typeof value.dbPath === "string" && value.dbPath.trim() ? value.dbPath : undefined,
-    path: typeof value.path === "string" && value.path.trim() ? value.path : null,
   }
 }
 

@@ -3,10 +3,20 @@ import { render } from "ink-testing-library"
 import { describe, expect, it, vi } from "vitest"
 import { ConfiguracionesMenuScreen } from "../src/cli/ui/screens/ConfiguracionesMenuScreen.js"
 import { ApiKeyScreen } from "../src/cli/ui/screens/ApiKeyScreen.js"
+import { MainMenuScreen } from "../src/cli/ui/screens/MainMenuScreen.js"
 
 const wait = () => new Promise((resolve) => setTimeout(resolve, 30))
 
 describe("settings UI", () => {
+  it("muestra solo búsqueda, configuración y salida en menú principal", () => {
+    const { lastFrame } = render(<MainMenuScreen onSelect={() => {}} />)
+    expect(lastFrame()).toContain("Buscar cotización")
+    expect(lastFrame()).toContain("Configuración")
+    expect(lastFrame()).toContain("Salir")
+    expect(lastFrame()).not.toContain("Organizar")
+    expect(lastFrame()).not.toContain("Crear cotización")
+  })
+
   it("muestra solo las tres configuraciones nuevas", () => {
     const { lastFrame } = render(
       <ConfiguracionesMenuScreen onSelect={() => {}} onBack={() => {}} />
