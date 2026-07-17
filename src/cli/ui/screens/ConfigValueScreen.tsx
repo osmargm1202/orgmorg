@@ -1,12 +1,18 @@
 import React, { useEffect, useState } from "react"
+import fs from "fs-extra"
+import { constants } from "node:fs"
+import path from "node:path"
 import { Box, Text, useApp, useInput } from "ink"
 import TextInput from "ink-text-input"
-import fs from "fs-extra"
-import path from "path"
-import { loadConfig, saveConfig, type Config } from "../../../config.js"
+import {
+  loadConfig,
+  normalizeApiBaseUrl,
+  saveConfig,
+  type Config,
+} from "../../../config.js"
 import { ScreenFrame } from "../components/ScreenFrame.js"
 
-type ConfigKey = keyof Pick<Config, "dbPath" | "path">
+type ConfigKey = keyof Pick<Config, "apiBaseUrl" | "basePath" | "dbPath" | "path">
 
 export function ConfigValueScreen({
   onBack,
@@ -23,23 +29,24 @@ export function ConfigValueScreen({
 }) {
   const { exit } = useApp()
   const [value, setValue] = useState("")
-  const [status, setStatus] = useState<"editing" | "saving" | "done" | "error">("editing")
+  const [status, setStatus] = useState<"editing" | "saving" | "done" | "error">(
+    "editing"
+  )
   const [message, setMessage] = useState("")
 
   useEffect(() => {
     let cancelled = false
-    ;(async () => {
-      const config = await loadConfig()
-      const current = config[configKey]
-      if (!cancelled && typeof current === "string") {
-        setValue(current)
-      }
-    })().catch((error) => {
-      if (!cancelled) {
-        setStatus("error")
-        setMessage(error instanceof Error ? error.message : String(error))
-      }
-    })
+    void loadConfig()
+      .then((config) => {
+        const current = config[configKey]
+        if (!cancelled && typeof current === "string") setValue(current)
+      })
+      .catch((error) => {
+        if (!cancelled) {
+          setStatus("error")
+          setMessage(error instanceof Error ? error.message : String(error))
+        }
+      })
     return () => {
       cancelled = true
     }
@@ -50,9 +57,7 @@ export function ConfigValueScreen({
       exit()
       return
     }
-    if (key.escape && status !== "saving") {
-      onBack()
-    }
+    if (key.escape && status !== "saving") onBack()
   })
 
   const handleSubmit = async () => {
@@ -62,27 +67,30 @@ export function ConfigValueScreen({
     setStatus("saving")
     try {
       const config = await loadConfig()
-      if (configKey === "path") {
-        const resolved = path.resolve(trimmed)
-        await fs.ensureDir(resolved)
-        config.path = resolved
-        setValue(resolved)
+      let normalized: string
+      if (configKey === "apiBaseUrl") {
+        normalized = normalizeApiBaseUrl(trimmed)
+      } else if (configKey === "basePath" || configKey === "path") {
+        normalized = path.resolve(trimmed)
+        await fs.ensureDir(normalized)
+        await fs.access(normalized, constants.W_OK)
       } else {
-        config[configKey] = trimmed
+        normalized = path.resolve(trimmed)
       }
-
+      config[configKey] = normalized
       await saveConfig(config)
+      setValue(normalized)
+      setMessage(`Valor guardado: ${normalized}`)
       setStatus("done")
-      setMessage(`Valor guardado para ${configKey}.`)
     } catch (error) {
-      setStatus("error")
       setMessage(error instanceof Error ? error.message : String(error))
+      setStatus("error")
     }
   }
 
   if (status === "saving") {
     return (
-      <ScreenFrame title={title} help="Guardando configuración...">
+      <ScreenFrame title={title} help="Validando y guardando configuración...">
         <Text color="yellow">Guardando configuración...</Text>
       </ScreenFrame>
     )
@@ -97,11 +105,19 @@ export function ConfigValueScreen({
   }
 
   return (
-    <ScreenFrame title={title} help="Escribe el valor y presiona Enter · Esc volver · Ctrl+C salir">
+    <ScreenFrame
+      title={title}
+      help="Escribe el valor y presiona Enter · Esc volver · Ctrl+C salir"
+    >
       <Text>{description}</Text>
       <Box marginTop={1}>
         <Text color="gray">Valor: </Text>
-        <TextInput value={value} onChange={setValue} onSubmit={handleSubmit} placeholder={placeholder} />
+        <TextInput
+          value={value}
+          onChange={setValue}
+          onSubmit={() => void handleSubmit()}
+          placeholder={placeholder}
+        />
       </Box>
     </ScreenFrame>
   )

@@ -3,12 +3,16 @@ import { MenuScreen } from "../components/MenuScreen.js"
 
 const OPCIONES = [
   {
-    id: "config-db-path",
-    label: "Configurar ruta de base de datos",
+    id: "config-api-url",
+    label: "Endpoint administrativo",
   },
   {
-    id: "config-path",
-    label: "Configurar directorio base",
+    id: "config-base-path",
+    label: "Carpeta base",
+  },
+  {
+    id: "config-api-key",
+    label: "API key",
   },
 ]
 
