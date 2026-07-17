@@ -52,7 +52,7 @@ it("busca, selecciona, confirma y crea una carpeta", async () => {
   )
   await waitForText(lastFrame, "Nombre del proyecto")
   stdin.write("torre")
-  await new Promise((resolve) => setTimeout(resolve, 30))
+  await waitForText(lastFrame, "torre")
   stdin.write("\r")
   await waitForText(lastFrame, "593")
   expect(lastFrame()).toContain("Diseño")

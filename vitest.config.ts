@@ -6,5 +6,6 @@ export default defineConfig({
     include: ["tests/**/*.test.{ts,tsx}"],
     clearMocks: true,
     restoreMocks: true,
+    fileParallelism: false,
   },
 })
