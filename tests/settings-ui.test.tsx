@@ -6,6 +6,8 @@ import { ApiKeyScreen } from "../src/cli/ui/screens/ApiKeyScreen.js"
 import { MainMenuScreen } from "../src/cli/ui/screens/MainMenuScreen.js"
 import { ConfigValueScreen } from "../src/cli/ui/screens/ConfigValueScreen.js"
 import { TokenLoginScreen } from "../src/cli/ui/screens/TokenLoginScreen.js"
+import { AuthMethodScreen } from "../src/cli/ui/screens/AuthMethodScreen.js"
+import { WebLoginScreen } from "../src/cli/ui/screens/WebLoginScreen.js"
 import { AppShell } from "../src/cli/ui/components/AppShell.js"
 
 const wait = () => new Promise((resolve) => setTimeout(resolve, 30))
@@ -48,6 +50,146 @@ describe("settings UI", () => {
     )
     expect(lastFrame()).toContain("ORGMorg")
     expect(lastFrame()).not.toContain("ORGMcalc")
+  })
+
+  it("ofrece ORGM_TOKEN y Google HTTPS", async () => {
+    const { lastFrame } = render(
+      <AuthMethodScreen
+        onSelect={() => {}}
+        onBack={() => {}}
+        loadConfig={async () => ({
+          apiBaseUrl: "https://api.example.com",
+          basePath: "/tmp",
+          apiKey: null,
+        })}
+      />
+    )
+    await waitForText(lastFrame, "Usar ORGM_TOKEN")
+    expect(lastFrame()).toContain("Iniciar sesión con Google (HTTPS)")
+  })
+
+  it("abre web, oculta JWT y guarda solo API key", async () => {
+    const saveConfig = vi.fn(async () => {})
+    const launchLogin = vi.fn(async () => ({
+      loginUrl: "https://api.example.com/auth/google/start",
+      opened: true,
+    }))
+    const provisionApiKey = vi.fn(async () => ({
+      apiKey: "orgm_web_key",
+      email: "osmar@or-gm.com",
+      roleName: "CLI",
+      source: "browser-jwt" as const,
+    }))
+    const { stdin, lastFrame } = render(
+      <WebLoginScreen
+        onBack={() => {}}
+        loadConfig={async () => ({
+          apiBaseUrl: "https://api.example.com",
+          basePath: "/tmp",
+          apiKey: null,
+        })}
+        saveConfig={saveConfig}
+        launchLogin={launchLogin}
+        provisionApiKey={provisionApiKey}
+      />
+    )
+    await waitForText(lastFrame, "Enter abrir Google")
+    stdin.write("\r")
+    await waitForText(lastFrame, "Pega el token")
+    const callbackUrl =
+      "https://admin.example/auth/callback#access_token=jwt-web-secret"
+    stdin.write(callbackUrl)
+    await wait()
+    expect(lastFrame()).not.toContain("jwt-web-secret")
+    expect(lastFrame()).not.toContain(callbackUrl)
+    stdin.write("\r")
+    await waitForText(lastFrame, "API key configurada")
+    expect(provisionApiKey).toHaveBeenCalledWith(
+      expect.objectContaining({ token: "jwt-web-secret", source: "browser-jwt" })
+    )
+    expect(saveConfig).toHaveBeenCalledWith(
+      expect.objectContaining({ apiKey: "orgm_web_key" })
+    )
+    expect(lastFrame()).not.toContain("jwt-web-secret")
+    expect(lastFrame()).not.toContain("orgm_web_key")
+  })
+
+  it("evita duplicado hasta elegir Reconfigurar", async () => {
+    const { stdin, lastFrame } = render(
+      <AuthMethodScreen
+        onSelect={() => {}}
+        onBack={() => {}}
+        loadConfig={async () => ({
+          apiBaseUrl: "https://api.example.com",
+          basePath: "/tmp",
+          apiKey: "orgm_existing",
+        })}
+        validateCredentials={async () => ({
+          email: "osmar@or-gm.com",
+          tenantId: 1,
+          expiresAt: null,
+          isSuperadmin: false,
+          permissions: { cotizaciones: ["ver", "imprimir"], proyectos: ["ver"] },
+        })}
+      />
+    )
+    await waitForText(lastFrame, "Reconfigurar")
+    expect(lastFrame()).not.toContain("Iniciar sesión con Google")
+    await wait()
+    stdin.write("\r")
+    await waitForText(lastFrame, "Iniciar sesión con Google")
+  })
+
+  it("mantiene URL visible cuando navegador no abre", async () => {
+    const { stdin, lastFrame } = render(
+      <WebLoginScreen
+        onBack={() => {}}
+        loadConfig={async () => ({
+          apiBaseUrl: "https://api.example.com",
+          basePath: "/tmp",
+          apiKey: null,
+        })}
+        launchLogin={async () => ({
+          loginUrl: "https://api.example.com/auth/google/start",
+          opened: false,
+        })}
+      />
+    )
+    await waitForText(lastFrame, "Enter abrir Google")
+    stdin.write("\r")
+    await waitForText(lastFrame, "navegador no abrió")
+    expect(lastFrame()).toContain("https://api.example.com/auth/google/start")
+  })
+
+  it("limpia JWT y no guarda cuando validación web falla", async () => {
+    const saveConfig = vi.fn(async () => {})
+    const { stdin, lastFrame } = render(
+      <WebLoginScreen
+        onBack={() => {}}
+        loadConfig={async () => ({
+          apiBaseUrl: "https://api.example.com",
+          basePath: "/tmp",
+          apiKey: null,
+        })}
+        saveConfig={saveConfig}
+        launchLogin={async () => ({
+          loginUrl: "https://api.example.com/auth/google/start",
+          opened: true,
+        })}
+        provisionApiKey={async () => {
+          throw new Error("JWT inválido o vencido.")
+        }}
+      />
+    )
+    await waitForText(lastFrame, "Enter abrir Google")
+    stdin.write("\r")
+    await waitForText(lastFrame, "Pega el token")
+    stdin.write("jwt-never-render-this")
+    await wait()
+    stdin.write("\r")
+    await waitForText(lastFrame, "JWT inválido")
+    expect(lastFrame()).not.toContain("jwt-never-render-this")
+    expect(saveConfig).not.toHaveBeenCalled()
   })
 
   it("obtiene y guarda key sin mostrar secretos", async () => {

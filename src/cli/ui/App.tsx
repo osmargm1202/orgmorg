@@ -9,6 +9,8 @@ import { ConfigValueScreen } from "./screens/ConfigValueScreen.js"
 import { MainMenuScreen } from "./screens/MainMenuScreen.js"
 import { SearchQuotationScreen } from "./screens/SearchQuotationScreen.js"
 import { TokenLoginScreen } from "./screens/TokenLoginScreen.js"
+import { AuthMethodScreen } from "./screens/AuthMethodScreen.js"
+import { WebLoginScreen } from "./screens/WebLoginScreen.js"
 import type { ScreenType } from "./types.js"
 
 export function App() {
@@ -41,8 +43,17 @@ export function App() {
             onBack={goBack}
           />
         )
-      case "config-token-login":
+      case "config-auth-method":
+        return (
+          <AuthMethodScreen
+            onSelect={(screen) => navigateTo(screen)}
+            onBack={goBack}
+          />
+        )
+      case "config-token-env":
         return <TokenLoginScreen onBack={goBack} />
+      case "config-token-web":
+        return <WebLoginScreen onBack={goBack} />
       case "config-api-url":
         return (
           <ConfigValueScreen

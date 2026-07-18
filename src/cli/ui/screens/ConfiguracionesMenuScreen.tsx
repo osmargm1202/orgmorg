@@ -3,7 +3,7 @@ import { MenuScreen } from "../components/MenuScreen.js"
 
 const OPCIONES = [
   {
-    id: "config-token-login",
+    id: "config-auth-method",
     label: "Iniciar sesión / Obtener API key",
   },
   {
