@@ -1,6 +1,10 @@
 import { describe, expect, it, vi } from "vitest"
 import { AdminApiError, type AuthIdentity } from "../src/admin-api.js"
-import { obtainApiKeyFromEnvironment, type TokenLoginClient } from "../src/services/token-login.js"
+import {
+  obtainApiKeyFromEnvironment,
+  provisionApiKeyFromToken,
+  type TokenLoginClient,
+} from "../src/services/token-login.js"
 
 const functionalPermissions = {
   cotizaciones: ["ver", "imprimir"],
@@ -155,6 +159,24 @@ describe("obtainApiKeyFromEnvironment", () => {
       })
     ).rejects.toThrow("usuarios:crear")
     expect(jwtClient.listRoles).not.toHaveBeenCalled()
+  })
+
+  it("aprovisiona JWT pegado sin devolverlo", async () => {
+    const jwtClient = client({
+      validateCredentials: vi.fn(async () => identity({}, "admin@or-gm.com", true)),
+      listRoles: vi.fn(async () => [
+        { id: 4, name: "CLI", active: true, permissions: functionalPermissions },
+      ]),
+      createApiKey: vi.fn(async () => "orgm_web_created"),
+    })
+    const result = await provisionApiKeyFromToken({
+      token: "jwt-web-secret",
+      source: "browser-jwt",
+      createClient: (credential) =>
+        credential === "orgm_web_created" ? client() : jwtClient,
+    })
+    expect(result).toMatchObject({ apiKey: "orgm_web_created", source: "browser-jwt" })
+    expect(JSON.stringify(result)).not.toContain("jwt-web-secret")
   })
 
   it("rechaza ausencia de rol compatible y key final sin permisos", async () => {

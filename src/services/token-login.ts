@@ -22,11 +22,23 @@ export interface TokenLoginClient {
   createApiKey(name: string, roleId: number): Promise<string>
 }
 
+export type TokenLoginSource =
+  | "existing"
+  | "environment-key"
+  | "environment-jwt"
+  | "browser-jwt"
+
 export interface TokenLoginResult {
   apiKey: string
   email: string
   roleName: string | null
-  source: "existing" | "environment-key" | "environment-jwt"
+  source: TokenLoginSource
+}
+
+export interface ProvisionApiKeyInput {
+  token: string
+  source: Exclude<TokenLoginSource, "existing">
+  createClient: (credential: string) => TokenLoginClient
 }
 
 export interface ObtainApiKeyInput {
@@ -76,6 +88,43 @@ async function tryExistingApiKey(
   }
 }
 
+export async function provisionApiKeyFromToken(
+  input: ProvisionApiKeyInput
+): Promise<TokenLoginResult> {
+  const token = input.token.trim()
+  if (!token) throw new Error("La credencial temporal está vacía.")
+
+  const tokenClient = input.createClient(token)
+  const tokenIdentity = await tokenClient.validateCredentials()
+
+  if (token.startsWith("orgm_")) {
+    assertFunctionalPermissions(tokenIdentity)
+    return {
+      apiKey: token,
+      email: tokenIdentity.email,
+      roleName: null,
+      source: input.source,
+    }
+  }
+
+  assertProvisioningPermissions(tokenIdentity)
+  const selectedRole = selectLeastPrivilegeRole(await tokenClient.listRoles())
+  if (!selectedRole) {
+    throw new Error(`No existe un rol compatible con: ${FUNCTIONAL_PERMISSION_LABEL}.`)
+  }
+
+  const apiKey = await tokenClient.createApiKey("orgmorg-cli", selectedRole.id)
+  const finalIdentity = await input.createClient(apiKey).validateCredentials()
+  assertFunctionalPermissions(finalIdentity)
+
+  return {
+    apiKey,
+    email: finalIdentity.email,
+    roleName: selectedRole.name,
+    source: input.source,
+  }
+}
+
 export async function obtainApiKeyFromEnvironment(
   input: ObtainApiKeyInput
 ): Promise<TokenLoginResult> {
@@ -87,33 +136,11 @@ export async function obtainApiKeyFromEnvironment(
     throw new Error("ORGM_TOKEN no está configurado en el entorno.")
   }
 
-  const environmentClient = input.createClient(environmentToken)
-  const environmentIdentity = await environmentClient.validateCredentials()
-
-  if (environmentToken.startsWith("orgm_")) {
-    assertFunctionalPermissions(environmentIdentity)
-    return {
-      apiKey: environmentToken,
-      email: environmentIdentity.email,
-      roleName: null,
-      source: "environment-key",
-    }
-  }
-
-  assertProvisioningPermissions(environmentIdentity)
-  const selectedRole = selectLeastPrivilegeRole(await environmentClient.listRoles())
-  if (!selectedRole) {
-    throw new Error(`No existe un rol compatible con: ${FUNCTIONAL_PERMISSION_LABEL}.`)
-  }
-
-  const apiKey = await environmentClient.createApiKey("orgmorg-cli", selectedRole.id)
-  const finalIdentity = await input.createClient(apiKey).validateCredentials()
-  assertFunctionalPermissions(finalIdentity)
-
-  return {
-    apiKey,
-    email: finalIdentity.email,
-    roleName: selectedRole.name,
-    source: "environment-jwt",
-  }
+  return provisionApiKeyFromToken({
+    token: environmentToken,
+    source: environmentToken.startsWith("orgm_")
+      ? "environment-key"
+      : "environment-jwt",
+    createClient: input.createClient,
+  })
 }
