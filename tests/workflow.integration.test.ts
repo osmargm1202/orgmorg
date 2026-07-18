@@ -1,20 +1,79 @@
+import React from "react"
 import fs from "fs-extra"
 import http from "node:http"
 import os from "node:os"
 import path from "node:path"
 import type { AddressInfo } from "node:net"
-import { afterEach, describe, expect, it } from "vitest"
+import { render } from "ink-testing-library"
+import { afterEach, describe, expect, it, vi } from "vitest"
 import { AdminApiClient } from "../src/admin-api.js"
-import { isConfigComplete, loadConfig, saveConfig } from "../src/config.js"
+import { WebLoginScreen } from "../src/cli/ui/screens/WebLoginScreen.js"
+import { getConfigPath, isConfigComplete, loadConfig, saveConfig } from "../src/config.js"
 import { syncQuotationFolder } from "../src/services/project-folders.js"
 
 const roots: string[] = []
+
+const waitForText = async (frame: () => string | undefined, text: string) => {
+  const deadline = Date.now() + 1000
+  while (Date.now() < deadline) {
+    if (frame()?.includes(text)) return
+    await new Promise((resolve) => setTimeout(resolve, 10))
+  }
+  throw new Error(`No apareció: ${text}`)
+}
+
 afterEach(async () => {
   delete process.env.ORGMORG_CONFIG_DIR
   await Promise.all(roots.splice(0).map((root) => fs.remove(root)))
 })
 
 describe("quotation workflow integration", () => {
+  it("guarda solo API key después de pegar callback web", async () => {
+    const root = await fs.mkdtemp(path.join(os.tmpdir(), "orgmorg-web-login-"))
+    roots.push(root)
+    process.env.ORGMORG_CONFIG_DIR = path.join(root, "config")
+    await saveConfig({
+      apiBaseUrl: "https://api.example.com",
+      basePath: path.join(root, "projects"),
+      apiKey: null,
+    })
+
+    const callbackUrl =
+      "https://admin.example/auth/callback#access_token=jwt-integration-secret"
+    const provisionApiKey = vi.fn(async () => ({
+      apiKey: "orgm_integration_key",
+      email: "osmar@or-gm.com",
+      roleName: "CLI",
+      source: "browser-jwt" as const,
+    }))
+    const { stdin, lastFrame } = render(
+      React.createElement(WebLoginScreen, {
+        onBack: () => {},
+        launchLogin: async () => ({
+          loginUrl: "https://api.example.com/auth/google/start",
+          opened: true,
+        }),
+        provisionApiKey,
+      })
+    )
+
+    await waitForText(lastFrame, "Enter abrir Google")
+    stdin.write("\r")
+    await waitForText(lastFrame, "Pega el token")
+    stdin.write(callbackUrl)
+    await new Promise((resolve) => setTimeout(resolve, 30))
+    stdin.write("\r")
+    await waitForText(lastFrame, "API key configurada")
+
+    expect(provisionApiKey).toHaveBeenCalledWith(
+      expect.objectContaining({ token: "jwt-integration-secret" })
+    )
+    await expect(loadConfig()).resolves.toMatchObject({ apiKey: "orgm_integration_key" })
+    const rawConfig = await fs.readFile(getConfigPath(), "utf8")
+    expect(rawConfig).not.toContain("jwt-integration-secret")
+    expect(rawConfig).not.toContain(callbackUrl)
+  })
+
   it("consulta loopback, crea carpeta y actualiza PDF sin borrar archivos", async () => {
     const root = await fs.mkdtemp(path.join(os.tmpdir(), "orgmorg-integration-"))
     roots.push(root)
