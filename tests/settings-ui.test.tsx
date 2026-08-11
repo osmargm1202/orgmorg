@@ -1,6 +1,17 @@
 import React from "react"
 import { render } from "ink-testing-library"
 import { describe, expect, it, vi } from "vitest"
+
+const terminalSize = vi.hoisted(() => ({
+  columns: 100,
+  on: () => {},
+  off: () => {},
+}))
+
+vi.mock("ink", async (importOriginal) => {
+  const ink = await importOriginal<typeof import("ink")>()
+  return { ...ink, useStdout: () => ({ stdout: terminalSize }) }
+})
 import { ConfiguracionesMenuScreen } from "../src/cli/ui/screens/ConfiguracionesMenuScreen.js"
 import { ApiKeyScreen } from "../src/cli/ui/screens/ApiKeyScreen.js"
 import { MainMenuScreen } from "../src/cli/ui/screens/MainMenuScreen.js"
@@ -50,6 +61,21 @@ describe("settings UI", () => {
     )
     expect(lastFrame()).toContain("ORGMorg")
     expect(lastFrame()).not.toContain("ORGMcalc")
+  })
+
+  it("cambia a wordmark compacto cuando no cabe el banner", () => {
+    terminalSize.columns = 30
+    const { lastFrame } = render(
+      <AppShell appVersion="2.0.0">
+        <></>
+      </AppShell>
+    )
+    expect(lastFrame()).toContain("ORGMorg")
+    expect(lastFrame()).not.toContain("████")
+    expect(lastFrame()?.split("\n").every((line) => line.length <= terminalSize.columns)).toBe(
+      true
+    )
+    terminalSize.columns = 100
   })
 
   it("ofrece ORGM_TOKEN y Google HTTPS", async () => {
