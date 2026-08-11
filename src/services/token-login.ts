@@ -2,16 +2,23 @@ import {
   AdminApiError,
   FUNCTIONAL_PERMISSIONS,
   hasPermissions,
-  selectLeastPrivilegeRole,
   type AdminRole,
   type AuthIdentity,
+  type Permissions,
 } from "../admin-api.js"
 import type { Config } from "../config.js"
 
 const PROVISIONING_PERMISSIONS = [
   ["roles", "ver"],
+  ["roles", "crear"],
   ["usuarios", "crear"],
 ] as const
+
+const RESTRICTED_ROLE_NAME = "orgmorg-cli-read-only"
+const RESTRICTED_ROLE_PERMISSIONS: Permissions = {
+  cotizaciones: ["ver", "imprimir"],
+  proyectos: ["ver"],
+}
 
 const FUNCTIONAL_PERMISSION_LABEL =
   "cotizaciones:ver, proyectos:ver, cotizaciones:imprimir"
@@ -19,6 +26,7 @@ const FUNCTIONAL_PERMISSION_LABEL =
 export interface TokenLoginClient {
   validateCredentials(): Promise<AuthIdentity>
   listRoles(): Promise<AdminRole[]>
+  createRole(name: string, permissions: Permissions): Promise<AdminRole>
   createApiKey(name: string, roleId: number): Promise<string>
 }
 
@@ -68,6 +76,37 @@ function assertProvisioningPermissions(identity: AuthIdentity): void {
   }
 }
 
+function hasExactPermissions(actual: Permissions, expected: Permissions): boolean {
+  const expectedEntries = Object.entries(expected)
+  return (
+    Object.keys(actual).length === expectedEntries.length &&
+    expectedEntries.every(
+      ([category, actions]) =>
+        actual[category]?.length === actions.length &&
+        actions.every((action) => actual[category]?.includes(action))
+    )
+  )
+}
+
+async function ensureRestrictedRole(client: TokenLoginClient): Promise<AdminRole> {
+  const roles = await client.listRoles()
+  const namedRole = roles.find((role) => role.active && role.name === RESTRICTED_ROLE_NAME)
+  if (namedRole) {
+    if (!hasExactPermissions(namedRole.permissions, RESTRICTED_ROLE_PERMISSIONS)) {
+      throw new Error(
+        `El rol ${RESTRICTED_ROLE_NAME} debe tener únicamente los permisos requeridos.`
+      )
+    }
+    return namedRole
+  }
+
+  const createdRole = await client.createRole(RESTRICTED_ROLE_NAME, RESTRICTED_ROLE_PERMISSIONS)
+  if (!createdRole.active || !hasExactPermissions(createdRole.permissions, RESTRICTED_ROLE_PERMISSIONS)) {
+    throw new Error(`La API creó un rol ${RESTRICTED_ROLE_NAME} con permisos inválidos.`)
+  }
+  return createdRole
+}
+
 async function tryExistingApiKey(
   config: Config,
   createClient: (credential: string) => TokenLoginClient
@@ -97,22 +136,8 @@ export async function provisionApiKeyFromToken(
   const tokenClient = input.createClient(token)
   const tokenIdentity = await tokenClient.validateCredentials()
 
-  if (token.startsWith("orgm_")) {
-    assertFunctionalPermissions(tokenIdentity)
-    return {
-      apiKey: token,
-      email: tokenIdentity.email,
-      roleName: null,
-      source: input.source,
-    }
-  }
-
   assertProvisioningPermissions(tokenIdentity)
-  const selectedRole = selectLeastPrivilegeRole(await tokenClient.listRoles())
-  if (!selectedRole) {
-    throw new Error(`No existe un rol compatible con: ${FUNCTIONAL_PERMISSION_LABEL}.`)
-  }
-
+  const selectedRole = await ensureRestrictedRole(tokenClient)
   const apiKey = await tokenClient.createApiKey("orgmorg-cli", selectedRole.id)
   const finalIdentity = await input.createClient(apiKey).validateCredentials()
   assertFunctionalPermissions(finalIdentity)

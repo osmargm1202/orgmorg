@@ -116,9 +116,9 @@ describe("quotation workflow integration", () => {
         )
         return
       }
-      if (request.url === "/api/proyectos/8") {
+      if (request.url === "/api/proyectos") {
         response.setHeader("content-type", "application/json")
-        response.end(JSON.stringify({ id: 8, nombre_proyecto: "Torre Central" }))
+        response.end(JSON.stringify([{ id: 8, nombre_proyecto: "Torre Central" }]))
         return
       }
       if (request.url === "/api/cotizaciones/593/pdf") {

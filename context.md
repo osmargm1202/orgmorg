@@ -11,7 +11,7 @@ Se decidió mantener el segundo método con pegado manual. No se implementará c
 
 ## Estado de `orgmorg`
 
-La implementación del login dual está terminada y fusionada localmente en `main`.
+La implementación del login dual y del aprovisionamiento restringido está terminada localmente.
 
 Incluye:
 
@@ -22,10 +22,11 @@ Incluye:
   - JWT directo;
   - fragmento `#access_token=...`;
   - query `?access_token=...`.
-- Aprovisionamiento automático de API key.
-- Persistencia exclusiva de la API key final; el JWT y callback permanecen en memoria.
+- Reutilización prioritaria de una API key local válida.
+- Aprovisionamiento automático de una segunda API key restringida desde `ORGM_TOKEN` o JWT web.
+- Creación o reutilización del rol `orgmorg-cli-read-only`, con únicamente los permisos funcionales.
+- Persistencia exclusiva de la API key final; el JWT, callback y `ORGM_TOKEN` permanecen en memoria.
 - Conservación de la configuración manual de API key.
-- Selección del rol activo compatible de menor privilegio.
 
 Permisos funcionales requeridos:
 
@@ -35,10 +36,11 @@ Permisos funcionales requeridos:
 
 Verificación realizada:
 
-- Build correcto.
-- 52 pruebas aprobadas.
-- Pruebas de UI repetidas 10/10 sin fallos.
-- `npm audit --audit-level=high` sin vulnerabilidades altas; queda una vulnerabilidad baja de `esbuild` aplicable al servidor de desarrollo en Windows.
+- Build correcto y 52 pruebas aprobadas.
+- `https://admin-api.or-gm.com/auth/google/start` devuelve `307` hacia Google.
+- El Client ID desplegado tiene el sufijo esperado y 72 caracteres; no se registró su valor.
+- Un script `npx tsx --eval`, ejecutado con `ORGM_TOKEN` inyectado por `sops-shared-env`, aprovisionó una API key distinta, la guardó localmente y validó únicamente los permisos funcionales.
+- La búsqueda `a` devolvió 565 resultados; el humo posterior creó una carpeta temporal y descargó el PDF de oferta desde producción.
 
 Commits principales:
 
@@ -47,31 +49,21 @@ Commits principales:
 - `91f3e93` — selector y pantalla de login web.
 - `27d25d8` — integración y prueba de persistencia segura.
 
-## Diagnóstico del fallo actual
+## Estado OAuth desplegado
 
-El login abre correctamente:
+El inicio de sesión abre:
 
 ```text
 https://admin-api.or-gm.com/auth/google/start
 ```
 
-El backend responde `307` y redirige a `accounts.google.com`, pero envía un `GOOGLE_CLIENT_ID` inválido:
+La comprobación sin credenciales confirmó un `307` hacia `accounts.google.com`. El Client ID configurado tiene el formato esperado `*.apps.googleusercontent.com`; la corrección de producción ya está aplicada.
 
-- tiene 20 caracteres;
-- no presenta el formato esperado `*.apps.googleusercontent.com`.
-
-Google responde:
-
-```text
-Error 401: invalid_client
-The OAuth client was not found.
-```
-
-La cuenta Google predeterminada no causa este error. El problema corresponde a la configuración OAuth del backend desplegado.
+No se ejecutó un login Google interactivo durante la última verificación, por lo que siguen pendientes el consentimiento y el callback reales.
 
 ## Cambios requeridos en `orgm-admin-backend`
 
-No se requiere cambiar la lógica Python actual. Deben corregirse las variables del entorno de producción:
+No se requiere cambiar la lógica Python actual para el flujo de credenciales. La CLI crea el rol restringido mediante los endpoints existentes de roles y API keys.
 
 ```env
 AUTH_ENABLED=true
@@ -124,13 +116,13 @@ Después de completar Google OAuth, el correo debe cumplir una condición:
 
 Los correos de `ALLOWED_EMAILS` funcionan como superadmin para el aprovisionamiento inicial.
 
-Para que la CLI genere una API key, debe existir al menos un rol activo con:
+La CLI prioriza una API key local válida con los permisos funcionales. Si no existe, usa el JWT web o `ORGM_TOKEN` temporal para:
 
-- `cotizaciones:ver`
-- `proyectos:ver`
-- `cotizaciones:imprimir`
+1. crear o reutilizar `orgmorg-cli-read-only`;
+2. asignarle únicamente `cotizaciones:ver`, `cotizaciones:imprimir` y `proyectos:ver`;
+3. crear una nueva API key con ese rol y persistir solo esa key.
 
-Si el usuario no es superadmin, también necesita autorización para consultar roles y crear API keys según las reglas actuales del backend.
+Un token temporal que no sea superadmin requiere `roles:ver`, `roles:crear` y `usuarios:crear`.
 
 ## Flujo esperado después de corregir OAuth
 
@@ -141,7 +133,7 @@ Si el usuario no es superadmin, también necesita autorización para consultar r
 5. Completar login en Google.
 6. Copiar el JWT o la URL completa que contiene `access_token`.
 7. Pegarla en la entrada oculta de la CLI.
-8. La CLI valida el JWT, selecciona rol, crea la API key y guarda solo la key `orgm_...`.
+8. La CLI crea o reutiliza el rol restringido, crea la segunda API key y guarda solo la key `orgm_...`.
 
 ## Validación posterior al despliegue
 
@@ -163,19 +155,9 @@ Si el usuario no es superadmin, también necesita autorización para consultar r
 
 ### Backend
 
-- Crear o recuperar OAuth Client válido en Google Cloud.
-- Configurar Client ID y Client Secret correspondientes en producción.
-- Autorizar el redirect URI exacto.
-- Verificar consent screen y test users.
-- Verificar `ALLOWED_EMAILS` o usuario activo.
-- Verificar que exista un rol compatible.
-- Reiniciar o replegar el servicio.
-- Ejecutar prueba completa de login.
+- Completar una prueba Google interactiva: consentimiento, callback y emisión de JWT de siete días.
+- Verificar `ALLOWED_EMAILS` o un usuario activo para la cuenta que hará el login.
 
-### `orgmorg`
-
-- `main` local está delante de `origin/main`; falta publicar los commits.
-- `src/cli/ui/screens/TokenLoginScreen.tsx` presenta un cambio de formato externo recurrente. Debe limpiarse o estabilizarse el formatter antes del `git push`.
 
 ## Restricciones vigentes
 

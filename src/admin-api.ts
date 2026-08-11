@@ -171,6 +171,20 @@ function normalizePermissions(value: unknown): Permissions {
   return permissions
 }
 
+function parseRole(value: unknown): AdminRole {
+  const role = value as RoleResponse
+  if (typeof role.activo !== "boolean") {
+    throw new AdminApiError("La API devolvió un estado de rol inválido.", "invalid-response")
+  }
+  return {
+    id: asNumber(role.id, "id de rol"),
+    name: asString(role.nombre, "nombre de rol"),
+    active: role.activo,
+    permissions: normalizePermissions(role.permisos),
+  }
+}
+
+
 async function parseJson(response: Response): Promise<unknown> {
   try {
     return await response.json()
@@ -284,21 +298,23 @@ export class AdminApiClient {
       }
     })
 
-    const projectIds = [...new Set(quotations.map((quotation) => quotation.projectId))]
-    const projectEntries = await Promise.all(
-      projectIds.map(async (projectId) => {
-        const payload = (await parseJson(
-          await this.request(
-            `/api/proyectos/${projectId}`,
-            {},
-            JSON_TIMEOUT_MS,
-            "proyectos:ver"
-          )
-        )) as ProjectResponse
-        return [projectId, asString(payload.nombre_proyecto, "nombre_proyecto")] as const
+    if (!quotations.length) return []
+
+    const rawProjects = await parseJson(
+      await this.request("/api/proyectos", {}, JSON_TIMEOUT_MS, "proyectos:ver")
+    )
+    if (!Array.isArray(rawProjects)) {
+      throw new AdminApiError("La API devolvió una lista de proyectos inválida.", "invalid-response")
+    }
+    const projects = new Map(
+      rawProjects.map((raw) => {
+        const project = raw as ProjectResponse
+        return [
+          asNumber(project.id, "id de proyecto"),
+          asString(project.nombre_proyecto, "nombre_proyecto"),
+        ] as const
       })
     )
-    const projects = new Map(projectEntries)
     const normalizedQuery = normalizeText(trimmedQuery)
 
     return quotations
@@ -317,18 +333,23 @@ export class AdminApiClient {
     if (!Array.isArray(payload)) {
       throw new AdminApiError("La API devolvió roles inválidos.", "invalid-response")
     }
-    return payload.map((raw) => {
-      const role = raw as RoleResponse
-      if (typeof role.activo !== "boolean") {
-        throw new AdminApiError("La API devolvió un estado de rol inválido.", "invalid-response")
-      }
-      return {
-        id: asNumber(role.id, "id de rol"),
-        name: asString(role.nombre, "nombre de rol"),
-        active: role.activo,
-        permissions: normalizePermissions(role.permisos),
-      }
-    })
+    return payload.map(parseRole)
+  }
+
+  async createRole(name: string, permissions: Permissions): Promise<AdminRole> {
+    const payload = await parseJson(
+      await this.request(
+        "/api/roles",
+        {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ nombre: name, permisos: permissions }),
+        },
+        JSON_TIMEOUT_MS,
+        "roles:crear"
+      )
+    )
+    return parseRole(payload)
   }
 
   async createApiKey(name: string, roleId: number): Promise<string> {

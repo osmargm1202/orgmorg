@@ -64,11 +64,11 @@ describe("AdminApiClient", () => {
           },
         ])
       }
-      if (url.pathname === "/api/proyectos/4") {
-        return Response.json({ id: 4, nombre_proyecto: "Tórre Central" })
-      }
-      if (url.pathname === "/api/proyectos/9") {
-        return Response.json({ id: 9, nombre_proyecto: "Nave Industrial" })
+      if (url.pathname === "/api/proyectos") {
+        return Response.json([
+          { id: 4, nombre_proyecto: "Tórre Central" },
+          { id: 9, nombre_proyecto: "Nave Industrial" },
+        ])
       }
       throw new Error(`URL inesperada: ${url}`)
     })
@@ -77,8 +77,9 @@ describe("AdminApiClient", () => {
       expect.objectContaining({ id: 12, projectName: "Tórre Central" }),
       expect.objectContaining({ id: 10, projectName: "Tórre Central" }),
     ])
-    expect(fetchMock).toHaveBeenCalledTimes(3)
+    expect(fetchMock).toHaveBeenCalledTimes(2)
   })
+
 
   it("rechaza respuesta no PDF y no deja destino", async () => {
     const dir = await fs.mkdtemp(path.join(os.tmpdir(), "orgmorg-pdf-"))
@@ -160,16 +161,29 @@ describe("AdminApiClient", () => {
     expect(selected).toMatchObject({ id: 4, name: "CLI 4" })
   })
 
-  it("lista roles y crea API key con rol seleccionado", async () => {
+  it("lista roles, crea un rol restringido y genera su API key", async () => {
+    const permissions = { cotizaciones: ["ver", "imprimir"], proyectos: ["ver"] }
     const fetchMock = vi.fn(async (input: string | URL | Request, init?: RequestInit) => {
       const url = new URL(String(input))
+      if (url.pathname === "/api/roles" && init?.method === "POST") {
+        expect(JSON.parse(String(init.body))).toEqual({
+          nombre: "orgmorg-cli-read-only",
+          permisos: permissions,
+        })
+        return Response.json({
+          id: 4,
+          nombre: "orgmorg-cli-read-only",
+          activo: true,
+          permisos: permissions,
+        })
+      }
       if (url.pathname === "/api/roles") {
         return Response.json([
           {
             id: 4,
             nombre: "CLI",
             activo: true,
-            permisos: { cotizaciones: ["ver", "imprimir"], proyectos: ["ver"] },
+            permisos: permissions,
           },
         ])
       }
@@ -184,6 +198,9 @@ describe("AdminApiClient", () => {
     await expect(client.listRoles()).resolves.toEqual([
       expect.objectContaining({ id: 4, name: "CLI", active: true }),
     ])
+    await expect(client.createRole("orgmorg-cli-read-only", permissions)).resolves.toEqual(
+      expect.objectContaining({ id: 4, name: "orgmorg-cli-read-only", active: true })
+    )
     await expect(client.createApiKey("orgmorg-cli", 4)).resolves.toBe("orgm_created_secret")
   })
 
@@ -194,6 +211,12 @@ describe("AdminApiClient", () => {
     })
     await expect(forbidden.listRoles()).rejects.toThrow("roles:ver")
     await expect(forbidden.createApiKey("orgmorg-cli", 4)).rejects.toThrow("usuarios:crear")
+    await expect(
+      forbidden.createRole("orgmorg-cli-read-only", {
+        cotizaciones: ["ver", "imprimir"],
+        proyectos: ["ver"],
+      })
+    ).rejects.toThrow("roles:crear")
 
     const invalid = new AdminApiClient(config, {
       fetch: async () => Response.json({ id: 1 }),

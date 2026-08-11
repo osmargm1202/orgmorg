@@ -1,5 +1,5 @@
 import { describe, expect, it, vi } from "vitest"
-import { AdminApiError, type AuthIdentity } from "../src/admin-api.js"
+import { type AuthIdentity } from "../src/admin-api.js"
 import {
   obtainApiKeyFromEnvironment,
   provisionApiKeyFromToken,
@@ -20,6 +20,12 @@ const identity = (
 const client = (overrides: Partial<TokenLoginClient> = {}): TokenLoginClient => ({
   validateCredentials: vi.fn(async () => identity(functionalPermissions)),
   listRoles: vi.fn(async () => []),
+  createRole: vi.fn(async () => ({
+    id: 4,
+    name: "orgmorg-cli-read-only",
+    active: true,
+    permissions: functionalPermissions,
+  })),
   createApiKey: vi.fn(async () => "orgm_created"),
   ...overrides,
 })
@@ -45,9 +51,16 @@ describe("obtainApiKeyFromEnvironment", () => {
     expect(existing.createApiKey).not.toHaveBeenCalled()
   })
 
-  it("valida y devuelve ORGM_TOKEN que ya es API key", async () => {
-    const environment = client()
-    const createClient = vi.fn(() => environment)
+  it("aprovisiona una API key restringida desde ORGM_TOKEN API key", async () => {
+    const environment = client({
+      validateCredentials: vi.fn(async () =>
+        identity({ roles: ["ver", "crear"], usuarios: ["crear"] })
+      ),
+    })
+    const generated = client()
+    const createClient = vi.fn((credential: string) =>
+      credential === "orgm_created" ? generated : environment
+    )
     await expect(
       obtainApiKeyFromEnvironment({
         config,
@@ -55,16 +68,18 @@ describe("obtainApiKeyFromEnvironment", () => {
         createClient,
       })
     ).resolves.toMatchObject({
-      apiKey: "orgm_environment",
+      apiKey: "orgm_created",
       source: "environment-key",
-      roleName: null,
+      roleName: "orgmorg-cli-read-only",
     })
+    expect(environment.createRole).toHaveBeenCalledWith("orgmorg-cli-read-only", functionalPermissions)
+    expect(environment.createApiKey).toHaveBeenCalledWith("orgmorg-cli", 4)
   })
 
-  it("usa JWT, elige rol mínimo, crea y valida API key", async () => {
+  it("crea un rol restringido para JWT aunque exista un rol compatible más amplio", async () => {
     const jwtClient = client({
       validateCredentials: vi.fn(async () =>
-        identity({ roles: ["ver"], usuarios: ["crear"] })
+        identity({ roles: ["ver", "crear"], usuarios: ["crear"] })
       ),
       listRoles: vi.fn(async () => [
         {
@@ -95,9 +110,10 @@ describe("obtainApiKeyFromEnvironment", () => {
     ).resolves.toEqual({
       apiKey: "orgm_created",
       email: "osmar@or-gm.com",
-      roleName: "CLI",
+      roleName: "orgmorg-cli-read-only",
       source: "environment-jwt",
     })
+    expect(jwtClient.createRole).toHaveBeenCalledWith("orgmorg-cli-read-only", functionalPermissions)
     expect(jwtClient.createApiKey).toHaveBeenCalledWith("orgmorg-cli", 4)
   })
 
@@ -109,23 +125,31 @@ describe("obtainApiKeyFromEnvironment", () => {
     expect(createClient).not.toHaveBeenCalled()
   })
 
-  it("continúa con token de entorno si key configurada es inválida", async () => {
-    const invalid = client({
-      validateCredentials: vi.fn(async () => {
-        throw new AdminApiError("revocada", "auth", 401)
-      }),
+  it("reutiliza una API key configurada válida antes de ORGM_TOKEN", async () => {
+    const configured = client({
+      validateCredentials: vi.fn(async () =>
+        identity({
+          cotizaciones: ["ver", "imprimir", "crear"],
+          proyectos: ["ver"],
+          roles: ["ver", "crear"],
+          usuarios: ["crear"],
+        })
+      ),
     })
-    const environment = client()
-    const createClient = vi.fn((credential: string) =>
-      credential === "orgm_invalid" ? invalid : environment
-    )
+    const createClient = vi.fn(() => configured)
     await expect(
       obtainApiKeyFromEnvironment({
-        config: { ...config, apiKey: "orgm_invalid" },
+        config: { ...config, apiKey: "orgm_configured" },
         environmentToken: "orgm_environment",
         createClient,
       })
-    ).resolves.toMatchObject({ source: "environment-key" })
+    ).resolves.toMatchObject({
+      apiKey: "orgm_configured",
+      source: "existing",
+      roleName: null,
+    })
+    expect(configured.listRoles).not.toHaveBeenCalled()
+    expect(configured.createApiKey).not.toHaveBeenCalled()
   })
 
   it("permite aprovisionamiento con JWT superadmin aunque permisos estén vacíos", async () => {
@@ -144,7 +168,7 @@ describe("obtainApiKeyFromEnvironment", () => {
         createClient: (credential) =>
           credential === "orgm_created" ? finalClient : jwtClient,
       })
-    ).resolves.toMatchObject({ source: "environment-jwt", roleName: "CLI" })
+    ).resolves.toMatchObject({ source: "environment-jwt", roleName: "orgmorg-cli-read-only" })
   })
 
   it("rechaza JWT sin permisos de aprovisionamiento", async () => {
@@ -157,7 +181,7 @@ describe("obtainApiKeyFromEnvironment", () => {
         environmentToken: "jwt_access",
         createClient: () => jwtClient,
       })
-    ).rejects.toThrow("usuarios:crear")
+    ).rejects.toThrow("roles:crear")
     expect(jwtClient.listRoles).not.toHaveBeenCalled()
   })
 
@@ -179,29 +203,37 @@ describe("obtainApiKeyFromEnvironment", () => {
     expect(JSON.stringify(result)).not.toContain("jwt-web-secret")
   })
 
-  it("rechaza ausencia de rol compatible y key final sin permisos", async () => {
-    const noRoleClient = client({
+  it("rechaza un rol dedicado inválido y una API key final sin permisos", async () => {
+    const invalidRoleClient = client({
       validateCredentials: vi.fn(async () =>
-        identity({ roles: ["ver"], usuarios: ["crear"] })
+        identity({ roles: ["ver", "crear"], usuarios: ["crear"] })
       ),
-      listRoles: vi.fn(async () => [
-        { id: 1, name: "Lector", active: true, permissions: { cotizaciones: ["ver"] } },
-      ]),
+      createRole: vi.fn(async () => ({
+        id: 1,
+        name: "orgmorg-cli-read-only",
+        active: true,
+        permissions: { cotizaciones: ["ver"] },
+      })),
     })
     await expect(
       obtainApiKeyFromEnvironment({
         config,
-        environmentToken: "jwt_no_role",
-        createClient: () => noRoleClient,
+        environmentToken: "jwt_invalid_role",
+        createClient: () => invalidRoleClient,
       })
-    ).rejects.toThrow("cotizaciones:ver, proyectos:ver, cotizaciones:imprimir")
+    ).rejects.toThrow("rol orgmorg-cli-read-only con permisos inválidos")
 
     const jwtClient = client({
       validateCredentials: vi.fn(async () =>
-        identity({ roles: ["ver"], usuarios: ["crear"] })
+        identity({ roles: ["ver", "crear"], usuarios: ["crear"] })
       ),
       listRoles: vi.fn(async () => [
-        { id: 4, name: "CLI", active: true, permissions: functionalPermissions },
+        {
+          id: 4,
+          name: "orgmorg-cli-read-only",
+          active: true,
+          permissions: functionalPermissions,
+        },
       ]),
     })
     const invalidCreated = client({
